@@ -3,7 +3,9 @@ import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles({
   sidebar: {
     flex: 3,
-    borderRight: "1px solid black",
+    // borderRight: "1px solid black",
+    display : "flex",
+    flexDirection : "column",
   },
   sidebar__header: {
     display: "flex",
@@ -48,7 +50,24 @@ const useStyles = makeStyles({
       padding: "0.5rem",
       backgroundColor : "rgb(235,235,235)",
 
-  }
+  },
+  sidebar__chats:{
+      overflow : "scroll", 
+      flex : 1,
+      overflowX : "hidden",
+      '&::-webkit-scrollbar': {
+        width: '0.4em'
+      },
+      '&::-webkit-scrollbar-track': {
+        boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+        webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,.1)',
+        outline: '1px solid slategrey'
+      }
+  },
+ 
 });
 
 export default useStyles;
