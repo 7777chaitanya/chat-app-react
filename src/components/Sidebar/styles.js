@@ -6,6 +6,7 @@ const useStyles = makeStyles({
     // borderRight: "1px solid black",
     display : "flex",
     flexDirection : "column",
+    // minWidth : "400px"
   },
   sidebar__header: {
     display: "flex",
@@ -14,6 +15,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     backgroundColor: "rgb(235,235,235)",
     border: "1px solid black",
+    maxWidth : "310px"
   },
   sidebar__header__icon: {
     marginRight: "2rem",
@@ -34,6 +36,8 @@ const useStyles = makeStyles({
     height : "1rem",
     backgroundColor : "white",
     borderRadius : "50px",
+    maxWidth : "310px"
+
   },
   inputField: {
     width: "100%",

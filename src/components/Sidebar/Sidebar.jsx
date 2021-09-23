@@ -23,6 +23,14 @@ const Sidebar = () => {
     setOpenMenuModal(false);
   };
 
+  const handleCreateNewRoom = () => {
+    handleCloseMenuModal();
+    const roomName = prompt(" Enter a name for the room");
+    if(roomName){
+      console.log(roomName)
+    }
+  }
+
   return (
     <div className={classes.sidebar}>
       <div className={classes.sidebar__header}>
@@ -65,7 +73,9 @@ const Sidebar = () => {
         <EachChat/>
         <EachChat/>
       </div>
-      {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}/>}
+      {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}
+      handleCreateNewRoom={handleCreateNewRoom}
+      />}
     </div>
   );
 };
