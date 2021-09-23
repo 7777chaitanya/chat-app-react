@@ -1,13 +1,17 @@
 import React from 'react';
-import "./App.css"
+import useStyles from "./appStyles";
+import {Sidebar, Chat} from "./components";
 
 const App = () => {
+    const classes = useStyles();
     return (
-        <div className="app">
-            <div className="app__body">
+        <div className={classes.app}>
+            <div className={classes.app__body}>
                 {/* sidebar with people list */}
-hi
+                <Sidebar/>
+
                 {/* messages */}
+                <Chat/>
             </div>
         </div>
     )
