@@ -15,7 +15,7 @@ if(window.innerWidth>660){
   return {
     
     top: "5rem",
-    left : "11rem"
+    left : "9rem"
     }
     // transform: `translate(-${top}%, -${left}%)`,
   }
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     // border: '2px solid #000',
     // boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
-   
+   boxShadow : "1px 1px  2px 0px darkgray"
   },
 }));
 

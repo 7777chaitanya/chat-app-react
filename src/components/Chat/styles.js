@@ -1,4 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { createTheme, makeStyles } from "@material-ui/core";
+
+
 
 const  useStyles = makeStyles(theme =>({
 chat : {
@@ -6,6 +8,7 @@ chat : {
     [theme.breakpoints.down('sm')]: {
         display : "none"
     },
+    border : "1px solid black"
 }
 }))
 
