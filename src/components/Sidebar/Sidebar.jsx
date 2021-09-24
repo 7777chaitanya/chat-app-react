@@ -32,6 +32,10 @@ const unsubscribe = onSnapshot(q, (querySnapshot) => {
   // console.log("Current cities in CA: ", cities.join(", "));
   console.log("rooms => ",rooms)
 });
+
+return () => {
+  unsubscribe();
+}
   }, [])
 
   const handleOpenMenuModal = () => {

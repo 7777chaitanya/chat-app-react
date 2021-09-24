@@ -1,15 +1,42 @@
 import { IconButton, CardHeader, Avatar } from "@material-ui/core";
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import useStyles from "./styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
 import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfied";
 import AttachmentIcon from "@material-ui/icons/Attachment";
+import {useParams} from 'react-router-dom';
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import {db} from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
-const Chat = () => {
+const Chat = (props) => {
   const classes = useStyles();
   const [message, setMessage] = useState("");
   const messageRef = useRef();
+  const {roomId} = useParams();
+  const [roomContent, setRoomContent] = useState({})
+  console.log("match => ",roomContent);
+
+
+  useEffect(() => {
+    const q = query(collection(db, "rooms"), where("name", "==", roomId));
+const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  const rooms = [];
+  querySnapshot.forEach((doc) => {
+      rooms.push(doc.data());
+  });
+  setRoomContent(rooms[0]);
+  
+
+});
+
+    
+    return () => {
+      unsubscribe();
+    }
+  }, [roomId])
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,7 +66,7 @@ const Chat = () => {
               </IconButton>
             </>
           }
-          title="Shrimp and Chorizo Paella"
+          title={roomId}
           subheader="September 14, 2016"
         />
       </div>
