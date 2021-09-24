@@ -81,6 +81,10 @@ const Chat = (props) => {
 
   };
 
+  const lastSeenDateAndTime = () => {
+    return messages[messages.length-1]?.time.toDate();
+  }
+
   return (
     <div className={classes.chat}>
       <div className={classes.chat__header}>
@@ -104,7 +108,7 @@ const Chat = (props) => {
             </>
           }
           title={roomId}
-          subheader="September 14, 2016"
+          subheader={`Last seen on ${lastSeenDateAndTime()}`}
         />
       </div>
 
