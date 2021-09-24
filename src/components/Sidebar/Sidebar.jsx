@@ -87,19 +87,7 @@ return () => {
 
       <div className={classes.sidebar__chats}>
         {rooms.map(eachRoom => <EachChat key={eachRoom.id} roomName={eachRoom.data.name} docId={eachRoom.id}/>)}
-        <EachChat/>
-        <EachChat/>
-        {/* <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/> */}
+       
       </div>
       {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}
       handleCreateNewRoom={handleCreateNewRoom}

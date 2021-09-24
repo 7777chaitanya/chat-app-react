@@ -118,16 +118,7 @@ const Chat = (props) => {
           hello
           <span className={classes.chat__timestamp}>03:52</span>
         </div>
-        <div className={classes.chat__message}>
-          <span className={classes.chat__user}>Chaitanya</span>
-          wassup guys
-          <span className={classes.chat__timestamp}>03:52</span>
-        </div>
-        <div className={classes.chat__receiver}>
-          <span className={classes.chat__user}>Chaitanya</span>
-          helllllllo
-          <span className={classes.chat__timestamp}>03:52</span>
-        </div>
+       
 
         {messages.map(eachMessage => (
            <div className={classes.chat__receiver}>
