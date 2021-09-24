@@ -61,10 +61,24 @@ const Chat = (props) => {
     }
   }, [roomDocId]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(messageRef.current.value);
+
+    // const messageQuery = query(
+    //   collection(db, "rooms", roomDocId, "messages",), orderBy("time")
+      
+    // );
+    const newCityRef = doc(collection(db, "rooms", roomDocId, "messages"));
+    await setDoc(newCityRef, {
+      name: "LosAngeles",
+      message: messageRef.current.value,
+      time: new Date()
+    });
     messageRef.current.value = "";
+
+
+
   };
 
   return (
