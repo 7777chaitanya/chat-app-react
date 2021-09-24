@@ -86,7 +86,7 @@ return () => {
       </div>
 
       <div className={classes.sidebar__chats}>
-        {rooms.map(eachRoom => <EachChat key={eachRoom.id} roomName={eachRoom.data.name}/>)}
+        {rooms.map(eachRoom => <EachChat key={eachRoom.id} roomName={eachRoom.data.name} docId={eachRoom.id}/>)}
         <EachChat/>
         <EachChat/>
         {/* <EachChat/>
