@@ -1,5 +1,5 @@
 import { Avatar, IconButton } from "@material-ui/core";
-import React from "react";
+import React,{useEffect, useState} from "react";
 import useStyles from "./styles";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import ChatIcon from "@material-ui/icons/Chat";
@@ -7,6 +7,11 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
 import EachChat from "./EachChat/EachChat";
 import MenuModal from "./MenuModal/MenuModal";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import {db} from "../../firebase";
+import { doc, setDoc } from "firebase/firestore"; 
+
+
 // import SidebarHeader from "./SidebarHeader";
 // import SidebarSearch from "./SidebarSearch";
 // import SidebarChats from "./SidebarChats"
@@ -14,6 +19,20 @@ import MenuModal from "./MenuModal/MenuModal";
 const Sidebar = () => {
   const classes = useStyles();
   const [openMenuModal, setOpenMenuModal] = React.useState(false);
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    const q = query(collection(db, "rooms"), where("name", "!=", ""));
+const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  const rooms = [];
+  querySnapshot.forEach((doc) => {
+      rooms.push({id : doc.id, data : doc.data()});
+  });
+  setRooms([...rooms])
+  // console.log("Current cities in CA: ", cities.join(", "));
+  console.log("rooms => ",rooms)
+});
+  }, [])
 
   const handleOpenMenuModal = () => {
     setOpenMenuModal(true);
@@ -23,11 +42,15 @@ const Sidebar = () => {
     setOpenMenuModal(false);
   };
 
-  const handleCreateNewRoom = () => {
+  const handleCreateNewRoom = async () => {
     handleCloseMenuModal();
     const roomName = prompt(" Enter a name for the room");
     if(roomName){
-      console.log(roomName)
+      await setDoc(doc(db, "rooms", roomName), {
+        name: roomName
+        
+      });
+      
     }
   }
 
@@ -59,6 +82,10 @@ const Sidebar = () => {
       </div>
 
       <div className={classes.sidebar__chats}>
+        {rooms.map(eachRoom => <EachChat key={eachRoom.id} roomName={eachRoom.data.name}/>)}
+        <EachChat/>
+        <EachChat/>
+        {/* <EachChat/>
         <EachChat/>
         <EachChat/>
         <EachChat/>
@@ -68,10 +95,7 @@ const Sidebar = () => {
         <EachChat/>
         <EachChat/>
         <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
-        <EachChat/>
+        <EachChat/> */}
       </div>
       {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}
       handleCreateNewRoom={handleCreateNewRoom}

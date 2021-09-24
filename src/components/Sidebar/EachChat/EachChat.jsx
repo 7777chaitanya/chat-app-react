@@ -5,7 +5,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 
 
-const EachChat = () => {
+const EachChat = ({roomName}) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -24,7 +24,7 @@ const EachChat = () => {
             <h6>07:30</h6>
             </>
           }
-          title="Shrimp and Chorizo Paella"
+          title={roomName}
           subheader="September 14, 2016"
         />
         </div>
