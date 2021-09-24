@@ -1,5 +1,15 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 import App from "./App";
-import "./index.css"
+import "./index.css";
+import { CurrentUserProvider} from "./contexts/CurrentUserContext";
 
-ReactDOM.render(<App/>, document.getElementById("root"));
+ReactDOM.render(
+
+    <>
+  <CurrentUserProvider>
+    <App />
+  </CurrentUserProvider>
+  </>,
+
+  document.getElementById("root")
+);

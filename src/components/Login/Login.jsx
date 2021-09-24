@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {  signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {auth, provider} from "../../firebase";
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 
 const Login = () => {
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useContext(CurrentUserContext);
+    
     console.log("user => ", user)
 
     const handleSignInWithGoogle = async (e) =>{
@@ -17,7 +19,7 @@ const Login = () => {
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
-          setUser(user.email);
+          setUser(user);
         // console.log(user)
         }).catch((error) => {
           // Handle Errors here.

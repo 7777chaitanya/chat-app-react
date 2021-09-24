@@ -1,48 +1,71 @@
 import { IconButton, CardHeader, Avatar } from "@material-ui/core";
-import React, {useRef, useState, useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import useStyles from "./styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
 import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfied";
 import AttachmentIcon from "@material-ui/icons/Attachment";
-import {useParams} from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import {db} from "../../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import { doc, setDoc, orderBy } from "firebase/firestore";
 
 const Chat = (props) => {
   const classes = useStyles();
   const [message, setMessage] = useState("");
   const messageRef = useRef();
-  const {roomId} = useParams();
-  const [roomContent, setRoomContent] = useState({})
-  console.log("match => ",roomContent);
-
+  const { roomId } = useParams();
+  const [roomContent, setRoomContent] = useState({});
+  const [messages, setMessages] = useState([]);
+  const [roomDocId, setRoomDocId] = useState("");
+  console.log("match => ", roomContent);
+  console.log("messages => ", messages);
 
   useEffect(() => {
     const q = query(collection(db, "rooms"), where("name", "==", roomId));
-const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  const rooms = [];
-  querySnapshot.forEach((doc) => {
-      rooms.push(doc.data());
-  });
-  setRoomContent(rooms[0]);
-  
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const rooms = [];
+      const messages = [];
 
-});
+      querySnapshot.forEach((doc) => {
+        setRoomDocId(doc.id);
+        rooms.push(doc.data());
+      });
+      setRoomContent(rooms[0]);
+    });
 
-    
     return () => {
       unsubscribe();
-    }
-  }, [roomId])
+    };
+  }, [roomId]);
 
+  useEffect(() => {
+    if (roomDocId) {
+      const messageQuery = query(
+        collection(db, "rooms", roomDocId, "messages"), orderBy("time")
+        
+      );
+      const messagesUnsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
+        const messages = [];
+
+        querySnapshot.forEach((doc) => {
+          console.log("messagesquerySnapshot => ", doc.data());
+
+          messages.push(doc.data());
+        });
+        setMessages([...messages]);
+      });
+      return () => {
+        messagesUnsubscribe();
+      };
+    }
+  }, [roomDocId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(messageRef.current.value);
-    messageRef.current.value="";
-  }
+    messageRef.current.value = "";
+  };
 
   return (
     <div className={classes.chat}>
@@ -87,11 +110,26 @@ const unsubscribe = onSnapshot(q, (querySnapshot) => {
           helllllllo
           <span className={classes.chat__timestamp}>03:52</span>
         </div>
+
+        {messages.map(eachMessage => (
+           <div className={classes.chat__receiver}>
+           <span className={classes.chat__user}>{eachMessage.name}</span>
+           {eachMessage.message}
+           <span className={classes.chat__timestamp}>{eachMessage.time.toDate}</span>
+         </div>
+        ))}
+
+     
+
       </div>
 
       <div className={classes.chat__footer}>
         <SentimentVerySatisfiedIcon className={classes.footerIcons} />
-        <form action="submit" className={classes.chat__footer__messageform} onSubmit={handleSubmit}>
+        <form
+          action="submit"
+          className={classes.chat__footer__messageform}
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
             placeholder="Enter your message here!"
