@@ -1,4 +1,4 @@
-import { Avatar, IconButton } from "@material-ui/core";
+import { Avatar, IconButton, Tooltip } from "@material-ui/core";
 import React,{useEffect, useState} from "react";
 import useStyles from "./styles";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
@@ -15,11 +15,13 @@ import { doc, setDoc } from "firebase/firestore";
 // import SidebarHeader from "./SidebarHeader";
 // import SidebarSearch from "./SidebarSearch";
 // import SidebarChats from "./SidebarChats"
+import { useAuth } from '../../contexts/AuthContext';
 
 const Sidebar = () => {
   const classes = useStyles();
   const [openMenuModal, setOpenMenuModal] = React.useState(false);
   const [rooms, setRooms] = useState([]);
+  const {currentUser} = useAuth();
 
   useEffect(() => {
     const q = query(collection(db, "rooms"), where("name", "!=", ""));
@@ -61,7 +63,13 @@ return () => {
   return (
     <div className={classes.sidebar}>
       <div className={classes.sidebar__header}>
+        {currentUser ? 
+        (<Tooltip title={`${currentUser.email}`}>
         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </Tooltip>) :
+        (<Tooltip title="hi">
+        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </Tooltip>)}
         <div className={classes.sidebar__header__icons}>
           <IconButton>
             <DonutLargeIcon className={classes.sidebar__header__icon} />
