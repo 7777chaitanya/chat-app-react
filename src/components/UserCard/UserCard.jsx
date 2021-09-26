@@ -1,57 +1,74 @@
-import React,{useContext} from "react";
-import { CardHeader, Avatar, IconButton } from '@material-ui/core';
-import { Card } from '@material-ui/core';
-import useStyles from './styles.js';
-import {Link} from "react-router-dom";
-import { Typography } from '@material-ui/core';
-import { ShowSearchListContext } from '../../contexts/ShowSearchListContext';
+import React, { useContext } from "react";
+import { CardHeader, Avatar, IconButton } from "@material-ui/core";
+import { Card } from "@material-ui/core";
+import useStyles from "./styles.js";
+import { Link } from "react-router-dom";
+import { Typography } from "@material-ui/core";
+import { ShowSearchListContext } from "../../contexts/ShowSearchListContext";
+import { doc } from "@firebase/firestore";
+import { setDoc } from 'firebase/firestore';
+import { db } from "../../firebase.js";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import {useHistory} from "react-router-dom";
 
 
-const UserCard = ({item}) => {
-    const classes = useStyles();
-    const { showSearchList, setShowSearchList, closeSearchList, openSearchList } = useContext(ShowSearchListContext)
+const UserCard = ({ item }) => {
+const history = useHistory();
+  const classes = useStyles();
+  const {currentUser} = useAuth();
+  const { showSearchList, setShowSearchList, closeSearchList, openSearchList } =
+    useContext(ShowSearchListContext);
 
-    
-  return (
-    (item.name === "No results found!" || item.name ==="Enter a word to Search!") 
-    
-    ?
+  const createPersonalRoom = async () => {
+    await setDoc(doc(db, "rooms", `${item.email}${currentUser.email}`), {
+        name: `${item.email}${currentUser.email}`,
+        members : [item.email, currentUser.email]
+        
+      });
+      history.push(`/app/${`${item.email}${currentUser.email}`}`)
+  };
 
-    (<Card className={classes.typographyRoot}>
+  const handleCardClick = () => {
+    createPersonalRoom();
+    closeSearchList();
+  };
 
-    <Typography className={classes.typography} variant="body1">{item.name}</Typography>
-</Card>)
-:
-    (<Card className={classes.root}>
-      
+  return item.name === "No results found!" ||
+    item.name === "Enter a word to Search!" ? (
+    <Card className={classes.typographyRoot}>
+      <Typography className={classes.typography} variant="body1">
+        {item.name}
+      </Typography>
+    </Card>
+  ) : (
+    <Card className={classes.root}>
       <CardHeader
         className={classes.usercard}
         // component={Link}
         // to={`/profile/${item.name}`}
-        onClick={closeSearchList}
+        onClick={handleCardClick}
         avatar={
-          (item?.avatarUrl!==null) &&
-          (
-          (item?.avatarUrl)  ? (
+          item?.avatarUrl !== null &&
+          (item?.avatarUrl ? (
             <Avatar
               alt={item?.name}
               src={item?.avatarUrl}
               className={classes.avatarSize}
             />
           ) : (
-            <Avatar aria-label="recipe" className={classes.avatarSize} src={item?.avatarUrl}
-          >
-            {item.name[0].toUpperCase()}
-          </Avatar>
-          )
-          )
+            <Avatar
+              aria-label="recipe"
+              className={classes.avatarSize}
+              src={item?.avatarUrl}
+            >
+              {item.name[0].toUpperCase()}
+            </Avatar>
+          ))
         }
-    
         title={item.name}
       />
-    </Card>)
-      
-)
-    }
+    </Card>
+  );
+};
 
 export default UserCard;
