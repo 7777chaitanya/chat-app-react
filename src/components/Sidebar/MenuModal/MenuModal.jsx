@@ -6,6 +6,7 @@ import InboxIcon from '@material-ui/icons/Inbox';
 import { useAuth } from '../../../contexts/AuthContext';
 import {auth} from "../../../firebase";
 import {useHistory} from 'react-router-dom';
+import SettingsDrawer from "../../SettingsDrawer/SettingsDrawer";
 
 
 
@@ -68,6 +69,21 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
         console.log(error)
     }
   };
+
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
   
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -77,6 +93,13 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
             <InboxIcon />
           </ListItemIcon>
           <ListItemText primary={<Typography variant="body2">Create a room</Typography>} />
+        </ListItem>
+
+        <ListItem button onClick={toggleDrawer("left", true)}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Settings" />
         </ListItem>
         <ListItem button onClick={handleLogout}>
           <ListItemIcon>
@@ -88,6 +111,7 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
       <Divider />
       
       <button onClick={handleCloseMenuModal}>close modal</button>
+      <SettingsDrawer toggleDrawer={toggleDrawer} state={state}/>
     </div>
   );
 

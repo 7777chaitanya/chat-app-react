@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@material-ui/core";
 import { HashRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
 import Login2 from './components/Login2.jsx/Login2';
+import Signup from "./components/Signup/Signup";
 
 const theme = createTheme({
   breakpoints: {
@@ -33,7 +34,11 @@ const App = () => {
               <Login2 />
             </Route>
 
-            <Route path="/">
+            <Route path="/signup">
+              <Signup/>
+            </Route>
+
+            <Route path="/" exact>
               <Sidebar/>
               <Chat/>
             </Route>

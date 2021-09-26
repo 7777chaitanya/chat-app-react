@@ -10,6 +10,7 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
 import { doc, setDoc, orderBy } from "firebase/firestore";
 import Picker from 'emoji-picker-react';
+import MicIcon from '@material-ui/icons/Mic';
 
 
 const Chat = (props) => {
@@ -63,15 +64,27 @@ const Chat = (props) => {
     }
   }, [roomDocId]);
 
+  const handleVoiceRecording = () => {
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+  }
+
+    
+  const [showEmojiPanel, setShowEmojiPanel] = useState(false);
+
+  const handleEmojiPanel = () => {
+    setShowEmojiPanel(p => !p);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(messageRef.current.value);
+    handleEmojiPanel();
 
     // const messageQuery = query(
     //   collection(db, "rooms", roomDocId, "messages",), orderBy("time")
       
     // );
-    const newCityRef = doc(collection(db, "rooms", roomDocId, "messages"));
+    const newCityRef = doc(collection(db, "rooms", roomDocId || "E6mkZUadkZGElsFo0YZC" , "messages"));
     await setDoc(newCityRef, {
       name: "LosAngeles",
       message: messageRef.current.value,
@@ -87,15 +100,12 @@ const Chat = (props) => {
     return messages[messages.length-1]?.time.toDate();
   }
 
-  
-  const [showEmojiPanel, setShowEmojiPanel] = useState(false);
 
-  const handleEmojiPanel = () => {
-    setShowEmojiPanel(p => !p);
-  }
 
   const onEmojiClick = (event, emojiObject) => {
       console.log(emojiObject.emoji);
+      messageRef.current.value += emojiObject.emoji;
+      messageRef?.current?.focus()
     //   console.log(event)
   }
 
@@ -146,7 +156,10 @@ const Chat = (props) => {
 
       </div>
 
-      {showEmojiPanel && <Picker onEmojiClick={onEmojiClick} />}
+      {showEmojiPanel && <Picker onEmojiClick={onEmojiClick} 
+      native={true}
+      pickerStyle={{ width: '100%' }}
+      />}
 
       <div className={classes.chat__footer}>
         <SentimentVerySatisfiedIcon className={classes.footerIcons} onClick={handleEmojiPanel}/>
@@ -166,6 +179,8 @@ const Chat = (props) => {
           </button>
         </form>
         <AttachmentIcon className={classes.footerIcons} />
+        <MicIcon className={classes.footerIcons} onClick={handleVoiceRecording}/>
+
       </div>
     </div>
   );

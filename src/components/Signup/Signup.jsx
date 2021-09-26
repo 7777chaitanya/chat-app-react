@@ -12,46 +12,61 @@ import {
   import Alert from "@material-ui/lab/Alert";
   import React, { useRef, useState } from "react";
   import { makeStyles } from "@material-ui/core/styles";
-  import {Link, useHistory} from 'react-router-dom';
+  import {Link, useHistory } from 'react-router-dom';
   
-  import { useAuth } from "../../contexts/AuthContext";
-  import { auth } from "../../firebase";
+import { useAuth } from "../../contexts/AuthContext";
+import { auth, db } from "../../firebase";
+import useStyles from "./styles";
+import { doc, setDoc } from "firebase/firestore"; 
+
   
-  
-  import useStyles from "./styles";
-  
-  const Login2 = () => {
+ 
+  const Signup = () => {
     const classes = useStyles();
+    const usernameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
+    const passwordConfirmRef = useRef();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+    const [signinSuccess, setSigninSuccess] = useState("");
+    const { signup } = useAuth();
     const history = useHistory();
   
     const handleSubmit = async (e) => {
       e.preventDefault();
       console.log("sign up method =>", auth);
   
-      
+      if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+        return setError("Passwords do not match!");
+      }
       try {
         setError("");
         setLoading(true);
-      //   setSigninSuccess("");
+        setSigninSuccess("");
   
-        const result = await login(
+        const result = await signup(
           auth,
           emailRef.current.value,
           passwordRef.current.value
         );
-        
-    
-        console.log("result =>", result);
+        if (result) {
+          setSigninSuccess("Account registered Successfully!");
+        }
+
+        // write user details to user collection 
+        await setDoc(doc(db, "users", emailRef.current.value), {
+            name: usernameRef.current.value,
+            email : emailRef.current.value,
+            avatarUrl : ""
+          });
+
         history.push('/');
+        console.log("result =>", result);
       } catch (error) {
-        
-        setError("Failed to log in");
+        setError(error.code);
       }
+      // setError
       setLoading(false);
     };
   
@@ -63,7 +78,7 @@ import {
           align="center"
           className={classes.typography}
         >
-          LogIn form
+          SignUp form
         </Typography>
         <Box className={classes.box}>
           {error && (
@@ -72,17 +87,32 @@ import {
             </Alert>
           )}
         </Box>
-        {/* <Box className={classes.box}>
+        <Box className={classes.box}>
           {signinSuccess && (
             <Alert variant="filled" severity="success">
               {signinSuccess}
             </Alert>
           )}
-        </Box> */}
+        </Box>
   
         <Box className={classes.formBox}>
           <form onSubmit={handleSubmit}>
             <Box className={classes.form}>
+
+            <Box className={classes.box}>
+                <FormControl>
+                  <InputLabel htmlFor="my-input">Username</InputLabel>
+                  <Input
+                    id="my-input"
+                    aria-describedby="my-helper-text"
+                    inputRef={usernameRef}
+                  />
+                  {/* <FormHelperText id="my-helper-text">
+                    We'll never share your email.
+                  </FormHelperText> */}
+                </FormControl>
+              </Box>
+
               <Box className={classes.box}>
                 <FormControl>
                   <InputLabel htmlFor="my-input">Email address</InputLabel>
@@ -110,7 +140,22 @@ import {
                   </FormHelperText>
                 </FormControl>
               </Box>
-  
+              <Box className={classes.box}>
+                <FormControl>
+                  <InputLabel htmlFor="my-input">
+                    Password Confirmation
+                  </InputLabel>
+                  <Input
+                    id="my-input"
+                    aria-describedby="my-helper-text"
+                    type="password"
+                    inputRef={passwordConfirmRef}
+                  />
+                  <FormHelperText id="my-helper-text">
+                    We'll never share your email.
+                  </FormHelperText>
+                </FormControl>
+              </Box>
               <Box className={classes.box}>
                 <Button
                   color="white"
@@ -118,7 +163,7 @@ import {
                   onClick={handleSubmit}
                   disabled={loading}
                 >
-                  Login
+                  Submit
                 </Button>
               </Box>
             </Box>
@@ -129,32 +174,16 @@ import {
           <Divider />
         </Box>
         <Box className={classes.link}>
-          <Typography
-            variant="subtitle2"
-            component={Link}
-            to="/forgot-password"
-            className={classes.link}
-            
-          >
-            Forgot Password?
+          {/* <a style={{ textDecoration: "none", color: "black" }} href="/login"> */}
+  
+          <Typography variant="subtitle2" component={Link} to="/login" className={classes.link}>
+            Already have an Account? Log In!
           </Typography>
-        </Box>
-         <Box className={classes.divider}>
-          <Divider />
-        </Box>
-        <Box className={classes.link}>
-          <Typography
-            variant="subtitle2"
-            component={Link}
-            to="/signup"
-            className={classes.link}
-          >
-            Don't have an account? SignUp!
-          </Typography>
+          {/* </a> */}
         </Box>
       </>
     );
   };
   
-  export default Login2;
+  export default Signup;
   
