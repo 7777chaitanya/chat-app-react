@@ -39,10 +39,11 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     width: "12rem",
     backgroundColor: theme.palette.background.paper,
+    borderRadius : "10px"
     // border: '2px solid #000',
     // boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
-   boxShadow : "1px 1px  2px 0px darkgray"
+  //  boxShadow : "1px 1px  2px 0px darkgray"
   },
 }));
 
@@ -82,17 +83,23 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
       return;
     }
 
+    if(state.left === true){
+      handleCloseMenuModal();
+    }
+
     setState({ ...state, [anchor]: open });
+
+
   };
   
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+<div style={modalStyle} className={classes.paper}>
       <List component="nav" aria-label="main mailbox folders">
         <ListItem button onClick={handleCreateNewRoom}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary={<Typography variant="body2">Create a room</Typography>} />
+          <ListItemText primary="Create room" />
         </ListItem>
 
         <ListItem button onClick={toggleDrawer("left", true)}>
@@ -110,8 +117,7 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
       </List>
       <Divider />
       
-      <button onClick={handleCloseMenuModal}>close modal</button>
-      <SettingsDrawer toggleDrawer={toggleDrawer} state={state}/>
+      <SettingsDrawer toggleDrawer={toggleDrawer} state={state} />
     </div>
   );
 
@@ -127,7 +133,7 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        {body}
+        {body} 
       </Modal>
     </div>
   );

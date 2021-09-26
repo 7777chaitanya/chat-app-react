@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Tooltip } from "@material-ui/core";
-import React,{useEffect, useState} from "react";
+import React,{useEffect, useState, useContext} from "react";
 import useStyles from "./styles";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import ChatIcon from "@material-ui/icons/Chat";
@@ -16,6 +16,8 @@ import { doc, setDoc } from "firebase/firestore";
 // import SidebarSearch from "./SidebarSearch";
 // import SidebarChats from "./SidebarChats"
 import { useAuth } from '../../contexts/AuthContext';
+import { ShowSearchListContext } from '../../contexts/ShowSearchListContext';
+import SearchList from "../SearchList/SearchList";
 
 const Sidebar = () => {
   const classes = useStyles();
@@ -60,6 +62,15 @@ return () => {
     }
   }
 
+  const {openSearchList,showSearchList,closeSearchList} = useContext(ShowSearchListContext);
+
+  const [searchTerm, setSearchTerm] = useState("")
+
+  const handleSearchTermChange = (e) => {
+  openSearchList();
+  setSearchTerm(e.target.value);
+  }
+
   return (
     <div className={classes.sidebar}>
       <div className={classes.sidebar__header}>
@@ -89,7 +100,7 @@ return () => {
         <div className={classes.sidebar_searchicon_div}>
         <SearchIcon className={classes.searchIcon}/>
         </div>
-        <input type="text" placeholder="search your friend here" className={classes.inputField}/>
+        <input type="text" placeholder="search your friend here" className={classes.inputField} onChange={handleSearchTermChange}/>
       </div>
       </div>
 
@@ -100,6 +111,8 @@ return () => {
       {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}
       handleCreateNewRoom={handleCreateNewRoom}
       />}
+
+      {showSearchList && <SearchList searchTerm={searchTerm} /> }
     </div>
   );
 };
