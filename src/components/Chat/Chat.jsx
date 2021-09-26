@@ -22,7 +22,7 @@ const Chat = (props) => {
   console.log("messages => ", messages);
 
   useEffect(() => {
-    const q = query(collection(db, "rooms"), where("name", "==", roomId));
+    const q = query(collection(db, "rooms"), where("name", "==", roomId || "E6mkZUadkZGElsFo0YZC"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const rooms = [];
       const messages = [];

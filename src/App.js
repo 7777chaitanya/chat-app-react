@@ -5,6 +5,7 @@ import { Sidebar, Chat, HomePage, Login } from "./components";
 import { createTheme, ThemeProvider } from "@material-ui/core";
 import { HashRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
+import Login2 from './components/Login2.jsx/Login2';
 
 const theme = createTheme({
   breakpoints: {
@@ -29,7 +30,7 @@ const App = () => {
           <Switch>
               
             <Route path="/login">
-              <Login />
+              <Login2 />
             </Route>
 
             <Route
@@ -42,12 +43,13 @@ const App = () => {
                 </>
               )}
             />
-            {user ?
-            (<Route path="/">
-              <HomePage />
-            </Route>) : (
-                <Redirect to="/login"/>
-            )}
+            <Route path="/">
+              {/* <HomePage /> */}
+              <Sidebar/>
+              <Chat/>
+            </Route>)
+              
+            
           </Switch>
         </div>
       </div>

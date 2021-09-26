@@ -1,14 +1,16 @@
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
-import { CurrentUserProvider} from "./contexts/CurrentUserContext";
+import { CurrentUserProvider } from "./contexts/CurrentUserContext";
+import { AuthProvider } from "./contexts/AuthContext";
 
 ReactDOM.render(
-
-    <>
-  <CurrentUserProvider>
-    <App />
-  </CurrentUserProvider>
+  <>
+    <AuthProvider>
+      <CurrentUserProvider>
+        <App />
+      </CurrentUserProvider>
+    </AuthProvider>
   </>,
 
   document.getElementById("root")
