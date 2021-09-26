@@ -33,6 +33,11 @@ const App = () => {
               <Login2 />
             </Route>
 
+            <Route path="/">
+              <Sidebar/>
+              <Chat/>
+            </Route>
+
             <Route
               path="/app/chat/:roomId"
               render={(props) => (
@@ -43,11 +48,7 @@ const App = () => {
                 </>
               )}
             />
-            <Route path="/">
-              {/* <HomePage /> */}
-              <Sidebar/>
-              <Chat/>
-            </Route>)
+        
               
             
           </Switch>
