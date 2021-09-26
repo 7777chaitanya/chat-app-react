@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
 import { doc, setDoc, orderBy } from "firebase/firestore";
+import Picker from 'emoji-picker-react';
+
 
 const Chat = (props) => {
   const classes = useStyles();
@@ -85,6 +87,18 @@ const Chat = (props) => {
     return messages[messages.length-1]?.time.toDate();
   }
 
+  
+  const [showEmojiPanel, setShowEmojiPanel] = useState(false);
+
+  const handleEmojiPanel = () => {
+    setShowEmojiPanel(p => !p);
+  }
+
+  const onEmojiClick = (event, emojiObject) => {
+      console.log(emojiObject.emoji);
+    //   console.log(event)
+  }
+
   return (
     <div className={classes.chat}>
       <div className={classes.chat__header}>
@@ -132,8 +146,10 @@ const Chat = (props) => {
 
       </div>
 
+      {showEmojiPanel && <Picker onEmojiClick={onEmojiClick} />}
+
       <div className={classes.chat__footer}>
-        <SentimentVerySatisfiedIcon className={classes.footerIcons} />
+        <SentimentVerySatisfiedIcon className={classes.footerIcons} onClick={handleEmojiPanel}/>
         <form
           action="submit"
           className={classes.chat__footer__messageform}
