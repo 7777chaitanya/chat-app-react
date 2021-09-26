@@ -10,6 +10,7 @@ import { setDoc } from 'firebase/firestore';
 import { db } from "../../firebase.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import {useHistory} from "react-router-dom";
+import { AllRoomsArrayContext } from "../../contexts/AllRoomsArrayContext.jsx";
 
 
 const UserCard = ({ item }) => {
@@ -19,13 +20,24 @@ const history = useHistory();
   const { showSearchList, setShowSearchList, closeSearchList, openSearchList } =
     useContext(ShowSearchListContext);
 
+const {allRoomsArray, setAllRoomsArray} = useContext(AllRoomsArrayContext);
+
+console.log("all rooooooooooms array => ", allRoomsArray)
+
   const createPersonalRoom = async () => {
+      console.log(allRoomsArray.includes(`${item.email}${currentUser.email}`));
+      console.log(`${item.email}${currentUser.email}`);
+      if(!(allRoomsArray.includes(`${item.email}${currentUser.email}`))){
     await setDoc(doc(db, "rooms", `${item.email}${currentUser.email}`), {
         name: `${item.email}${currentUser.email}`,
         members : [item.email, currentUser.email]
         
       });
-      history.push(`/app/${`${item.email}${currentUser.email}`}`)
+      history.push(`/app/chat/${`${item.email}${currentUser.email}`}`)
+    }
+    else{
+        history.push(`/app/chat/${`${item.email}${currentUser.email}`}`);
+    }
   };
 
   const handleCardClick = () => {
