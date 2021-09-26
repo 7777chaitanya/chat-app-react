@@ -13,7 +13,7 @@ import MailIcon from '@material-ui/icons/Mail';
 
 const useStyles = makeStyles({
   list: {
-    width: 250,
+    width: 360,
   },
   fullList: {
     width: 'auto',
@@ -32,23 +32,8 @@ export default function TemporaryDrawer({toggleDrawer, state}) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+     
+      hi
     </div>
   );
 
