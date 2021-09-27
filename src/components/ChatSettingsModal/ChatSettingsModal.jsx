@@ -50,7 +50,7 @@ export default function SimpleModal() {
     let roomFinder = rooms.find(room => room.id === currentRoom);
 
       console.log("roomFinder=>",roomFinder) ;
-    return roomFinder.data.privateChat;
+    return roomFinder?.data?.privateChat;
     }
     
   };

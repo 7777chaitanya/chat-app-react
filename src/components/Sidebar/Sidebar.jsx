@@ -10,6 +10,7 @@ import MenuModal from "./MenuModal/MenuModal";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import {db} from "../../firebase";
 import { doc, setDoc } from "firebase/firestore"; 
+import ProfileDrawer from "../ProfileDrawer/ProfileDrawer";
 
 
 // import SidebarHeader from "./SidebarHeader";
@@ -77,12 +78,27 @@ const Sidebar = () => {
   setSearchTerm(e.target.value);
   }
 
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
   return (
     <div className={classes.sidebar}>
       <div className={classes.sidebar__header}>
         {currentUser ? 
         (<Tooltip title={`${currentUser.email}`}>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" onClick={toggleDrawer("left", true)}/>
         </Tooltip>) :
         (<Tooltip title="hi">
         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
@@ -119,6 +135,8 @@ const Sidebar = () => {
       />}
 
       {showSearchList && <SearchList searchTerm={searchTerm} /> }
+
+      <ProfileDrawer state={state} toggleDrawer={toggleDrawer}/>
     </div>
   );
 };
