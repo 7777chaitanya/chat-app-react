@@ -105,7 +105,9 @@ const Sidebar = () => {
 
   const {allUsers} = useContext(AllUsersContext);
 
-  const profileBelongsTo = allUsers.find(doc => doc.email === currentUser.email)
+  const profileBelongsTo = allUsers.find(doc => doc.email === currentUser.email);
+
+  
 
 
   return (

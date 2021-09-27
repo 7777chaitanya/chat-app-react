@@ -13,6 +13,7 @@ import { Avatar, TextField, IconButton, Box } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import ProfilePictureModal from "../ProfilePictureModal/ProfilePicutureModal"
 
 export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen,  setShowUserNamePen, setShowUserBioPen, showUserBioPen}) {
   const classes = useStyles();
@@ -70,6 +71,16 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
   setUserBio(e.target.value);
   }
 
+  const [openProfilePictureModal, setOpenProfilePictureModal] = React.useState(false);
+
+  const handleOpenProfilePictureModal = () => {
+    setOpenProfilePictureModal(true);
+  };
+
+  const handleCloseProfilePictureModal = () => {
+    setOpenProfilePictureModal(false);
+  };
+
   const list = (anchor) => (
     <div
       //   className={clsx(classes.list, {
@@ -92,10 +103,15 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
               alt={profileBelongsTo?.username}
               src={profileBelongsTo?.avatarUrl}
               className={classes.avatarSize}
+              onClick={handleOpenProfilePictureModal}
             />
           ) : (
             <AccountCircle className={classes?.avatarSize} />
           )}
+          {openProfilePictureModal && <ProfilePictureModal openProfilePictureModal={openProfilePictureModal}
+            handleCloseProfilePictureModal={handleCloseProfilePictureModal}
+          />}
+
         </div>
       </div>
 
