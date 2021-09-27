@@ -23,9 +23,10 @@ export default function TemporaryDrawer({ state, toggleDrawer }) {
 
   const list = (anchor) => (
     <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === "top" || anchor === "bottom",
-      })}
+    //   className={clsx(classes.list, {
+    //     [classes.fullList]: anchor === "top" || anchor === "bottom",
+    //   })}
+    className={classes.list}
       role="presentation"
       onKeyDown={toggleDrawer(anchor, false)}
     >
@@ -72,7 +73,7 @@ export default function TemporaryDrawer({ state, toggleDrawer }) {
     <div>
       {["left"].map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+          {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
           <Drawer
             anchor={anchor}
             open={state[anchor]}
