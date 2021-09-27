@@ -18,8 +18,7 @@ import { CurrentRoomContext } from "../../contexts/CurrentRoomContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
 import SendIcon from "@material-ui/icons/Send";
-
-
+import { CurrentUserDocContext } from "../../contexts/CurrentUserDocContext";
 
 const Chat = (props) => {
   const classes = useStyles();
@@ -34,9 +33,12 @@ const Chat = (props) => {
   );
   const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
   const { allUsers, setAllUsers } = useContext(AllUsersContext);
+  const { currentUserDoc, setCurrentUserDoc } = useContext(
+    CurrentUserDocContext
+  );
   const { currentUser } = useAuth();
   const chatBodyRef = useRef();
-  console.log("match => ", roomContent);
+  console.log("match => ", currentUserDoc);
   console.log("messages => ", messages);
 
   useEffect(() => {
@@ -83,11 +85,10 @@ const Chat = (props) => {
     }
   }, [roomDocId]);
 
-  
   useEffect(() => {
-    const objDiv = document.getElementById('chatBodyRef');
+    const objDiv = document.getElementById("chatBodyRef");
     objDiv.scrollTop = objDiv.scrollHeight;
-  }, [messages])
+  }, [messages]);
 
   const handleVoiceRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true, video: true });
@@ -99,16 +100,13 @@ const Chat = (props) => {
     setShowEmojiPanel((p) => !p);
   };
   const closeEmojiPanel = () => {
-    setShowEmojiPanel(false)
-  }
-
-
+    setShowEmojiPanel(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(messageRef.current.value);
     setShowEmojiPanel(false);
-    
 
     // const messageQuery = query(
     //   collection(db, "rooms", roomDocId, "messages",), orderBy("time")
@@ -123,7 +121,6 @@ const Chat = (props) => {
       time: new Date(),
     });
     messageRef.current.value = "";
-
   };
 
   const lastSeenDateAndTime = () => {
@@ -158,7 +155,14 @@ const Chat = (props) => {
     return { name: roomContent?.name, avatarUrl: null };
   };
 
-  
+  const senderName = (email) => {
+    const requiredUser = allUsers?.find((doc) => doc.email === email);
+    if (requiredUser?.name === currentUserDoc?.name) {
+      return "You";
+    } else {
+      return requiredUser?.name;
+    }
+  };
 
   return (
     <div className={classes.chat}>
@@ -201,7 +205,9 @@ const Chat = (props) => {
 
         {messages.map((eachMessage) => (
           <div className={classes.chat__receiver}>
-            <span className={classes.chat__user}>{eachMessage.name}</span>
+            <span className={classes.chat__user}>
+              {senderName(eachMessage.name)}
+            </span>
             {eachMessage.message}
             <span className={classes.chat__timestamp}>
               {eachMessage.time.toDate}
