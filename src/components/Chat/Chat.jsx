@@ -9,14 +9,15 @@ import { useParams } from "react-router-dom";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
 import { doc, setDoc, orderBy } from "firebase/firestore";
-import Picker from 'emoji-picker-react';
-import MicIcon from '@material-ui/icons/Mic';
+import Picker from "emoji-picker-react";
+import MicIcon from "@material-ui/icons/Mic";
 import ChatSettingsModal from "../ChatSettingsModal/ChatSettingsModal";
 import { ChatSettingsModalContext } from "../../contexts/ChatSettingsModalContext";
-import AddMemberModal from "../AddMemberModal/AddMemberModal"
+import AddMemberModal from "../AddMemberModal/AddMemberModal";
 import { CurrentRoomContext } from "../../contexts/CurrentRoomContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
+import SendIcon from "@material-ui/icons/Send";
 
 const Chat = (props) => {
   const classes = useStyles();
@@ -26,15 +27,20 @@ const Chat = (props) => {
   const [roomContent, setRoomContent] = useState({});
   const [messages, setMessages] = useState([]);
   const [roomDocId, setRoomDocId] = useState("");
-  const {open, handleOpen, handleClose} = useContext(ChatSettingsModalContext);
-  const {currentRoom, setCurrentRoom} = useContext(CurrentRoomContext);
+  const { open, handleOpen, handleClose } = useContext(
+    ChatSettingsModalContext
+  );
+  const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
   const { allUsers, setAllUsers } = useContext(AllUsersContext);
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth();
   console.log("match => ", roomContent);
   console.log("messages => ", messages);
 
   useEffect(() => {
-    const q = query(collection(db, "rooms"), where("name", "==", roomId || "E6mkZUadkZGElsFo0YZC"));
+    const q = query(
+      collection(db, "rooms"),
+      where("name", "==", roomId || "E6mkZUadkZGElsFo0YZC")
+    );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const rooms = [];
       const messages = [];
@@ -53,10 +59,10 @@ const Chat = (props) => {
 
   useEffect(() => {
     if (roomDocId) {
-      setCurrentRoom(roomDocId)
+      setCurrentRoom(roomDocId);
       const messageQuery = query(
-        collection(db, "rooms", roomDocId, "messages"), orderBy("time")
-        
+        collection(db, "rooms", roomDocId, "messages"),
+        orderBy("time")
       );
       const messagesUnsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
         const messages = [];
@@ -75,75 +81,82 @@ const Chat = (props) => {
   }, [roomDocId]);
 
   const handleVoiceRecording = () => {
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-  }
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+  };
 
-    
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
 
   const handleEmojiPanel = () => {
-    setShowEmojiPanel(p => !p);
+    setShowEmojiPanel((p) => !p);
+  };
+  const closeEmojiPanel = () => {
+    setShowEmojiPanel(false)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(messageRef.current.value);
-    handleEmojiPanel();
+    setShowEmojiPanel(false)
 
     // const messageQuery = query(
     //   collection(db, "rooms", roomDocId, "messages",), orderBy("time")
-      
+
     // );
-    const newCityRef = doc(collection(db, "rooms", roomDocId || "E6mkZUadkZGElsFo0YZC" , "messages"));
+    const newCityRef = doc(
+      collection(db, "rooms", roomDocId || "E6mkZUadkZGElsFo0YZC", "messages")
+    );
     await setDoc(newCityRef, {
       name: "LosAngeles",
       message: messageRef.current.value,
-      time: new Date()
+      time: new Date(),
     });
     messageRef.current.value = "";
-
-
-
   };
 
   const lastSeenDateAndTime = () => {
-    return messages[messages.length-1]?.time.toDate();
-  }
+    return messages[messages.length - 1]?.time.toDate();
+  };
 
   const clickCheck = () => {
-handleOpen();
-  }
-
+    handleOpen();
+  };
 
   const onEmojiClick = (event, emojiObject) => {
-      console.log(emojiObject.emoji);
-      messageRef.current.value += emojiObject.emoji;
-      messageRef?.current?.focus()
+    console.log(emojiObject.emoji);
+    messageRef.current.value += emojiObject.emoji;
+    messageRef?.current?.focus();
     //   console.log(event)
-  }
+  };
 
   const generateRoomName = () => {
-    if(roomContent?.privateChat){
-      let friend = roomContent?.members?.find(member => member !== currentUser.email);
-      let friendName= friend;
-      if(!friendName){
-        return {name : "Your Saved Messages", avatarUrl : null}
+    if (roomContent?.privateChat) {
+      let friend = roomContent?.members?.find(
+        (member) => member !== currentUser.email
+      );
+      let friendName = friend;
+      if (!friendName) {
+        return { name: "Your Saved Messages", avatarUrl: null };
       }
       // return friendName
-      const docOfFriend = allUsers.find(doc => doc.email === friendName);
-      return {name : docOfFriend?.name, avatarUrl : docOfFriend?.avatarUrl}
+      const docOfFriend = allUsers.find((doc) => doc.email === friendName);
+      return { name: docOfFriend?.name, avatarUrl: docOfFriend?.avatarUrl };
     }
 
-    return {name : roomContent?.name, avatarUrl : null}
-  }
+    return { name: roomContent?.name, avatarUrl: null };
+  };
 
   return (
     <div className={classes.chat}>
       <div className={classes.chat__header}>
         <CardHeader
           avatar={
-            <Avatar aria-label="recipe" className={classes.avatar} src={generateRoomName()?.avatarUrl}>
-              {generateRoomName().name && generateRoomName()?.name[0]?.toUpperCase()}
+            <Avatar
+              aria-label="recipe"
+              className={classes.avatar}
+              src={generateRoomName()?.avatarUrl}
+            >
+              {generateRoomName().name &&
+                generateRoomName()?.name[0]?.toUpperCase()}
             </Avatar>
           }
           action={
@@ -170,27 +183,31 @@ handleOpen();
           hello
           <span className={classes.chat__timestamp}>03:52</span>
         </div>
-       
 
-        {messages.map(eachMessage => (
-           <div className={classes.chat__receiver}>
-           <span className={classes.chat__user}>{eachMessage.name}</span>
-           {eachMessage.message}
-           <span className={classes.chat__timestamp}>{eachMessage.time.toDate}</span>
-         </div>
+        {messages.map((eachMessage) => (
+          <div className={classes.chat__receiver}>
+            <span className={classes.chat__user}>{eachMessage.name}</span>
+            {eachMessage.message}
+            <span className={classes.chat__timestamp}>
+              {eachMessage.time.toDate}
+            </span>
+          </div>
         ))}
-
-     
-
       </div>
 
-      {showEmojiPanel && <Picker onEmojiClick={onEmojiClick} 
-      native={true}
-      pickerStyle={{ width: '100%' }}
-      />}
+      {showEmojiPanel && (
+        <Picker
+          onEmojiClick={onEmojiClick}
+          native={true}
+          pickerStyle={{ width: "100%" }}
+        />
+      )}
 
       <div className={classes.chat__footer}>
-        <SentimentVerySatisfiedIcon className={classes.footerIcons} onClick={handleEmojiPanel}/>
+        <SentimentVerySatisfiedIcon
+          className={classes.footerIcons}
+          onClick={handleEmojiPanel}
+        />
         <form
           action="submit"
           className={classes.chat__footer__messageform}
@@ -205,13 +222,18 @@ handleOpen();
           <button type="submit" className={classes.submitButton}>
             submit
           </button>
+          <IconButton type="submit">
+            <SendIcon />
+          </IconButton>
         </form>
         <AttachmentIcon className={classes.footerIcons} />
-        <MicIcon className={classes.footerIcons} onClick={handleVoiceRecording}/>
-
+        <MicIcon
+          className={classes.footerIcons}
+          onClick={handleVoiceRecording}
+        />
       </div>
-      <ChatSettingsModal/>
-      <AddMemberModal/>
+      <ChatSettingsModal />
+      <AddMemberModal />
     </div>
   );
 };
