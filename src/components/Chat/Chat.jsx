@@ -1,4 +1,4 @@
-import { IconButton, CardHeader, Avatar } from "@material-ui/core";
+import { IconButton, CardHeader, Avatar, Box, Typography } from "@material-ui/core";
 import React, { useRef, useState, useEffect, useContext } from "react";
 import useStyles from "./styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -7,7 +7,7 @@ import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfie
 import AttachmentIcon from "@material-ui/icons/Attachment";
 import { useParams } from "react-router-dom";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db, storage } from "../../firebase";
 import { doc, setDoc, orderBy } from "firebase/firestore";
 import Picker from "emoji-picker-react";
 import MicIcon from "@material-ui/icons/Mic";
@@ -21,6 +21,28 @@ import SendIcon from "@material-ui/icons/Send";
 import { CurrentUserDocContext } from "../../contexts/CurrentUserDocContext";
 import EachMessage from "../EachMessage/EachMessage";
 import { PhotoCamera } from "@material-ui/icons";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 const Chat = (props) => {
   const classes = useStyles();
@@ -42,8 +64,25 @@ const Chat = (props) => {
   const chatBodyRef = useRef();
   const [wassupImage, setWassupImage] = useState(null);
 
+  const [progressBar, setProgressBar] = useState(null);
+  const [showProgressBar, setshowProgressBar] = useState(false);
+
+  const handleMessageChange = (e) =>{
+    setMessage(e.target.value)
+  }
+
   console.log("match => ", currentUserDoc);
   console.log("messages => ", messages);
+
+  const checkIfImageOrTextBoxIsEmpty = () => {
+    if(messageRef){
+    if (message === "" && wassupImage === null) {
+      return true;
+    }
+    return false;
+  }
+  };
+
 
   const handleWassupImageChange = (e) => {
     e.target.files[0] && setWassupImage(e.target.files[0]);
@@ -111,15 +150,68 @@ const Chat = (props) => {
     setShowEmojiPanel(false);
   };
 
+  const postToFireStorage = async () => {
+    const file = wassupImage;
+
+    const storageRef = ref(storage, "images/" + file.name);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    setshowProgressBar(true);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        console.log("error occured while trying to upload image");
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+          const newCityRef = doc(
+            collection(
+              db,
+              "rooms",
+              roomDocId || "E6mkZUadkZGElsFo0YZC",
+              "messages"
+            )
+          );
+
+          setDoc(newCityRef, {
+            name: currentUser.email,
+            message: messageRef.current.value,
+            time: new Date(),
+            imageUrl: downloadURL,
+          });
+          messageRef.current.value = "";
+          setWassupImage(null);
+          setshowProgressBar(false);
+
+        });
+      }
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(messageRef.current.value);
     setShowEmojiPanel(false);
 
-    // const messageQuery = query(
-    //   collection(db, "rooms", roomDocId, "messages",), orderBy("time")
-
-    // );
+    if (wassupImage !== null) {
+      postToFireStorage();
+      return;
+    }
     const newCityRef = doc(
       collection(db, "rooms", roomDocId || "E6mkZUadkZGElsFo0YZC", "messages")
     );
@@ -128,6 +220,7 @@ const Chat = (props) => {
       name: currentUser.email,
       message: messageRef.current.value,
       time: new Date(),
+      imageUrl: null,
     });
     messageRef.current.value = "";
   };
@@ -229,6 +322,7 @@ const Chat = (props) => {
             name={senderName(eachMessage.name)}
             time={eachMessage.time.toDate().toString()}
             message={eachMessage.message}
+            imageUrl={eachMessage?.imageUrl}
           />
         ))}
       </div>
@@ -239,6 +333,12 @@ const Chat = (props) => {
           native={true}
           pickerStyle={{ width: "100%" }}
         />
+      )}
+
+      {showProgressBar && (
+        <Box className={classes.progressBar}>
+          <LinearProgressWithLabel value={progressBar} />
+        </Box>
       )}
 
       <div className={classes.chat__footer}>
@@ -255,12 +355,13 @@ const Chat = (props) => {
             type="text"
             placeholder="Enter your message here!"
             className={classes.messageInput}
+            onChange={handleMessageChange}
             ref={messageRef}
           />
           <button type="submit" className={classes.submitButton}>
             submit
           </button>
-          <IconButton type="submit">
+          <IconButton type="submit" disabled={checkIfImageOrTextBoxIsEmpty()}>
             <SendIcon />
           </IconButton>
         </form>
@@ -269,7 +370,6 @@ const Chat = (props) => {
           id="icon-button-file"
           className={classes.input}
           onChange={handleWassupImageChange}
-          
         />
         <label htmlFor="icon-button-file">
           <IconButton

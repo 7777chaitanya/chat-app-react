@@ -18,7 +18,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import useStyles from "./styles";
 
 
-export default function RecipeReviewCard({name,time,message}) {
+export default function RecipeReviewCard({name,time,message, imageUrl}) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -76,11 +76,12 @@ export default function RecipeReviewCard({name,time,message}) {
           </Typography>
         </CardContent>
       </Collapse>
+      {imageUrl &&
       <CardMedia
         className={classes.media}
-        image="/static/images/cards/paella.jpg"
-        title="Paella dish"
-      />
+        image={imageUrl}
+        title={name}
+      />}
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {message}
