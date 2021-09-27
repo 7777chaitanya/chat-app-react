@@ -21,15 +21,17 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'relative',
-    width: "12rem",
+    width: "20rem",
     backgroundColor: theme.palette.background.paper,
-    borderRadius : "10px"
+    borderRadius : "50px",
+    
   },
 
   inputField: {
     width: "100%",
     border: "none",
     height : "2rem",
+    borderRadius : "5px",
     "&:focus": {
        outlineWidth : "0rem"
       }

@@ -37,7 +37,8 @@ console.log("all rooooooooooms array => ", allRoomsArray)
       if(!(allRoomsArray.includes(`${item.email}${currentUser.email}`))){
     await setDoc(doc(db, "rooms", `${item.email}${currentUser.email}`), {
         name: `${item.email}${currentUser.email}`,
-        members : [item.email, currentUser.email]
+        members : [item.email, currentUser.email],
+        privateChat : true
         
       });
       history.push(`/app/chat/${`${item.email}${currentUser.email}`}`)

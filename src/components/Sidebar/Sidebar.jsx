@@ -59,7 +59,9 @@ const Sidebar = () => {
     const roomName = prompt(" Enter a name for the room");
     if(roomName){
       await setDoc(doc(db, "rooms", roomName), {
-        name: roomName
+        name: roomName,
+        members : [],
+        privateChat : false
         
       });
       
