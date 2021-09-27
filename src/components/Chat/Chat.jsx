@@ -19,6 +19,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
 import SendIcon from "@material-ui/icons/Send";
 import { CurrentUserDocContext } from "../../contexts/CurrentUserDocContext";
+import EachMessage from "../EachMessage/EachMessage";
+import { PhotoCamera } from "@material-ui/icons";
 
 const Chat = (props) => {
   const classes = useStyles();
@@ -38,8 +40,14 @@ const Chat = (props) => {
   );
   const { currentUser } = useAuth();
   const chatBodyRef = useRef();
+  const [wassupImage, setWassupImage] = useState(null);
+
   console.log("match => ", currentUserDoc);
   console.log("messages => ", messages);
+
+  const handleWassupImageChange = (e) => {
+    e.target.files[0] && setWassupImage(e.target.files[0]);
+  };
 
   useEffect(() => {
     const q = query(
@@ -115,6 +123,7 @@ const Chat = (props) => {
     const newCityRef = doc(
       collection(db, "rooms", roomDocId || "E6mkZUadkZGElsFo0YZC", "messages")
     );
+
     await setDoc(newCityRef, {
       name: currentUser.email,
       message: messageRef.current.value,
@@ -210,9 +219,17 @@ const Chat = (props) => {
             </span>
             {eachMessage.message}
             <span className={classes.chat__timestamp}>
-              {eachMessage.time.toDate}
+              {eachMessage.time.toDate().toString()}
             </span>
           </div>
+        ))}
+
+        {messages.map((eachMessage) => (
+          <EachMessage
+            name={senderName(eachMessage.name)}
+            time={eachMessage.time.toDate().toString()}
+            message={eachMessage.message}
+          />
         ))}
       </div>
 
@@ -247,7 +264,26 @@ const Chat = (props) => {
             <SendIcon />
           </IconButton>
         </form>
-        <AttachmentIcon className={classes.footerIcons} />
+        <input
+          type="file"
+          id="icon-button-file"
+          className={classes.input}
+          onChange={handleWassupImageChange}
+          
+        />
+        <label htmlFor="icon-button-file">
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="span"
+            className={classes.footerIcons}
+          >
+            <PhotoCamera />
+          </IconButton>
+        </label>
+        {/* <IconButton>
+          <AttachmentIcon className={classes.footerIcons} />
+        </IconButton> */}
         <MicIcon
           className={classes.footerIcons}
           onClick={handleVoiceRecording}

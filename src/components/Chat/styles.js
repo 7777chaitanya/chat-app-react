@@ -104,7 +104,10 @@ display : "flex"
   },
   submitButton:{
       display : "none"
-  }
+  },
+  input: {
+    display: 'none',
+  },
 }));
 
 export default useStyles;
