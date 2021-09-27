@@ -1,7 +1,9 @@
-import React,{useContext} from 'react';
+import React,{useContext, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { MemberSearchModalContext } from '../../contexts/MemberSearchModalContext';
+import { ShowSearchListContext } from '../../contexts/ShowSearchListContext';
+import SearchList from "../SearchList/SearchList";
 
 
 
@@ -23,6 +25,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius : "10px"
   },
+
+  inputField: {
+    width: "100%",
+    border: "none",
+    height : "2rem",
+    "&:focus": {
+       outlineWidth : "0rem"
+      }
+  },
 }));
 
 export default function SimpleModal() {
@@ -30,10 +41,20 @@ export default function SimpleModal() {
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
  const {openMemberSearch,handleOpenMemberSearch,handleCloseMemberSearch} = useContext(MemberSearchModalContext);
+ const { showSearchList, setShowSearchList, closeSearchList, openSearchList } =
+ useContext(ShowSearchListContext);
+
+ const [searchTerm, setSearchTerm] = useState("");
+
+ const handleSearchTermChange = (event) => {
+   setSearchTerm(event.target.value);
+   openSearchList();
+ }
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-    <input type="text" />
+        <input type="text" placeholder="search your friend here" className={classes.inputField} onChange={handleSearchTermChange}/>
+    {showSearchList && <SearchList searchTerm={searchTerm} usedInAddMemberModal={true}/>}
     </div>
   );
 

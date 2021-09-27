@@ -11,9 +11,13 @@ import { db } from "../../firebase.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import {useHistory} from "react-router-dom";
 import { AllRoomsArrayContext } from "../../contexts/AllRoomsArrayContext.jsx";
+import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext.jsx";
+import { CurrentRoomContext } from "../../contexts/CurrentRoomContext.jsx";
+import {  updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 
-const UserCard = ({ item }) => {
+
+const UserCard = ({ item,usedInAddMemberModal }) => {
 const history = useHistory();
   const classes = useStyles();
   const {currentUser} = useAuth();
@@ -21,6 +25,9 @@ const history = useHistory();
     useContext(ShowSearchListContext);
 
 const {allRoomsArray, setAllRoomsArray} = useContext(AllRoomsArrayContext);
+const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
+const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
+
 
 console.log("all rooooooooooms array => ", allRoomsArray)
 
@@ -40,10 +47,31 @@ console.log("all rooooooooooms array => ", allRoomsArray)
     }
   };
 
+  const addPersonToMembersOfTheRoom= async () => {
+    console.log("addPersonToMembersOfTheRoom=>",currentRoom);
+    console.log("item.email", item.email);
+if(currentRoom){
+    const roomDocRef = doc(db, "rooms", currentRoom);
+
+    await updateDoc(roomDocRef, {
+      members: arrayUnion(item.email)
+  });
+}
+
+  }
+
   const handleCardClick = () => {
+    console.log("usedInAddMemberModal=>",usedInAddMemberModal)
+    if(!usedInAddMemberModal){
     createPersonalRoom();
+    }
+    else{
+      addPersonToMembersOfTheRoom();
+    }
     closeSearchList();
   };
+
+
 
   return item.name === "No results found!" ||
     item.name === "Enter a word to Search!" ? (

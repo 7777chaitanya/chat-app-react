@@ -14,6 +14,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import ChatSettingsModal from "../ChatSettingsModal/ChatSettingsModal";
 import { ChatSettingsModalContext } from "../../contexts/ChatSettingsModalContext";
 import AddMemberModal from "../AddMemberModal/AddMemberModal"
+import { CurrentRoomContext } from "../../contexts/CurrentRoomContext";
 
 const Chat = (props) => {
   const classes = useStyles();
@@ -23,7 +24,8 @@ const Chat = (props) => {
   const [roomContent, setRoomContent] = useState({});
   const [messages, setMessages] = useState([]);
   const [roomDocId, setRoomDocId] = useState("");
-  const {open, handleOpen, handleClose} = useContext(ChatSettingsModalContext)
+  const {open, handleOpen, handleClose} = useContext(ChatSettingsModalContext);
+  const {currentRoom, setCurrentRoom} = useContext(CurrentRoomContext);
   console.log("match => ", roomContent);
   console.log("messages => ", messages);
 
@@ -47,6 +49,7 @@ const Chat = (props) => {
 
   useEffect(() => {
     if (roomDocId) {
+      setCurrentRoom(roomDocId)
       const messageQuery = query(
         collection(db, "rooms", roomDocId, "messages"), orderBy("time")
         

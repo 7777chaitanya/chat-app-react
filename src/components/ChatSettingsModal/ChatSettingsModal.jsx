@@ -46,7 +46,7 @@ export default function SimpleModal() {
           <ListItemText primary="Add member" />
         </ListItem>
 
-        <ListItem button onClick={handleOpenMemberSearch}>
+        <ListItem button >
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>

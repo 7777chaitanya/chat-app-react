@@ -8,6 +8,8 @@ import { AllUsersProvider } from "./contexts/AllUsersContext";
 import { AllRoomsArrayProvider } from "./contexts/AllRoomsArrayContext";
 import { ChatSettingsModalProvider } from "./contexts/ChatSettingsModalContext";
 import { MemberSearchProvider } from "./contexts/MemberSearchModalContext";
+import { AllRoomsWithDocIdProvider } from "./contexts/AllRoomsWithDocIdContext";
+import { CurrentRoomProvider } from "./contexts/CurrentRoomContext";
 
 ReactDOM.render(
   <>
@@ -18,7 +20,11 @@ ReactDOM.render(
             <AllRoomsArrayProvider>
               <ChatSettingsModalProvider>
                 <MemberSearchProvider>
+                <AllRoomsWithDocIdProvider>
+                <CurrentRoomProvider>
                   <App />
+                  </CurrentRoomProvider>
+                  </AllRoomsWithDocIdProvider>
                 </MemberSearchProvider>
               </ChatSettingsModalProvider>
             </AllRoomsArrayProvider>

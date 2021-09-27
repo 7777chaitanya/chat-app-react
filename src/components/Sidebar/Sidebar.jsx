@@ -18,30 +18,33 @@ import { doc, setDoc } from "firebase/firestore";
 import { useAuth } from '../../contexts/AuthContext';
 import { ShowSearchListContext } from '../../contexts/ShowSearchListContext';
 import SearchList from "../SearchList/SearchList";
+import { AllRoomsWithDocIdContext } from '../../contexts/AllRoomsWithDocIdContext';
 
 const Sidebar = () => {
   const classes = useStyles();
   const [openMenuModal, setOpenMenuModal] = React.useState(false);
-  const [rooms, setRooms] = useState([]);
   const {currentUser} = useAuth();
 
-  useEffect(() => {
-    const q = query(collection(db, "rooms"), where("name", "!=", ""));
-const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  let rooms = [];
-  querySnapshot.forEach((doc) => {
-      rooms.push({id : doc.id, data : doc.data()});
-  });
-  rooms = rooms.filter(rooms => rooms.data?.members?.includes(currentUser?.email))
-  setRooms([...rooms])
-  // console.log("Current cities in CA: ", cities.join(", "));
-  console.log("rooms => ",rooms)
-});
+  const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
+//   const [rooms, setRooms] = useState([]);
 
-return () => {
-  unsubscribe();
-}
-  }, [currentUser])
+//   useEffect(() => {
+//     const q = query(collection(db, "rooms"), where("name", "!=", ""));
+// const unsubscribe = onSnapshot(q, (querySnapshot) => {
+//   let rooms = [];
+//   querySnapshot.forEach((doc) => {
+//       rooms.push({id : doc.id, data : doc.data()});
+//   });
+//   rooms = rooms.filter(rooms => rooms.data?.members?.includes(currentUser?.email))
+//   setRooms([...rooms])
+//   // console.log("Current cities in CA: ", cities.join(", "));
+//   console.log("rooms => ",rooms)
+// });
+
+// return () => {
+//   unsubscribe();
+// }
+//   }, [currentUser])
 
   const handleOpenMenuModal = () => {
     setOpenMenuModal(true);
