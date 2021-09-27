@@ -28,6 +28,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import moment from 'moment';
 
 function LinearProgressWithLabel(props) {
   return (
@@ -298,7 +299,7 @@ const Chat = (props) => {
             </>
           }
           title={generateRoomName()?.name}
-          subheader={`Last seen on ${lastSeenDateAndTime()}`}
+          subheader={`Last seen on ${moment(lastSeenDateAndTime()).format('MMM Do YYYY, h:mm:ss a')}`}
         />
       </div>
 

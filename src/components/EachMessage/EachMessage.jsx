@@ -19,6 +19,7 @@ import useStyles from "./styles";
 import { CurrentUserDocContext } from '../../contexts/CurrentUserDocContext';
 import { AllUsersContext } from '../../contexts/AllUsersContext';
 import { Box } from '@material-ui/core';
+import moment from 'moment'
 
 
 export default function RecipeReviewCard({name,time,message, imageUrl, email}) {
@@ -65,7 +66,7 @@ export default function RecipeReviewCard({name,time,message, imageUrl, email}) {
           </IconButton>
         }
         title={<Typography paragraph className={classes.chat__user} gutterBottom={false}>{name}</Typography>}
-        subheader={<Typography paragraph className={classes. chat__timestamp}>{time}</Typography>}
+        subheader={<Typography paragraph className={classes. chat__timestamp}>{moment(time).format('MMM Do YYYY, h:mm:ss a')}</Typography>}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>

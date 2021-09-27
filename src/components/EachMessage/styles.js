@@ -56,9 +56,10 @@ const  useStyles = makeStyles(theme => ({
     },
     chat__user:{
         // position : "absolute",
-        fontSize : "small",
+        fontSize : "medium",
         fontWeight : 800,
-        marginBottom : "0"
+        marginBottom : "0",
+        color : "purple"
         // top : 0,
         // left : 8
     },
