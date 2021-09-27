@@ -15,6 +15,8 @@ import ChatSettingsModal from "../ChatSettingsModal/ChatSettingsModal";
 import { ChatSettingsModalContext } from "../../contexts/ChatSettingsModalContext";
 import AddMemberModal from "../AddMemberModal/AddMemberModal"
 import { CurrentRoomContext } from "../../contexts/CurrentRoomContext";
+import { useAuth } from "../../contexts/AuthContext";
+import { AllUsersContext } from "../../contexts/AllUsersContext";
 
 const Chat = (props) => {
   const classes = useStyles();
@@ -26,6 +28,8 @@ const Chat = (props) => {
   const [roomDocId, setRoomDocId] = useState("");
   const {open, handleOpen, handleClose} = useContext(ChatSettingsModalContext);
   const {currentRoom, setCurrentRoom} = useContext(CurrentRoomContext);
+  const { allUsers, setAllUsers } = useContext(AllUsersContext);
+  const {currentUser} = useAuth();
   console.log("match => ", roomContent);
   console.log("messages => ", messages);
 
@@ -118,6 +122,21 @@ handleOpen();
     //   console.log(event)
   }
 
+  const generateRoomName = () => {
+    if(roomContent?.privateChat){
+      let friend = roomContent?.members?.find(member => member !== currentUser.email);
+      let friendName= friend;
+      if(!friendName){
+        return "Your Saved Messages"
+      }
+      // return friendName
+      const docOfFriend = allUsers.find(doc => doc.email === friendName);
+      return docOfFriend?.name
+    }
+
+    return roomContent.name
+  }
+
   return (
     <div className={classes.chat}>
       <div className={classes.chat__header}>
@@ -140,7 +159,7 @@ handleOpen();
               </IconButton>
             </>
           }
-          title={roomId}
+          title={generateRoomName()}
           subheader={`Last seen on ${lastSeenDateAndTime()}`}
         />
       </div>
