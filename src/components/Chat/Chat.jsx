@@ -1,5 +1,5 @@
 import { IconButton, CardHeader, Avatar } from "@material-ui/core";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import useStyles from "./styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
@@ -11,7 +11,9 @@ import { db } from "../../firebase";
 import { doc, setDoc, orderBy } from "firebase/firestore";
 import Picker from 'emoji-picker-react';
 import MicIcon from '@material-ui/icons/Mic';
-
+import ChatSettingsModal from "../ChatSettingsModal/ChatSettingsModal";
+import { ChatSettingsModalContext } from "../../contexts/ChatSettingsModalContext";
+import AddMemberModal from "../AddMemberModal/AddMemberModal"
 
 const Chat = (props) => {
   const classes = useStyles();
@@ -21,6 +23,7 @@ const Chat = (props) => {
   const [roomContent, setRoomContent] = useState({});
   const [messages, setMessages] = useState([]);
   const [roomDocId, setRoomDocId] = useState("");
+  const {open, handleOpen, handleClose} = useContext(ChatSettingsModalContext)
   console.log("match => ", roomContent);
   console.log("messages => ", messages);
 
@@ -100,6 +103,9 @@ const Chat = (props) => {
     return messages[messages.length-1]?.time.toDate();
   }
 
+  const clickCheck = () => {
+handleOpen();
+  }
 
 
   const onEmojiClick = (event, emojiObject) => {
@@ -126,7 +132,7 @@ const Chat = (props) => {
               <IconButton aria-label="settings">
                 <SearchIcon />
               </IconButton>
-              <IconButton aria-label="settings">
+              <IconButton aria-label="settings" onClick={clickCheck}>
                 <MoreVertIcon />
               </IconButton>
             </>
@@ -182,6 +188,8 @@ const Chat = (props) => {
         <MicIcon className={classes.footerIcons} onClick={handleVoiceRecording}/>
 
       </div>
+      <ChatSettingsModal/>
+      <AddMemberModal/>
     </div>
   );
 };

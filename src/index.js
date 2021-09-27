@@ -6,6 +6,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ShowSearchListProvider } from "./contexts/ShowSearchListContext";
 import { AllUsersProvider } from "./contexts/AllUsersContext";
 import { AllRoomsArrayProvider } from "./contexts/AllRoomsArrayContext";
+import { ChatSettingsModalProvider } from "./contexts/ChatSettingsModalContext";
+import { MemberSearchProvider } from "./contexts/MemberSearchModalContext";
 
 ReactDOM.render(
   <>
@@ -14,7 +16,11 @@ ReactDOM.render(
         <AllUsersProvider>
           <ShowSearchListProvider>
             <AllRoomsArrayProvider>
-            <App />
+              <ChatSettingsModalProvider>
+                <MemberSearchProvider>
+                  <App />
+                </MemberSearchProvider>
+              </ChatSettingsModalProvider>
             </AllRoomsArrayProvider>
           </ShowSearchListProvider>
         </AllUsersProvider>
