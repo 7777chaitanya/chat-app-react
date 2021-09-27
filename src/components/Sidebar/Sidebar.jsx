@@ -20,6 +20,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { ShowSearchListContext } from '../../contexts/ShowSearchListContext';
 import SearchList from "../SearchList/SearchList";
 import { AllRoomsWithDocIdContext } from '../../contexts/AllRoomsWithDocIdContext';
+import { AllUsersContext } from "../../contexts/AllUsersContext";
 
 const Sidebar = () => {
   const classes = useStyles();
@@ -93,12 +94,19 @@ const Sidebar = () => {
     setState({ ...state, [anchor]: open });
   };
 
+  const {allUsers} = useContext(AllUsersContext);
+
+  const profileBelongsTo = allUsers.find(doc => doc.email === currentUser.email)
+
+
   return (
     <div className={classes.sidebar}>
       <div className={classes.sidebar__header}>
         {currentUser ? 
         (<Tooltip title={`${currentUser.email}`}>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" onClick={toggleDrawer("left", true)}/>
+        <Avatar alt="Remy Sharp" src={profileBelongsTo?.avatarUrl} onClick={toggleDrawer("left", true)}>
+          {profileBelongsTo?.name[0]?.toUpperCase()}
+        </Avatar>
         </Tooltip>) :
         (<Tooltip title="hi">
         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
