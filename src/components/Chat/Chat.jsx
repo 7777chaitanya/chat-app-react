@@ -127,14 +127,14 @@ handleOpen();
       let friend = roomContent?.members?.find(member => member !== currentUser.email);
       let friendName= friend;
       if(!friendName){
-        return "Your Saved Messages"
+        return {name : "Your Saved Messages", avatarUrl : null}
       }
       // return friendName
       const docOfFriend = allUsers.find(doc => doc.email === friendName);
-      return docOfFriend?.name
+      return {name : docOfFriend?.name, avatarUrl : docOfFriend?.avatarUrl}
     }
 
-    return roomContent.name
+    return {name : roomContent?.name, avatarUrl : null}
   }
 
   return (
@@ -142,8 +142,8 @@ handleOpen();
       <div className={classes.chat__header}>
         <CardHeader
           avatar={
-            <Avatar aria-label="recipe" className={classes.avatar}>
-              R
+            <Avatar aria-label="recipe" className={classes.avatar} src={generateRoomName()?.avatarUrl}>
+              {generateRoomName().name && generateRoomName()?.name[0]?.toUpperCase()}
             </Avatar>
           }
           action={
@@ -159,7 +159,7 @@ handleOpen();
               </IconButton>
             </>
           }
-          title={generateRoomName()}
+          title={generateRoomName()?.name}
           subheader={`Last seen on ${lastSeenDateAndTime()}`}
         />
       </div>
