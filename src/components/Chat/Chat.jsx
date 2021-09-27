@@ -257,12 +257,16 @@ const Chat = (props) => {
     return { name: roomContent?.name, avatarUrl: null };
   };
 
+ 
+ 
   const senderName = (email) => {
     const requiredUser = allUsers?.find((doc) => doc.email === email);
     if (requiredUser?.name === currentUserDoc?.name) {
       return "You";
+      
     } else {
       return requiredUser?.name;
+
     }
   };
 
@@ -318,12 +322,16 @@ const Chat = (props) => {
         ))}
 
         {messages.map((eachMessage) => (
+          <Box >
           <EachMessage
             name={senderName(eachMessage.name)}
             time={eachMessage.time.toDate().toString()}
             message={eachMessage.message}
             imageUrl={eachMessage?.imageUrl}
+            email={eachMessage.name}
+            
           />
+          </Box>
         ))}
       </div>
 

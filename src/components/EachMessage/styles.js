@@ -23,7 +23,48 @@ const  useStyles = makeStyles(theme => ({
       },
       avatar: {
         backgroundColor: red[500],
+        width: theme.spacing(3),
+    height: theme.spacing(3),
       },
+      chat__receiver : {
+        backgroundColor : "white",
+        position : 'relative',
+        fontSize : "1rem",
+        // padding : '1rem',
+        // borderRadius : '1rem',
+        width : "fit-content",
+        // marginBottom : "1rem",
+          marginLeft : "auto",
+          backgroundColor : "rgb(219,246,198)"
+      },
+      chat__message : {
+        backgroundColor : "white",
+        position : 'relative',
+        fontSize : "1rem",
+        // padding : '1rem',
+        // borderRadius : '1rem',
+        width : "fit-content",
+        
+        // marginBottom : "1rem"
+        
+  
+    },
+    chat__timestamp : {
+        marginLeft : "0.3rem",
+        fontSize : "xx-small",
+        marginBottom : "0"
+    },
+    chat__user:{
+        // position : "absolute",
+        fontSize : "small",
+        fontWeight : 800,
+        marginBottom : "0"
+        // top : 0,
+        // left : 8
+    },
+    messageText:{
+        paddingTop : "0rem"
+    }
 }))
 
 export default useStyles;
