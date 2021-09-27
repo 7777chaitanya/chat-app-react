@@ -19,6 +19,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
 import SendIcon from "@material-ui/icons/Send";
 
+
+
 const Chat = (props) => {
   const classes = useStyles();
   const [message, setMessage] = useState("");
@@ -33,6 +35,7 @@ const Chat = (props) => {
   const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
   const { allUsers, setAllUsers } = useContext(AllUsersContext);
   const { currentUser } = useAuth();
+  const chatBodyRef = useRef();
   console.log("match => ", roomContent);
   console.log("messages => ", messages);
 
@@ -80,6 +83,12 @@ const Chat = (props) => {
     }
   }, [roomDocId]);
 
+  
+  useEffect(() => {
+    const objDiv = document.getElementById('chatBodyRef');
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }, [messages])
+
   const handleVoiceRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true, video: true });
   };
@@ -93,10 +102,13 @@ const Chat = (props) => {
     setShowEmojiPanel(false)
   }
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(messageRef.current.value);
-    setShowEmojiPanel(false)
+    setShowEmojiPanel(false);
+    
 
     // const messageQuery = query(
     //   collection(db, "rooms", roomDocId, "messages",), orderBy("time")
@@ -106,11 +118,12 @@ const Chat = (props) => {
       collection(db, "rooms", roomDocId || "E6mkZUadkZGElsFo0YZC", "messages")
     );
     await setDoc(newCityRef, {
-      name: "LosAngeles",
+      name: currentUser.email,
       message: messageRef.current.value,
       time: new Date(),
     });
     messageRef.current.value = "";
+
   };
 
   const lastSeenDateAndTime = () => {
@@ -145,6 +158,8 @@ const Chat = (props) => {
     return { name: roomContent?.name, avatarUrl: null };
   };
 
+  
+
   return (
     <div className={classes.chat}>
       <div className={classes.chat__header}>
@@ -177,7 +192,7 @@ const Chat = (props) => {
         />
       </div>
 
-      <div className={classes.chat__body}>
+      <div className={classes.chat__body} id="chatBodyRef">
         <div className={classes.chat__message}>
           <span className={classes.chat__user}>Chaitanya</span>
           hello
