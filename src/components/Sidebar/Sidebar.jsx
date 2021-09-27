@@ -72,7 +72,11 @@ const Sidebar = () => {
 
   const {openSearchList,showSearchList,closeSearchList} = useContext(ShowSearchListContext);
 
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showUserNamePen, setShowUserNamePen] = useState(true);
+  const [showUserBioPen, setShowUserBioPen] = useState(true);
+
+
 
   const handleSearchTermChange = (e) => {
   openSearchList();
@@ -87,6 +91,11 @@ const Sidebar = () => {
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
+    if(!open){
+      setShowUserNamePen(true);
+      setShowUserBioPen(true);
+    }
+
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -103,7 +112,7 @@ const Sidebar = () => {
     <div className={classes.sidebar}>
       <div className={classes.sidebar__header}>
         {currentUser ? 
-        (<Tooltip title={`${currentUser.email}`}>
+        (<Tooltip title={`${profileBelongsTo?.name}`}>
         <Avatar alt="Remy Sharp" src={profileBelongsTo?.avatarUrl} onClick={toggleDrawer("left", true)}>
           {profileBelongsTo?.name[0]?.toUpperCase()}
         </Avatar>
@@ -144,7 +153,9 @@ const Sidebar = () => {
 
       {showSearchList && <SearchList searchTerm={searchTerm} /> }
 
-      <ProfileDrawer state={state} toggleDrawer={toggleDrawer}/>
+      <ProfileDrawer state={state} toggleDrawer={toggleDrawer} showUserNamePen={showUserNamePen} setShowUserNamePen={setShowUserNamePen}
+      showUserBioPen={showUserBioPen} setShowUserBioPen={setShowUserBioPen}
+      />
     </div>
   );
 };

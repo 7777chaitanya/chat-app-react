@@ -57,6 +57,10 @@ paddingBottom : "1rem"
   pBox : {
       padding : "2rem",
       backgroundColor : "rgb(200,200,200)"
+  },
+  usernameBox:{
+    display :"flex",
+    alignItems : "center"
   }
 });
 
