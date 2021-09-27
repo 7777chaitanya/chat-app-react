@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent : "space-between",
     alignItems : "center",
     height : "3rem",
-    padding: "0 1rem"
+    padding: "0.5rem 1rem"
 
   },
   footerIcons:{
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   chat__footer__messageform : {
 flex : 1,
 // backgroundColor : "green",
-display : "flex"
+display : "flex",
 
   },
   messageInput:{

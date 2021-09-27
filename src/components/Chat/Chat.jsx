@@ -370,10 +370,19 @@ const Chat = (props) => {
           <button type="submit" className={classes.submitButton}>
             submit
           </button>
+          {message &&
           <IconButton type="submit" disabled={checkIfImageOrTextBoxIsEmpty()}>
             <SendIcon />
-          </IconButton>
+          </IconButton>}
         </form>
+        {!message &&
+        <IconButton           onClick={handleVoiceRecording}
+        >
+        <MicIcon
+          className={classes.footerIcons}
+        />
+        </IconButton>
+        }
         <input
           type="file"
           id="icon-button-file"
@@ -393,10 +402,8 @@ const Chat = (props) => {
         {/* <IconButton>
           <AttachmentIcon className={classes.footerIcons} />
         </IconButton> */}
-        <MicIcon
-          className={classes.footerIcons}
-          onClick={handleVoiceRecording}
-        />
+
+       
       </div>
       <ChatSettingsModal />
       <AddMemberModal />
