@@ -28,10 +28,11 @@ const Sidebar = () => {
   useEffect(() => {
     const q = query(collection(db, "rooms"), where("name", "!=", ""));
 const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  const rooms = [];
+  let rooms = [];
   querySnapshot.forEach((doc) => {
       rooms.push({id : doc.id, data : doc.data()});
   });
+  rooms = rooms.filter(rooms => rooms.data?.members?.includes(currentUser?.email))
   setRooms([...rooms])
   // console.log("Current cities in CA: ", cities.join(", "));
   console.log("rooms => ",rooms)
@@ -40,7 +41,7 @@ const unsubscribe = onSnapshot(q, (querySnapshot) => {
 return () => {
   unsubscribe();
 }
-  }, [])
+  }, [currentUser])
 
   const handleOpenMenuModal = () => {
     setOpenMenuModal(true);
