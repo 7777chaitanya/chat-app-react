@@ -1,4 +1,11 @@
-import { IconButton, CardHeader, Avatar, Box, Typography, ListItem } from "@material-ui/core";
+import {
+  IconButton,
+  CardHeader,
+  Avatar,
+  Box,
+  Typography,
+  ListItem,
+} from "@material-ui/core";
 import React, { useRef, useState, useEffect, useContext } from "react";
 import useStyles from "./styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -28,11 +35,11 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import moment from 'moment';
-import Popover from '@material-ui/core/Popover';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import moment from "moment";
+import Popover from "@material-ui/core/Popover";
+import Button from "@material-ui/core/Button";
+import List from "@material-ui/core/List";
+import ListItemText from "@material-ui/core/ListItemText";
 import ChatInfo from "../ChatInfo/ChatInfo";
 
 function LinearProgressWithLabel(props) {
@@ -77,22 +84,21 @@ const Chat = (props) => {
   const [progressBar, setProgressBar] = useState(null);
   const [showProgressBar, setshowProgressBar] = useState(false);
 
-  const handleMessageChange = (e) =>{
-    setMessage(e.target.value)
-  }
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+  };
 
   console.log("match => ", currentUserDoc);
   console.log("messages => ", messages);
 
   const checkIfImageOrTextBoxIsEmpty = () => {
-    if(messageRef){
-    if (message === "" && wassupImage === null) {
-      return true;
+    if (messageRef) {
+      if (message === "" && wassupImage === null) {
+        return true;
+      }
+      return false;
     }
-    return false;
-  }
   };
-
 
   const handleWassupImageChange = (e) => {
     e.target.files[0] && setWassupImage(e.target.files[0]);
@@ -131,7 +137,7 @@ const Chat = (props) => {
 
         querySnapshot.forEach((doc) => {
           console.log("messagesquerySnapshot => ", doc.data());
-          const docObject   = {...doc.data(), id : doc.id}
+          const docObject = { ...doc.data(), id: doc.id };
 
           messages.push(docObject);
         });
@@ -174,7 +180,7 @@ const Chat = (props) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
-        setProgressBar(progress)
+        setProgressBar(progress);
         switch (snapshot.state) {
           case "paused":
             console.log("Upload is paused");
@@ -205,13 +211,12 @@ const Chat = (props) => {
             message: messageRef.current.value,
             time: new Date(),
             imageUrl: downloadURL,
-            starred : false,
-            liked : false
+            starred: false,
+            liked: false,
           });
           messageRef.current.value = "";
           setWassupImage(null);
           setshowProgressBar(false);
-
         });
       }
     );
@@ -235,8 +240,8 @@ const Chat = (props) => {
       message: messageRef.current.value,
       time: new Date(),
       imageUrl: null,
-      starred : false,
-      liked : false
+      starred: false,
+      liked: false,
     });
     messageRef.current.value = "";
   };
@@ -273,16 +278,12 @@ const Chat = (props) => {
     return { name: roomContent?.name, avatarUrl: null };
   };
 
- 
- 
   const senderName = (email) => {
     const requiredUser = allUsers?.find((doc) => doc.email === email);
     if (requiredUser?.name === currentUserDoc?.name) {
       return "You";
-      
     } else {
       return requiredUser?.name;
-
     }
   };
 
@@ -297,138 +298,141 @@ const Chat = (props) => {
   };
 
   const open = Boolean(anchorEl);
-  const ide = open ? 'simple-popover' : undefined;
+  const ide = open ? "simple-popover" : undefined;
 
   return (
     <div className={classes.chat}>
       <Box className={classes.fullChatContainer}>
-      <Box className={classes.fullChatContainerLeft}>
-      <div className={classes.chat__header}>
-        <CardHeader
-          avatar={
-            <Avatar
-              aria-label="recipe"
-              className={classes.avatar}
-              src={generateRoomName()?.avatarUrl}
-            >
-              {generateRoomName().name &&
-                generateRoomName()?.name[0]?.toUpperCase()}
-            </Avatar>
-          }
-          action={
-            <>
-              {/* <IconButton aria-label="settings">
+        <Box className={classes.fullChatContainerLeft}>
+          <div className={classes.chat__header}>
+            <CardHeader
+              avatar={
+                <Avatar
+                  aria-label="recipe"
+                  className={classes.avatar}
+                  src={generateRoomName()?.avatarUrl}
+                >
+                  {generateRoomName().name &&
+                    generateRoomName()?.name[0]?.toUpperCase()}
+                </Avatar>
+              }
+              action={
+                <>
+                  {/* <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton> */}
-              <IconButton aria-label="settings">
-                <SearchIcon />
+                  <IconButton aria-label="settings">
+                    <SearchIcon />
+                  </IconButton>
+                  <IconButton aria-label="settings" onClick={handleClick}>
+                    <MoreVertIcon />
+                  </IconButton>
+                </>
+              }
+              title={generateRoomName()?.name}
+              subheader={`Last seen on ${moment(lastSeenDateAndTime()).format(
+                "MMM Do YYYY, h:mm:ss a"
+              )}`}
+            />
+          </div>
+
+          <div className={classes.chat__body} id="chatBodyRef">
+            {messages.map((eachMessage) => (
+              <Box>
+                <EachMessage
+                  name={senderName(eachMessage.name)}
+                  time={eachMessage.time.toDate().toString()}
+                  message={eachMessage.message}
+                  imageUrl={eachMessage?.imageUrl}
+                  email={eachMessage.name}
+                  id={eachMessage.id}
+                  roomDocId={roomDocId}
+                  starred={eachMessage?.starred}
+                  liked={eachMessage?.liked}
+                />
+              </Box>
+            ))}
+          </div>
+
+          {showEmojiPanel && (
+            <Picker
+              onEmojiClick={onEmojiClick}
+              native={true}
+              pickerStyle={{ width: "100%" }}
+            />
+          )}
+
+          {showProgressBar && (
+            <Box className={classes.progressBar}>
+              <LinearProgressWithLabel value={progressBar} />
+            </Box>
+          )}
+
+          <div className={classes.chat__footer}>
+            <SentimentVerySatisfiedIcon
+              className={classes.footerIcons}
+              onClick={handleEmojiPanel}
+            />
+            <form
+              action="submit"
+              className={classes.chat__footer__messageform}
+              onSubmit={handleSubmit}
+            >
+              <input
+                type="text"
+                placeholder="Enter your message here!"
+                className={classes.messageInput}
+                onChange={handleMessageChange}
+                ref={messageRef}
+              />
+              <button type="submit" className={classes.submitButton}>
+                submit
+              </button>
+              {message && (
+                <IconButton
+                  type="submit"
+                  disabled={checkIfImageOrTextBoxIsEmpty()}
+                >
+                  <SendIcon />
+                </IconButton>
+              )}
+            </form>
+            {!message && (
+              <IconButton onClick={handleVoiceRecording}>
+                <MicIcon className={classes.footerIcons} />
               </IconButton>
-              <IconButton aria-label="settings" onClick={handleClick}>
-                <MoreVertIcon />
+            )}
+
+            <label>
+              <input
+                type="file"
+                id="icon-button-file"
+                className={classes.input}
+                onChange={handleWassupImageChange}
+              />
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+                className={classes.footerIcons}
+              >
+                <PhotoCamera />
               </IconButton>
-            </>
-          }
-          title={generateRoomName()?.name}
-          subheader={`Last seen on ${moment(lastSeenDateAndTime()).format('MMM Do YYYY, h:mm:ss a')}`}
-        />
-      </div>
-
-      <div className={classes.chat__body} id="chatBodyRef">
-       
-        {messages.map((eachMessage) => (
-          <Box >
-          <EachMessage
-            name={senderName(eachMessage.name)}
-            time={eachMessage.time.toDate().toString()}
-            message={eachMessage.message}
-            imageUrl={eachMessage?.imageUrl}
-            email={eachMessage.name}
-            id={eachMessage.id}
-            roomDocId={roomDocId}
-            starred = {eachMessage?.starred}
-            liked={eachMessage?.liked}
-            
-          />
-          </Box>
-        ))}
-      </div>
-
-      {showEmojiPanel && (
-        <Picker
-          onEmojiClick={onEmojiClick}
-          native={true}
-          pickerStyle={{ width: "100%" }}
-        />
-      )}
-
-      {showProgressBar && (
-        <Box className={classes.progressBar}>
-          <LinearProgressWithLabel value={progressBar} />
-        </Box>
-      )}
-
-      <div className={classes.chat__footer}>
-        <SentimentVerySatisfiedIcon
-          className={classes.footerIcons}
-          onClick={handleEmojiPanel}
-        />
-        <form
-          action="submit"
-          className={classes.chat__footer__messageform}
-          onSubmit={handleSubmit}
-        >
-          <input
-            type="text"
-            placeholder="Enter your message here!"
-            className={classes.messageInput}
-            onChange={handleMessageChange}
-            ref={messageRef}
-          />
-          <button type="submit" className={classes.submitButton}>
-            submit
-          </button>
-          {message &&
-          <IconButton type="submit" disabled={checkIfImageOrTextBoxIsEmpty()}>
-            <SendIcon />
-          </IconButton>}
-        </form>
-        {!message &&
-        <IconButton           onClick={handleVoiceRecording}
-        >
-        <MicIcon
-          className={classes.footerIcons}
-        />
-        </IconButton>
-        }
-       
-        <label>
-        <input
-          type="file"
-          id="icon-button-file"
-          className={classes.input}
-          onChange={handleWassupImageChange}
-        />
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="span"
-            className={classes.footerIcons}
-          >
-            <PhotoCamera />
-          </IconButton>
-        </label>
-        {/* <IconButton>
+            </label>
+            {/* <IconButton>
           <AttachmentIcon className={classes.footerIcons} />
         </IconButton> */}
+          </div>
+        </Box>
+        <Box className={classes.fullChatContainerRight}>
+          <ChatInfo 
+            name={generateRoomName()?.name}
+            avatarUrl={generateRoomName()?.avatarUrl}
+            messages={messages}
+          />
+        </Box>
+      </Box>
 
-       
-      </div>
-      </Box>
-      <Box className={classes.fullChatContainerRight}>
-      <ChatInfo/>
-      </Box>
-      </Box>
-      
       <ChatSettingsModal />
       <AddMemberModal />
       <Popover
@@ -437,25 +441,29 @@ const Chat = (props) => {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
+          vertical: "bottom",
+          horizontal: "center",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
+          vertical: "top",
+          horizontal: "center",
         }}
       >
-         <List component="nav" aria-label="secondary mailbox folders" className={classes.chatSettingsList}>
-        <ListItem button>
-          <ListItemText primary="Contact Info" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Clear Messages" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Delete Chat" />
-        </ListItem>
-      </List>
+        <List
+          component="nav"
+          aria-label="secondary mailbox folders"
+          className={classes.chatSettingsList}
+        >
+          <ListItem button>
+            <ListItemText primary="Contact Info" />
+          </ListItem>
+          <ListItem button>
+            <ListItemText primary="Clear Messages" />
+          </ListItem>
+          <ListItem button>
+            <ListItemText primary="Delete Chat" />
+          </ListItem>
+        </List>
       </Popover>
     </div>
   );

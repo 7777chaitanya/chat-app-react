@@ -71,13 +71,36 @@ paddingBottom : "1rem"
   },
 
   MediaBox:{
+    maxWidth : "21rem",
+    overflow   : "scroll",
+    marginBottom : "1rem",
+
     display : "flex",
-    flexDirection : "column",
+    '&::-webkit-scrollbar': {
+      width: '0.4rem'
+    },
+    '&::-webkit-scrollbar-track': {
+      boxShadow: 'inset 0 0 1px rgba(0,0,0,0.00)',
+      webkitBoxShadow: 'inset 0 0 1px rgba(0,0,0,0.00)'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      outline: '0.1rem solid slategrey'
+    }
+
+    // flexDirection : "column",
 
   },
   mediaBoxImages:{
     width : "5rem",
-    height : "auto"
+    height : "auto",
+    margin : "0.5rem",
+    justifyContent:'flex-start'
+
+  },
+  buttonBox:{
+  
+    padding: "1rem"
   }
 });
 

@@ -8,10 +8,13 @@ import CheckIcon from "@material-ui/icons/Check";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
-const ChatInfo = () => {
+const ChatInfo = ({name, avatarUrl,messages}) => {
   const classes = useStyles();
   const [showUserNamePen, setShowUserNamePen] = useState(false);
   const [username, setusername] = useState("");
+
+  const messagesWithMedia = messages.filter(message => message?.imageUrl?.length > 2);
+  
 
   const handleFocusUserNameField = () => {
     console.log("focus user name field");
@@ -27,13 +30,13 @@ const ChatInfo = () => {
         <IconButton>
           <ArrowBackIcon />
         </IconButton>
-        <p className={classes.profileDrawerHeaderText}>Profile</p>
+        <p className={classes.profileDrawerHeaderText}>{name}</p>
       </div>
 
       <div className={classes.avatarBox}>
         <div className={classes.avatar}>
-          {true ? (
-            <Avatar className={classes.avatarSize} />
+          {avatarUrl ? (
+            <Avatar className={classes.avatarSize} src={avatarUrl}/>
           ) : (
             <AccountCircle className={classes?.avatarSize} />
           )}
@@ -88,16 +91,22 @@ const ChatInfo = () => {
           alt=""
           className={classes.mediaBoxImages}
         />
+        
+        {messagesWithMedia.map(message => <img src={message.imageUrl} className={classes.mediaBoxImages} />)}
       </Box>
+      <Box className={classes.buttonBox}>
       <Button
         variant="contained"
         color="secondary"
         className={classes.button}
         startIcon={<DeleteForeverIcon />}
         fullWidth={true}
+        className={classes.chatInfoButtons}
       >
         Delete Chat
       </Button>
+      </Box>
+      <Box className={classes.buttonBox}>
 
       <Button
         variant="contained"
@@ -105,9 +114,12 @@ const ChatInfo = () => {
         className={classes.button}
         startIcon={<DeleteForeverIcon />}
         fullWidth={true}
+        className={classes.chatInfoButtons}
       >
         Clear Chat
       </Button>
+      </Box>
+
     </div>
   );
 };
