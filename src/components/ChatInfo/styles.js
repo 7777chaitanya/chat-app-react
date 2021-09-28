@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
   profileDrawerHeader: {
     display: "flex",
-    paddingTop : "4rem",
+    paddingTop : "2rem",
     paddingLeft : "2rem",
     paddingBottom : "2rem",
     backgroundColor : "rgb(105,193,165)",
@@ -61,10 +61,23 @@ paddingBottom : "1rem"
   },
   usernameBox:{
     display :"flex",
-    alignItems : "center"
+    alignItems : "center",
+    marginLeft : "2rem",
+    paddingTop : "1rem",
+    paddingBottom : "1rem"
   },
   progressBar:{
     marginTop : "1rem"
+  },
+
+  MediaBox:{
+    display : "flex",
+    flexDirection : "column",
+
+  },
+  mediaBoxImages:{
+    width : "5rem",
+    height : "auto"
   }
 });
 
