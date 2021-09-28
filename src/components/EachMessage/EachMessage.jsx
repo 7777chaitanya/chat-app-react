@@ -43,14 +43,17 @@ export default function RecipeReviewCard({name,time,message, imageUrl, email}) {
     }    
   }
 
-  
+  const profileBelongsTo = allUsers.find(user => user.email === email)
 
   return (
     <Card className={clsx(classes.root,userMessageClass())} >
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+          // profileBelongsTo ?
+          // (<Avatar aria-label="recipe" className={classes.avatar} src={profileBelongsTo?.avatarUrl}/>):
+
+          <Avatar aria-label="recipe" className={classes.avatar} src={profileBelongsTo?.avatarUrl}>
+           { name && name[0].toUpperCase()}
           </Avatar>
         }
         action={
