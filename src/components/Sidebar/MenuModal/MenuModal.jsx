@@ -106,7 +106,7 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="Settings" />
+          <ListItemText primary="Create New room" />
         </ListItem>
         <ListItem button onClick={handleLogout}>
           <ListItemIcon>
