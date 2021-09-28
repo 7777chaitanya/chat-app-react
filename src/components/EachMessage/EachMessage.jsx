@@ -139,6 +139,7 @@ export default function RecipeReviewCard({
   return (
     <Card className={clsx(classes.root, userMessageClass())}>
       <CardHeader
+        className={classes.messageCardHeader}
         avatar={
           // profileBelongsTo ?
           // (<Avatar aria-label="recipe" className={classes.avatar} src={profileBelongsTo?.avatarUrl}/>):
@@ -157,8 +158,7 @@ export default function RecipeReviewCard({
               [classes.expandOpen]: expanded,
             })}
             onClick={handleClick}
-            aria-expanded={expanded}
-            aria-label="show more"
+        
           >
             <ExpandMoreIcon />
           </IconButton>
@@ -187,25 +187,7 @@ export default function RecipeReviewCard({
           {message}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-{liked  ?
-        (<IconButton aria-label="add to favorites" onClick={handleDislikeMessage}>
-          <FavoriteIcon />
-        </IconButton>) :
-  (
-    <IconButton onClick={handleLikeMessage}>
-      <FavoriteBorderIcon/>
-    </IconButton>
-  )}
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-         onClick={handleClick}
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
+ 
       
 
       <Popover
@@ -246,6 +228,26 @@ export default function RecipeReviewCard({
                 </ListItemIcon>
                 <ListItemText
                   primary={<Typography variant="body2">Unstar</Typography>}
+                />
+              </ListItem>
+            )}
+
+{!liked ? (
+              <ListItem button onClick={handleLikeMessage}>
+                <ListItemIcon>
+                  <FavoriteBorderIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={<Typography variant="body2">Like</Typography>}
+                />
+              </ListItem>
+            ) : (
+              <ListItem button onClick={handleDislikeMessage}>
+                <ListItemIcon>
+                  <FavoriteIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={<Typography variant="body2">Dislike</Typography>}
                 />
               </ListItem>
             )}

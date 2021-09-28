@@ -17,6 +17,7 @@ const  useStyles = makeStyles(theme => ({
         transition: theme.transitions.create('transform', {
           duration: theme.transitions.duration.shortest,
         }),
+
       },
       expandOpen: {
         transform: 'rotate(180deg)',
@@ -71,6 +72,10 @@ const  useStyles = makeStyles(theme => ({
       
     },
     lastChild:{
+      paddingBottom : "0rem"
+    },
+    messageCardHeader:{
+      paddingTop : "0rem",
       paddingBottom : "0rem"
     }
 }))
