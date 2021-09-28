@@ -187,7 +187,7 @@ updateDoc(washingtonRef, {
         </ListItem>
         <ListItem>
          
-          {/* <ListItemIcon> */}
+          <ListItemIcon>
       
         <label>
         <input
@@ -205,9 +205,10 @@ updateDoc(washingtonRef, {
             <PhotoCamera />
           </IconButton>
         </label>
-          {/* </ListItemIcon> */}
+          </ListItemIcon>
           <ListItemText primary="Change dp" />
         </ListItem>
+        
       </List>
       <Divider />
       {openPhotoPreviewModal && (
