@@ -314,11 +314,21 @@ const Chat = (props) => {
   const ide = open ? "simple-popover" : undefined;
 
   const handleClearMessagesFromChat = async () => {
+    handleClose();
     messages.forEach(message=>
      deleteDoc(doc(db, "rooms", currentRoom, "messages", message.id))
 
     );
 }
+
+  
+const [showRightContainer, setShowRightContainer] = useState(false);
+
+const handleShowRightContainer = () =>{
+  setShowRightContainer(p=>!p);
+  handleClose();
+}
+
 
   return (
     <div className={classes.chat}>
@@ -444,7 +454,8 @@ const Chat = (props) => {
         </IconButton> */}
           </div>
         </Box>
-        <Box className={classes.fullChatContainerRight}>
+        {showRightContainer &&
+        (<Box className={classes.fullChatContainerRight}>
           <ChatInfo 
             name={generateRoomName()?.name}
             avatarUrl={generateRoomName()?.avatarUrl}
@@ -452,8 +463,9 @@ const Chat = (props) => {
             bio={getFriendsBio()}
             roomContent={roomContent}
             messages={messages}
+            handleShowRightContainer={handleShowRightContainer}
           />
-        </Box>
+        </Box>)}
       </Box>
 
       <ChatSettingsModal />
@@ -478,7 +490,7 @@ const Chat = (props) => {
           className={classes.chatSettingsList}
         >
           {roomContent.privateChat ?
-          (<ListItem button>
+          (<ListItem button onClick={handleShowRightContainer}>
             <ListItemText primary="Contact Info" />
           </ListItem>) :
           (<ListItem button>

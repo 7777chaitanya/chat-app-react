@@ -11,7 +11,7 @@ import { CurrentRoomContext } from '../../contexts/CurrentRoomContext';
 import { db } from "../../firebase";
 import { collection, deleteDoc, doc, query } from "@firebase/firestore";
 
-const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
+const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightContainer}) => {
   const classes = useStyles();
   const [showUserNamePen, setShowUserNamePen] = useState(false);
   const [username, setusername] = useState("");
@@ -48,7 +48,7 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
   return (
     <div>
       <div className={classes.profileDrawerHeader}>
-        <IconButton>
+        <IconButton onClick={handleShowRightContainer}>
           <ArrowBackIcon />
         </IconButton>
         <p className={classes.profileDrawerHeaderText}>{name}</p>

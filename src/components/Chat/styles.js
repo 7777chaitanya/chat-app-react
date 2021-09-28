@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   chat__header: {},
   chat__body: {
+    minHeight : "70vh",
     flex: 1,
     backgroundImage: `url(${image})`,
     backgroundRepeat: "repeat",

@@ -64,7 +64,8 @@ const Sidebar = () => {
         name: roomName,
         members : [currentUser.email],
         privateChat : false,
-        desc : ""
+        desc : "",
+        avatarUrl : ""
       });
       
     }
