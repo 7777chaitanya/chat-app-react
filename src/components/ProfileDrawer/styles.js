@@ -52,7 +52,8 @@ paddingBottom : "1rem"
   },
   avatarBox:{
       backgroundColor : "rgb(200,200,200)",
-      padding: "1rem 0"
+      padding: "1rem 0",
+      // position : "absolute"
   },
   pBox : {
       padding : "2rem",

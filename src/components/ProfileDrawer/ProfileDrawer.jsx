@@ -13,7 +13,9 @@ import { Avatar, TextField, IconButton, Box } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import ProfilePictureModal from "../ProfilePictureModal/ProfilePicutureModal"
+import ProfilePictureModal from "../ProfilePictureModal/ProfilePicutureModal";
+import { motion } from "framer-motion"
+
 
 export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen,  setShowUserNamePen, setShowUserBioPen, showUserBioPen}) {
   const classes = useStyles();
@@ -91,9 +93,12 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
       // onKeyDown={toggleDrawer(anchor, false)}
     >
       <div className={classes.profileDrawerHeader}>
-        <IconButton onClick={toggleDrawer(anchor, false)}>
+        <motion.IconButton onClick={toggleDrawer(anchor, false)}
+         whileHover={{ scale: 1.1 }}
+         whileTap={{ scale: 0.9 }}
+        >
           <ArrowBackIcon />
-        </IconButton>
+        </motion.IconButton>
         <p className={classes.profileDrawerHeaderText}>Profile</p>
       </div>
       <div className={classes.avatarBox}>
@@ -106,7 +111,7 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
               onClick={handleOpenProfilePictureModal}
             />
           ) : (
-            <AccountCircle className={classes?.avatarSize} />
+            <AccountCircle className={classes?.avatarSize} onClick={handleOpenProfilePictureModal}/>
           )}
           {openProfilePictureModal && <ProfilePictureModal openProfilePictureModal={openProfilePictureModal}
             handleCloseProfilePictureModal={handleCloseProfilePictureModal}
