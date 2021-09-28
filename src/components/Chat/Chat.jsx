@@ -122,8 +122,9 @@ const Chat = (props) => {
 
         querySnapshot.forEach((doc) => {
           console.log("messagesquerySnapshot => ", doc.data());
+          const docObject   = {...doc.data(), id : doc.id}
 
-          messages.push(doc.data());
+          messages.push(docObject);
         });
         setMessages([...messages]);
       });
@@ -136,7 +137,7 @@ const Chat = (props) => {
   useEffect(() => {
     const objDiv = document.getElementById("chatBodyRef");
     objDiv.scrollTop = objDiv.scrollHeight;
-  }, [messages]);
+  }, [messages.length]);
 
   const handleVoiceRecording = () => {
     navigator.mediaDevices.getUserMedia({ audio: true, video: true });
@@ -195,6 +196,8 @@ const Chat = (props) => {
             message: messageRef.current.value,
             time: new Date(),
             imageUrl: downloadURL,
+            starred : false,
+            liked : false
           });
           messageRef.current.value = "";
           setWassupImage(null);
@@ -223,6 +226,8 @@ const Chat = (props) => {
       message: messageRef.current.value,
       time: new Date(),
       imageUrl: null,
+      starred : false,
+      liked : false
     });
     messageRef.current.value = "";
   };
@@ -331,6 +336,10 @@ const Chat = (props) => {
             message={eachMessage.message}
             imageUrl={eachMessage?.imageUrl}
             email={eachMessage.name}
+            id={eachMessage.id}
+            roomDocId={roomDocId}
+            starred = {eachMessage?.starred}
+            liked={eachMessage?.liked}
             
           />
           </Box>

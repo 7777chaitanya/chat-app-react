@@ -65,6 +65,13 @@ const  useStyles = makeStyles(theme => ({
     },
     messageText:{
         paddingTop : "0rem"
+    },
+    collapseCard:{
+      padding : "0rem"
+      
+    },
+    lastChild:{
+      paddingBottom : "0rem"
     }
 }))
 

@@ -1,28 +1,49 @@
-import React,{useContext} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import React, { useContext } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import { red } from "@material-ui/core/colors";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import useStyles from "./styles";
-import { CurrentUserDocContext } from '../../contexts/CurrentUserDocContext';
-import { AllUsersContext } from '../../contexts/AllUsersContext';
-import { Box } from '@material-ui/core';
-import moment from 'moment'
-
-
-export default function RecipeReviewCard({name,time,message, imageUrl, email}) {
+import { CurrentUserDocContext } from "../../contexts/CurrentUserDocContext";
+import { AllUsersContext } from "../../contexts/AllUsersContext";
+import { Box } from "@material-ui/core";
+import moment from "moment";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import InboxIcon from "@material-ui/icons/Inbox";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import { doc, deleteDoc,updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import StarIcon from "@material-ui/icons/Star";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+export default function RecipeReviewCard({
+  name,
+  time,
+  message,
+  imageUrl,
+  email,
+  id,
+  roomDocId,
+  starred,
+  liked
+}) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const { allUsers, setAllUsers } = useContext(AllUsersContext);
@@ -35,29 +56,81 @@ export default function RecipeReviewCard({name,time,message, imageUrl, email}) {
   };
 
   const userMessageClass = () => {
-    if(name==="You"){
-        return classes.chat__receiver
+    if (name === "You") {
+      return classes.chat__receiver;
+    } else {
+      return classes.chat__message;
     }
-    else{
-        return classes.chat__message
-    }    
-  }
+  };
 
-  const profileBelongsTo = allUsers.find(user => user.email === email)
+  const profileBelongsTo = allUsers.find((user) => user.email === email);
+
+  const handleStarMessage = async () => {
+    console.log("starredc");
+    // const messageQuery = query(collection(db, "rooms", roomDocId, "messages", id));
+
+    const docRef = doc(db, "rooms", roomDocId, "messages", id);
+
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(docRef, {
+      starred: true,
+    });
+  };
+
+  const handleUnstarMessage = async () => {
+    const docRef = doc(db, "rooms", roomDocId, "messages", id);
+
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(docRef, {
+      starred: false,
+    });
+  };
+
+  const handleDeleteMessage = async () => {
+    console.log("deleted");
+    // const messageQuery = query(collection(db, "rooms", roomDocId, "messages", id));
+    await deleteDoc(doc(db, "rooms", roomDocId, "messages", id));
+  };
+
+  const handleLikeMessage = async () => {
+    console.log("starredc");
+    // const messageQuery = query(collection(db, "rooms", roomDocId, "messages", id));
+
+    const docRef = doc(db, "rooms", roomDocId, "messages", id);
+
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(docRef, {
+      liked: true,
+    });
+  };
+
+  const handleDislikeMessage = async () => {
+    const docRef = doc(db, "rooms", roomDocId, "messages", id);
+
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(docRef, {
+      liked: false,
+    });
+  };
+  
 
   return (
-    <Card className={clsx(classes.root,userMessageClass())} >
+    <Card className={clsx(classes.root, userMessageClass())}>
       <CardHeader
         avatar={
           // profileBelongsTo ?
           // (<Avatar aria-label="recipe" className={classes.avatar} src={profileBelongsTo?.avatarUrl}/>):
 
-          <Avatar aria-label="recipe" className={classes.avatar} src={profileBelongsTo?.avatarUrl}>
-           { name && name[0].toUpperCase()}
+          <Avatar
+            aria-label="recipe"
+            className={classes.avatar}
+            src={profileBelongsTo?.avatarUrl}
+          >
+            {name && name[0].toUpperCase()}
           </Avatar>
         }
         action={
-            <IconButton
+          <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
             })}
@@ -68,41 +141,83 @@ export default function RecipeReviewCard({name,time,message, imageUrl, email}) {
             <ExpandMoreIcon />
           </IconButton>
         }
-        title={<Typography paragraph className={classes.chat__user} gutterBottom={false}>{name}</Typography>}
-        subheader={<Typography paragraph className={classes. chat__timestamp}>{moment(time).format('MMM Do YYYY, h:mm:ss a')}</Typography>}
+        title={
+          <Typography
+            paragraph
+            className={classes.chat__user}
+            gutterBottom={false}
+          >
+            {name}
+          </Typography>
+        }
+        subheader={
+          <Typography paragraph className={classes.chat__timestamp}>
+            {moment(time).format("MMM Do YYYY, h:mm:ss a")}
+          </Typography>
+        }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering
-          </Typography>
-          <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large
-          </Typography>
-          <Typography paragraph>
-            Add rice and stir very gently to distribute. 
-          </Typography>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography>
+        <CardContent className={classes.collapseCard}>
+          <List
+            component="nav"
+            aria-label="main mailbox folders"
+            dense={false}
+            disablePadding={true}
+            disableSpacing={true}
+          >
+            {!starred ? (
+              <ListItem button onClick={handleStarMessage}>
+                <ListItemIcon>
+                  <StarBorderIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={<Typography variant="body2">Star</Typography>}
+                />
+              </ListItem>
+            ) : (
+              <ListItem button onClick={handleUnstarMessage}>
+                <ListItemIcon>
+                  <StarIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={<Typography variant="body2">Unstar</Typography>}
+                />
+              </ListItem>
+            )}
+
+            <ListItem
+              button
+              className={classes.lastChild}
+              onClick={handleDeleteMessage}
+            >
+              <ListItemIcon>
+                <DeleteForeverIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText
+                primary={<Typography variant="body2">Delete</Typography>}
+              />
+            </ListItem>
+          </List>
         </CardContent>
       </Collapse>
-      {imageUrl &&
-      <CardMedia
-        className={classes.media}
-        image={imageUrl}
-        title={name}
-      />}
+      {imageUrl && (
+        <CardMedia className={classes.media} image={imageUrl} title={name} />
+      )}
       <CardContent className={classes.messageText}>
-        <Typography variant="body2" color="textSecondary" component="p" >
+        <Typography variant="body2" color="textSecondary" component="p">
           {message}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+{liked  ?
+        (<IconButton aria-label="add to favorites" onClick={handleDislikeMessage}>
           <FavoriteIcon />
-        </IconButton>
+        </IconButton>) :
+  (
+    <IconButton onClick={handleLikeMessage}>
+      <FavoriteBorderIcon/>
+    </IconButton>
+  )}
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
@@ -117,7 +232,6 @@ export default function RecipeReviewCard({name,time,message, imageUrl, email}) {
           <ExpandMoreIcon />
         </IconButton>
       </CardActions>
-      
     </Card>
   );
 }
