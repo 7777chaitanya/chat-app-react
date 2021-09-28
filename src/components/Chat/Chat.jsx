@@ -33,6 +33,7 @@ import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
+import ChatInfo from "../ChatInfo/ChatInfo";
 
 function LinearProgressWithLabel(props) {
   return (
@@ -300,6 +301,8 @@ const Chat = (props) => {
 
   return (
     <div className={classes.chat}>
+      <Box className={classes.fullChatContainer}>
+      <Box className={classes.fullChatContainerLeft}>
       <div className={classes.chat__header}>
         <CardHeader
           avatar={
@@ -420,6 +423,12 @@ const Chat = (props) => {
 
        
       </div>
+      </Box>
+      <Box className={classes.fullChatContainerRight}>
+      <ChatInfo/>
+      </Box>
+      </Box>
+      
       <ChatSettingsModal />
       <AddMemberModal />
       <Popover

@@ -46,7 +46,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent : "space-between",
     alignItems : "center",
     height : "3rem",
-    padding: "0.5rem 1rem"
+    padding: "0.5rem 1rem",
+    position : "relative",
+    // flex : 2
 
   },
   footerIcons:{
@@ -111,7 +113,35 @@ display : "flex",
   chatSettingsList:{
     minWidth : '8rem',
     
+  },
+  fullChatContainer:{
+    display : "flex"
+  },
+  fullChatContainerLeft : {
+    display : "flex",
+    maxHeight : "99vh",
+    flexDirection : "column",
+      flex : 6,
+      overflow: "scroll",
+      // padding : "1rem",
+      overflowX : "hidden",
+      '&::-webkit-scrollbar': {
+        width: '0.4em'
+      },
+      '&::-webkit-scrollbar-track': {
+        boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+        webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,.1)',
+        outline: '1px solid slategrey'
+      }
+  },
+  fullChatContainerRight : {
+flex : 4,
+// display : "none"
   }
+
 }));
 
 export default useStyles;
