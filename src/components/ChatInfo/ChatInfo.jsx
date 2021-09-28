@@ -10,6 +10,8 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { CurrentRoomContext } from '../../contexts/CurrentRoomContext';
 import { db } from "../../firebase";
 import { collection, deleteDoc, doc, query } from "@firebase/firestore";
+import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext";
+import {useHistory} from "react-router-dom";
 
 const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightContainer}) => {
   const classes = useStyles();
@@ -17,12 +19,15 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
   const [username, setusername] = useState("");
   const [userBio, setUserBio] = useState("");
   const {currentRoom} = useContext(CurrentRoomContext);
+  const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
+  const history = useHistory();
+
 
   useEffect(() => {
-    if(roomContent.privateChat){
+    if(roomContent?.privateChat){
     setUserBio(bio)}
     else{
-      setUserBio(roomContent.desc)
+      setUserBio(roomContent?.desc)
     }
   }, [name])
 
@@ -45,6 +50,12 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
       );
   }
 
+  const handleDeleteAChat = async () => {
+    await handleClearMessagesFromChat()
+    await deleteDoc(doc(db,"rooms",currentRoom));
+    history.push(`/app/chat/${rooms[0].name}`);
+  }
+
   return (
     <div>
       <div className={classes.profileDrawerHeader}>
@@ -64,22 +75,22 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
         </div>
       </div>
 
-     { !roomContent.privateChat &&
+     { !roomContent?.privateChat &&
 
      ( <Box className={classes.usernameBox}>
         <TextField
           required
           id="standard-required"
           label="Required"
-          defaultValue={roomContent.name}
+          defaultValue={roomContent?.name}
           disabled={showUserNamePen}
           // onChange={handleUsernameChange}
         />
-        {!roomContent.privateChat &&
+        {!roomContent?.privateChat &&
           (<IconButton onClick={handleFocusUserNameField}>
             <EditIcon />
           </IconButton>)}
-          {!roomContent.privateChat &&
+          {!roomContent?.privateChat &&
           (<IconButton onClick={saveUsernameChanges} disabled={!username}>
             <CheckIcon />
           </IconButton>)}
@@ -95,11 +106,11 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
           disabled={showUserNamePen}
           // onChange={handleUsernameChange}
         />
-         {!roomContent.privateChat &&
+         {!roomContent?.privateChat &&
           (<IconButton onClick={handleFocusUserNameField}>
             <EditIcon />
           </IconButton>)}
-          {!roomContent.privateChat &&
+          {!roomContent?.privateChat &&
           (<IconButton onClick={saveUsernameChanges} disabled={!username}>
             <CheckIcon />
           </IconButton>)}
@@ -123,6 +134,7 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
         startIcon={<DeleteForeverIcon />}
         fullWidth={true}
         className={classes.chatInfoButtons}
+        onClick={handleDeleteAChat}
       >
         Delete Chat
       </Button>

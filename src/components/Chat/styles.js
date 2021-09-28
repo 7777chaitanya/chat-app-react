@@ -17,8 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
   chat__header: {},
   chat__body: {
-    minHeight : "70vh",
-    flex: 1,
+    // minHeight : "70vh",
+    // height : "100%",
+    flex : 1,
     backgroundImage: `url(${image})`,
     backgroundRepeat: "repeat",
     backgroundPosition: "center",
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "3rem",
+    maxHeight: "3rem",
     padding: "0.5rem 1rem",
     position: "relative",
     // flex : 2

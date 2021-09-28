@@ -41,6 +41,9 @@ import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import ChatInfo from "../ChatInfo/ChatInfo";
+import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext";
+import {useHistory} from "react-router-dom";
+
 
 function LinearProgressWithLabel(props) {
   return (
@@ -83,6 +86,10 @@ const Chat = (props) => {
 
   const [progressBar, setProgressBar] = useState(null);
   const [showProgressBar, setshowProgressBar] = useState(false);
+  const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
+  const history = useHistory();
+
+
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
@@ -321,6 +328,12 @@ const Chat = (props) => {
     );
 }
 
+const handleDeleteAChat = async () => {
+  await handleClearMessagesFromChat()
+  await deleteDoc(doc(db,"rooms",currentRoom));
+  history.push(`/app/chat/${rooms[0].name}`);
+}
+
   
 const [showRightContainer, setShowRightContainer] = useState(false);
 
@@ -489,17 +502,17 @@ const handleShowRightContainer = () =>{
           aria-label="secondary mailbox folders"
           className={classes.chatSettingsList}
         >
-          {roomContent.privateChat ?
+          {roomContent?.privateChat ?
           (<ListItem button onClick={handleShowRightContainer}>
             <ListItemText primary="Contact Info" />
           </ListItem>) :
-          (<ListItem button>
+          (<ListItem button onClick={handleShowRightContainer}>
             <ListItemText primary="Group Info" />
           </ListItem>)}
           <ListItem button onClick={handleClearMessagesFromChat}>
             <ListItemText primary="Clear Messages" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={handleDeleteAChat}>
             <ListItemText primary="Delete Chat" />
           </ListItem>
         </List>
