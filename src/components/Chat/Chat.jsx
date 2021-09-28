@@ -1,4 +1,4 @@
-import { IconButton, CardHeader, Avatar, Box, Typography } from "@material-ui/core";
+import { IconButton, CardHeader, Avatar, Box, Typography, ListItem } from "@material-ui/core";
 import React, { useRef, useState, useEffect, useContext } from "react";
 import useStyles from "./styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -29,6 +29,10 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import moment from 'moment';
+import Popover from '@material-ui/core/Popover';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import ListItemText from '@material-ui/core/ListItemText';
 
 function LinearProgressWithLabel(props) {
   return (
@@ -45,6 +49,10 @@ function LinearProgressWithLabel(props) {
   );
 }
 
+function ListItemLink(props) {
+  return <ListItem button component="a" {...props} />;
+}
+
 const Chat = (props) => {
   const classes = useStyles();
   const [message, setMessage] = useState("");
@@ -53,9 +61,9 @@ const Chat = (props) => {
   const [roomContent, setRoomContent] = useState({});
   const [messages, setMessages] = useState([]);
   const [roomDocId, setRoomDocId] = useState("");
-  const { open, handleOpen, handleClose } = useContext(
-    ChatSettingsModalContext
-  );
+  // const { open, handleOpen, handleClose } = useContext(
+  //   ChatSettingsModalContext
+  // );
   const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
   const { allUsers, setAllUsers } = useContext(AllUsersContext);
   const { currentUserDoc, setCurrentUserDoc } = useContext(
@@ -236,9 +244,9 @@ const Chat = (props) => {
     return messages[messages.length - 1]?.time.toDate();
   };
 
-  const clickCheck = () => {
-    handleOpen();
-  };
+  // const clickCheck = () => {
+  //   handleOpen();
+  // };
 
   const onEmojiClick = (event, emojiObject) => {
     console.log(emojiObject.emoji);
@@ -277,6 +285,19 @@ const Chat = (props) => {
     }
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const ide = open ? 'simple-popover' : undefined;
+
   return (
     <div className={classes.chat}>
       <div className={classes.chat__header}>
@@ -299,7 +320,7 @@ const Chat = (props) => {
               <IconButton aria-label="settings">
                 <SearchIcon />
               </IconButton>
-              <IconButton aria-label="settings" onClick={clickCheck}>
+              <IconButton aria-label="settings" onClick={handleClick}>
                 <MoreVertIcon />
               </IconButton>
             </>
@@ -401,6 +422,32 @@ const Chat = (props) => {
       </div>
       <ChatSettingsModal />
       <AddMemberModal />
+      <Popover
+        id={ide}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+         <List component="nav" aria-label="secondary mailbox folders" className={classes.chatSettingsList}>
+        <ListItem button>
+          <ListItemText primary="Contact Info" />
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary="Clear Messages" />
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary="Delete Chat" />
+        </ListItem>
+      </List>
+      </Popover>
     </div>
   );
 };

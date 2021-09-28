@@ -108,6 +108,10 @@ display : "flex",
   input: {
     display: 'none',
   },
+  chatSettingsList:{
+    minWidth : '8rem',
+    
+  }
 }));
 
 export default useStyles;
