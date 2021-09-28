@@ -11,6 +11,7 @@ import { MemberSearchProvider } from "./contexts/MemberSearchModalContext";
 import { AllRoomsWithDocIdProvider } from "./contexts/AllRoomsWithDocIdContext";
 import { CurrentRoomProvider } from "./contexts/CurrentRoomContext";
 import { CurrentUserDocProvider } from "./contexts/CurrentUserDocContext";
+import { PhotoPreviewModalProvider } from "./contexts/PhotoPreviewModalContext";
 
 ReactDOM.render(
   <>
@@ -24,7 +25,9 @@ ReactDOM.render(
                 <AllRoomsWithDocIdProvider>
                 <CurrentRoomProvider>
                   <CurrentUserDocProvider>
+                  <PhotoPreviewModalProvider>
                   <App />
+                  </PhotoPreviewModalProvider>
                   </CurrentUserDocProvider>
                   </CurrentRoomProvider>
                   </AllRoomsWithDocIdProvider>

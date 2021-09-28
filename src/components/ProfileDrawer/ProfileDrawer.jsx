@@ -15,6 +15,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import ProfilePictureModal from "../ProfilePictureModal/ProfilePicutureModal";
 import { motion } from "framer-motion"
+import { PhotoPreviewModalContext } from "../../contexts/PhotoPreviewModalContext";
 
 
 export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen,  setShowUserNamePen, setShowUserBioPen, showUserBioPen}) {
@@ -83,6 +84,12 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
     setOpenProfilePictureModal(false);
   };
 
+  const {
+    openPhotoPreviewModal,
+    handleOpenPhotoPreviewModal,
+    handleClosePhotoPreviewModal
+} = useContext(PhotoPreviewModalContext)
+
   const list = (anchor) => (
     <div
       //   className={clsx(classes.list, {
@@ -113,10 +120,7 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
           ) : (
             <AccountCircle className={classes?.avatarSize} onClick={handleOpenProfilePictureModal}/>
           )}
-          {openProfilePictureModal && <ProfilePictureModal openProfilePictureModal={openProfilePictureModal}
-            handleCloseProfilePictureModal={handleCloseProfilePictureModal}
-          />}
-
+         
         </div>
       </div>
 
@@ -186,6 +190,10 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
           )}
         </Box>
       </div>
+      {openProfilePictureModal && <ProfilePictureModal openProfilePictureModal={openProfilePictureModal}
+            handleCloseProfilePictureModal={handleCloseProfilePictureModal}
+          />}
+
     </div>
   );
 
