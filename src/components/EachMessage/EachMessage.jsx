@@ -18,7 +18,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import useStyles from "./styles";
 import { CurrentUserDocContext } from "../../contexts/CurrentUserDocContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
-import { Box } from "@material-ui/core";
+import { Box, Popover } from "@material-ui/core";
 import moment from "moment";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -67,6 +67,8 @@ export default function RecipeReviewCard({
 
   const handleStarMessage = async () => {
     console.log("starredc");
+    handleClose();
+
     // const messageQuery = query(collection(db, "rooms", roomDocId, "messages", id));
 
     const docRef = doc(db, "rooms", roomDocId, "messages", id);
@@ -78,6 +80,8 @@ export default function RecipeReviewCard({
   };
 
   const handleUnstarMessage = async () => {
+    handleClose();
+
     const docRef = doc(db, "rooms", roomDocId, "messages", id);
 
     // Set the "capital" field of the city 'DC'
@@ -88,6 +92,8 @@ export default function RecipeReviewCard({
 
   const handleDeleteMessage = async () => {
     console.log("deleted");
+    handleClose();
+
     // const messageQuery = query(collection(db, "rooms", roomDocId, "messages", id));
     await deleteDoc(doc(db, "rooms", roomDocId, "messages", id));
   };
@@ -95,6 +101,7 @@ export default function RecipeReviewCard({
   const handleLikeMessage = async () => {
     console.log("starredc");
     // const messageQuery = query(collection(db, "rooms", roomDocId, "messages", id));
+    handleClose();
 
     const docRef = doc(db, "rooms", roomDocId, "messages", id);
 
@@ -106,12 +113,27 @@ export default function RecipeReviewCard({
 
   const handleDislikeMessage = async () => {
     const docRef = doc(db, "rooms", roomDocId, "messages", id);
+    handleClose();
 
     // Set the "capital" field of the city 'DC'
     await updateDoc(docRef, {
       liked: false,
     });
   };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const ide = open ? 'simple-popover' : undefined;
+
   
 
   return (
@@ -134,7 +156,7 @@ export default function RecipeReviewCard({
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
             })}
-            onClick={handleExpandClick}
+            onClick={handleClick}
             aria-expanded={expanded}
             aria-label="show more"
           >
@@ -156,7 +178,50 @@ export default function RecipeReviewCard({
           </Typography>
         }
       />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      
+      {imageUrl && (
+        <CardMedia className={classes.media} image={imageUrl} title={name} />
+      )}
+      <CardContent className={classes.messageText}>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {message}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+{liked  ?
+        (<IconButton aria-label="add to favorites" onClick={handleDislikeMessage}>
+          <FavoriteIcon />
+        </IconButton>) :
+  (
+    <IconButton onClick={handleLikeMessage}>
+      <FavoriteBorderIcon/>
+    </IconButton>
+  )}
+        <IconButton aria-label="share">
+          <ShareIcon />
+        </IconButton>
+        <IconButton
+         onClick={handleClick}
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      
+
+      <Popover
+        id={ide}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
         <CardContent className={classes.collapseCard}>
           <List
             component="nav"
@@ -199,39 +264,7 @@ export default function RecipeReviewCard({
             </ListItem>
           </List>
         </CardContent>
-      </Collapse>
-      {imageUrl && (
-        <CardMedia className={classes.media} image={imageUrl} title={name} />
-      )}
-      <CardContent className={classes.messageText}>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {message}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-{liked  ?
-        (<IconButton aria-label="add to favorites" onClick={handleDislikeMessage}>
-          <FavoriteIcon />
-        </IconButton>) :
-  (
-    <IconButton onClick={handleLikeMessage}>
-      <FavoriteBorderIcon/>
-    </IconButton>
-  )}
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
+      </Popover>
     </Card>
   );
 }
