@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import useStyles from "./styles";
 import { motion } from "framer-motion";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Avatar, IconButton, Box, TextField, Button } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
+import { AccountCircle, ContactsOutlined } from "@material-ui/icons";
 import CheckIcon from "@material-ui/icons/Check";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
-const ChatInfo = ({name, avatarUrl,messages}) => {
+const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
   const classes = useStyles();
   const [showUserNamePen, setShowUserNamePen] = useState(false);
   const [username, setusername] = useState("");
+  const [userBio, setUserBio] = useState("")
+
+  useEffect(() => {
+    if(roomContent.privateChat){
+    setUserBio(bio)}
+    else{
+      setUserBio(roomContent.desc)
+    }
+  }, [bio])
 
   const messagesWithMedia = messages.filter(message => message?.imageUrl?.length > 2);
   
@@ -23,6 +32,7 @@ const ChatInfo = ({name, avatarUrl,messages}) => {
   const saveUsernameChanges = () => {
     console.log("handle user name changes");
   };
+  console.log("biiio=>", roomContent)
 
   return (
     <div>
@@ -64,12 +74,13 @@ const ChatInfo = ({name, avatarUrl,messages}) => {
         )}
       </Box>
 
+
       <Box className={classes.usernameBox}>
         <TextField
           required
           id="standard-required"
           label="Required"
-          defaultValue="hello"
+          value={userBio}
           disabled={showUserNamePen}
           // onChange={handleUsernameChange}
         />

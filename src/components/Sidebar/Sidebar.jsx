@@ -63,8 +63,8 @@ const Sidebar = () => {
       await setDoc(doc(db, "rooms", roomName), {
         name: roomName,
         members : [currentUser.email],
-        privateChat : false
-        
+        privateChat : false,
+        desc : ""
       });
       
     }

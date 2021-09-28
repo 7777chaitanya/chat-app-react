@@ -88,7 +88,7 @@ const Chat = (props) => {
     setMessage(e.target.value);
   };
 
-  console.log("match => ", currentUserDoc);
+  console.log("match => ", roomContent);
   console.log("messages => ", messages);
 
   const checkIfImageOrTextBoxIsEmpty = () => {
@@ -268,7 +268,7 @@ const Chat = (props) => {
       );
       let friendName = friend;
       if (!friendName) {
-        return { name: "Your Saved Messages", avatarUrl: null };
+        return { name: "Your Saved Messages", avatarUrl: currentUserDoc.avatarUrl };
       }
       // return friendName
       const docOfFriend = allUsers.find((doc) => doc.email === friendName);
@@ -277,6 +277,19 @@ const Chat = (props) => {
 
     return { name: roomContent?.name, avatarUrl: null };
   };
+
+  const getFriendsBio = () => {
+    if (roomContent?.privateChat) {
+      let friend = roomContent?.members?.find(
+        (member) => member !== currentUser.email
+      );
+      let friendName = friend;
+      let friendDoc = allUsers.find(user => user.email === friend);
+      console.log("friend doc => ", friendDoc?.bio)
+      return friendDoc?.bio;
+    }
+
+  }
 
   const senderName = (email) => {
     const requiredUser = allUsers?.find((doc) => doc.email === email);
@@ -429,6 +442,8 @@ const Chat = (props) => {
             name={generateRoomName()?.name}
             avatarUrl={generateRoomName()?.avatarUrl}
             messages={messages}
+            bio={getFriendsBio()}
+            roomContent={roomContent}
           />
         </Box>
       </Box>
@@ -454,9 +469,13 @@ const Chat = (props) => {
           aria-label="secondary mailbox folders"
           className={classes.chatSettingsList}
         >
-          <ListItem button>
+          {roomContent.privateChat ?
+          (<ListItem button>
             <ListItemText primary="Contact Info" />
-          </ListItem>
+          </ListItem>) :
+          (<ListItem button>
+            <ListItemText primary="Group Info" />
+          </ListItem>)}
           <ListItem button>
             <ListItemText primary="Clear Messages" />
           </ListItem>
