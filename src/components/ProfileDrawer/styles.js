@@ -62,6 +62,9 @@ paddingBottom : "1rem"
   usernameBox:{
     display :"flex",
     alignItems : "center"
+  },
+  progressBar:{
+    marginTop : "1rem"
   }
 });
 

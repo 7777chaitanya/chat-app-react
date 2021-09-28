@@ -9,13 +9,30 @@ import useStyles from "./styles";
 import { AccountCircle } from "@material-ui/icons";
 import { useAuth } from "../../contexts/AuthContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
-import { Avatar, TextField, IconButton, Box } from "@material-ui/core";
+import { Avatar, TextField, IconButton, Box, Typography } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import ProfilePictureModal from "../ProfilePictureModal/ProfilePicutureModal";
 import { motion } from "framer-motion"
 import { PhotoPreviewModalContext } from "../../contexts/PhotoPreviewModalContext";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      {/* <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box> */}
+    </Box>
+  );
+}
+
 
 
 export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen,  setShowUserNamePen, setShowUserBioPen, showUserBioPen}) {
@@ -90,6 +107,9 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
     handleClosePhotoPreviewModal
 } = useContext(PhotoPreviewModalContext)
 
+const [progressBar, setProgressBar] = useState(null);
+const [showProgressBar, setshowProgressBar] = useState(false);
+
   const list = (anchor) => (
     <div
       //   className={clsx(classes.list, {
@@ -122,6 +142,11 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
           )}
          
         </div>
+        {showProgressBar && (
+        <Box className={classes.progressBar}>
+          <LinearProgressWithLabel value={progressBar} />
+        </Box>
+      )}
       </div>
 
       <div className={classes.yourNameBox}>
@@ -192,6 +217,11 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
       </div>
       {openProfilePictureModal && <ProfilePictureModal openProfilePictureModal={openProfilePictureModal}
             handleCloseProfilePictureModal={handleCloseProfilePictureModal}
+            progressBar={progressBar}
+            setProgressBar={setProgressBar}
+            showProgressBar={showProgressBar}
+            setshowProgressBar={setshowProgressBar}
+
           />}
 
     </div>

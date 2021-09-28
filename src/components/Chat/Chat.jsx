@@ -164,6 +164,7 @@ const Chat = (props) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
+        setProgressBar(progress)
         switch (snapshot.state) {
           case "paused":
             console.log("Upload is paused");
@@ -383,13 +384,14 @@ const Chat = (props) => {
         />
         </IconButton>
         }
+       
+        <label>
         <input
           type="file"
           id="icon-button-file"
           className={classes.input}
           onChange={handleWassupImageChange}
         />
-        <label htmlFor="icon-button-file">
           <IconButton
             color="primary"
             aria-label="upload picture"
