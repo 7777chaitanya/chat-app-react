@@ -15,7 +15,7 @@ import AttachmentIcon from "@material-ui/icons/Attachment";
 import { useParams } from "react-router-dom";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db, storage } from "../../firebase";
-import { doc, setDoc, orderBy } from "firebase/firestore";
+import { doc, setDoc, orderBy,deleteDoc } from "firebase/firestore";
 import Picker from "emoji-picker-react";
 import MicIcon from "@material-ui/icons/Mic";
 import ChatSettingsModal from "../ChatSettingsModal/ChatSettingsModal";
@@ -313,6 +313,13 @@ const Chat = (props) => {
   const open = Boolean(anchorEl);
   const ide = open ? "simple-popover" : undefined;
 
+  const handleClearMessagesFromChat = async () => {
+    messages.forEach(message=>
+     deleteDoc(doc(db, "rooms", currentRoom, "messages", message.id))
+
+    );
+}
+
   return (
     <div className={classes.chat}>
       <Box className={classes.fullChatContainer}>
@@ -444,6 +451,7 @@ const Chat = (props) => {
             messages={messages}
             bio={getFriendsBio()}
             roomContent={roomContent}
+            messages={messages}
           />
         </Box>
       </Box>
@@ -476,7 +484,7 @@ const Chat = (props) => {
           (<ListItem button>
             <ListItemText primary="Group Info" />
           </ListItem>)}
-          <ListItem button>
+          <ListItem button onClick={handleClearMessagesFromChat}>
             <ListItemText primary="Clear Messages" />
           </ListItem>
           <ListItem button>

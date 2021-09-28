@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useContext} from "react";
 import useStyles from "./styles";
 import { motion } from "framer-motion";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -7,12 +7,16 @@ import { AccountCircle, ContactsOutlined } from "@material-ui/icons";
 import CheckIcon from "@material-ui/icons/Check";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import { CurrentRoomContext } from '../../contexts/CurrentRoomContext';
+import { db } from "../../firebase";
+import { collection, deleteDoc, doc, query } from "@firebase/firestore";
 
 const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
   const classes = useStyles();
   const [showUserNamePen, setShowUserNamePen] = useState(false);
   const [username, setusername] = useState("");
-  const [userBio, setUserBio] = useState("")
+  const [userBio, setUserBio] = useState("");
+  const {currentRoom} = useContext(CurrentRoomContext);
 
   useEffect(() => {
     if(roomContent.privateChat){
@@ -20,7 +24,7 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
     else{
       setUserBio(roomContent.desc)
     }
-  }, [bio])
+  }, [name])
 
   const messagesWithMedia = messages.filter(message => message?.imageUrl?.length > 2);
   
@@ -33,6 +37,13 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
     console.log("handle user name changes");
   };
   console.log("biiio=>", roomContent)
+
+  const handleClearMessagesFromChat = async () => {
+      messages.forEach(message=>
+       deleteDoc(doc(db, "rooms", currentRoom, "messages", message.id))
+
+      );
+  }
 
   return (
     <div>
@@ -53,26 +64,26 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
         </div>
       </div>
 
-      <Box className={classes.usernameBox}>
+     { !roomContent.privateChat &&
+
+     ( <Box className={classes.usernameBox}>
         <TextField
           required
           id="standard-required"
           label="Required"
-          defaultValue="hello"
+          defaultValue={roomContent.name}
           disabled={showUserNamePen}
           // onChange={handleUsernameChange}
         />
-        {showUserNamePen && (
-          <IconButton onClick={handleFocusUserNameField}>
+        {!roomContent.privateChat &&
+          (<IconButton onClick={handleFocusUserNameField}>
             <EditIcon />
-          </IconButton>
-        )}
-        {!showUserNamePen && (
-          <IconButton onClick={saveUsernameChanges} disabled={!username}>
+          </IconButton>)}
+          {!roomContent.privateChat &&
+          (<IconButton onClick={saveUsernameChanges} disabled={!username}>
             <CheckIcon />
-          </IconButton>
-        )}
-      </Box>
+          </IconButton>)}
+      </Box>)}
 
 
       <Box className={classes.usernameBox}>
@@ -84,17 +95,16 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
           disabled={showUserNamePen}
           // onChange={handleUsernameChange}
         />
-        {showUserNamePen && (
-          <IconButton onClick={handleFocusUserNameField}>
+         {!roomContent.privateChat &&
+          (<IconButton onClick={handleFocusUserNameField}>
             <EditIcon />
-          </IconButton>
-        )}
-        {!showUserNamePen && (
-          <IconButton onClick={saveUsernameChanges} disabled={!username}>
+          </IconButton>)}
+          {!roomContent.privateChat &&
+          (<IconButton onClick={saveUsernameChanges} disabled={!username}>
             <CheckIcon />
-          </IconButton>
-        )}
+          </IconButton>)}
       </Box>
+
 
       <Box className={classes.MediaBox}>
         <img
@@ -126,6 +136,7 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent}) => {
         startIcon={<DeleteForeverIcon />}
         fullWidth={true}
         className={classes.chatInfoButtons}
+        onClick={handleClearMessagesFromChat}
       >
         Clear Chat
       </Button>
