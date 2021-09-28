@@ -62,7 +62,7 @@ const Sidebar = () => {
     if(roomName){
       await setDoc(doc(db, "rooms", roomName), {
         name: roomName,
-        members : [],
+        members : [currentUser.email],
         privateChat : false
         
       });
