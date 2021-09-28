@@ -15,7 +15,7 @@ import AttachmentIcon from "@material-ui/icons/Attachment";
 import { useParams } from "react-router-dom";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db, storage } from "../../firebase";
-import { doc, setDoc, orderBy,deleteDoc } from "firebase/firestore";
+import { doc, setDoc, orderBy, deleteDoc, updateDoc } from "firebase/firestore";
 import Picker from "emoji-picker-react";
 import MicIcon from "@material-ui/icons/Mic";
 import ChatSettingsModal from "../ChatSettingsModal/ChatSettingsModal";
@@ -42,8 +42,7 @@ import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import ChatInfo from "../ChatInfo/ChatInfo";
 import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext";
-import {useHistory} from "react-router-dom";
-
+import { useHistory } from "react-router-dom";
 
 function LinearProgressWithLabel(props) {
   return (
@@ -86,10 +85,8 @@ const Chat = (props) => {
 
   const [progressBar, setProgressBar] = useState(null);
   const [showProgressBar, setshowProgressBar] = useState(false);
-  const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
+  const { rooms, setRooms } = useContext(AllRoomsWithDocIdContext);
   const history = useHistory();
-
-
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
@@ -221,6 +218,19 @@ const Chat = (props) => {
             starred: false,
             liked: false,
           });
+
+          messageRef.current.value = "";
+
+          const roomDocRef = doc(
+            db,
+            "rooms",
+            roomDocId || "E6mkZUadkZGElsFo0YZC"
+          );
+
+          updateDoc(roomDocRef, {
+            lastMessageTime: new Date(),
+          });
+
           messageRef.current.value = "";
           setWassupImage(null);
           setshowProgressBar(false);
@@ -233,6 +243,7 @@ const Chat = (props) => {
     e.preventDefault();
     console.log(messageRef.current.value);
     setShowEmojiPanel(false);
+    if(messageRef.current.value==="") return;
 
     if (wassupImage !== null) {
       postToFireStorage();
@@ -250,7 +261,15 @@ const Chat = (props) => {
       starred: false,
       liked: false,
     });
+
     messageRef.current.value = "";
+
+    const roomDocRef = doc(db, "rooms", roomDocId || "E6mkZUadkZGElsFo0YZC");
+
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(roomDocRef, {
+      lastMessageTime: new Date(),
+    });
   };
 
   const lastSeenDateAndTime = () => {
@@ -275,7 +294,10 @@ const Chat = (props) => {
       );
       let friendName = friend;
       if (!friendName) {
-        return { name: "Your Saved Messages", avatarUrl: currentUserDoc.avatarUrl };
+        return {
+          name: "Your Saved Messages",
+          avatarUrl: currentUserDoc.avatarUrl,
+        };
       }
       // return friendName
       const docOfFriend = allUsers.find((doc) => doc.email === friendName);
@@ -291,12 +313,11 @@ const Chat = (props) => {
         (member) => member !== currentUser.email
       );
       let friendName = friend;
-      let friendDoc = allUsers.find(user => user.email === friend);
-      console.log("friend doc => ", friendDoc?.bio)
+      let friendDoc = allUsers.find((user) => user.email === friend);
+      console.log("friend doc => ", friendDoc?.bio);
       return friendDoc?.bio;
     }
-
-  }
+  };
 
   const senderName = (email) => {
     const requiredUser = allUsers?.find((doc) => doc.email === email);
@@ -322,26 +343,23 @@ const Chat = (props) => {
 
   const handleClearMessagesFromChat = async () => {
     handleClose();
-    messages.forEach(message=>
-     deleteDoc(doc(db, "rooms", currentRoom, "messages", message.id))
-
+    messages.forEach((message) =>
+      deleteDoc(doc(db, "rooms", currentRoom, "messages", message.id))
     );
-}
+  };
 
-const handleDeleteAChat = async () => {
-  await handleClearMessagesFromChat()
-  await deleteDoc(doc(db,"rooms",currentRoom));
-  history.push(`/app/chat/${rooms[0].name}`);
-}
+  const handleDeleteAChat = async () => {
+    await handleClearMessagesFromChat();
+    await deleteDoc(doc(db, "rooms", currentRoom));
+    history.push(`/app/chat/${rooms[0].name}`);
+  };
 
-  
-const [showRightContainer, setShowRightContainer] = useState(false);
+  const [showRightContainer, setShowRightContainer] = useState(false);
 
-const handleShowRightContainer = () =>{
-  setShowRightContainer(p=>!p);
-  handleClose();
-}
-
+  const handleShowRightContainer = () => {
+    setShowRightContainer((p) => !p);
+    handleClose();
+  };
 
   return (
     <div className={classes.chat}>
@@ -467,18 +485,19 @@ const handleShowRightContainer = () =>{
         </IconButton> */}
           </div>
         </Box>
-        {showRightContainer &&
-        (<Box className={classes.fullChatContainerRight}>
-          <ChatInfo 
-            name={generateRoomName()?.name}
-            avatarUrl={generateRoomName()?.avatarUrl}
-            messages={messages}
-            bio={getFriendsBio()}
-            roomContent={roomContent}
-            messages={messages}
-            handleShowRightContainer={handleShowRightContainer}
-          />
-        </Box>)}
+        {showRightContainer && (
+          <Box className={classes.fullChatContainerRight}>
+            <ChatInfo
+              name={generateRoomName()?.name}
+              avatarUrl={generateRoomName()?.avatarUrl}
+              messages={messages}
+              bio={getFriendsBio()}
+              roomContent={roomContent}
+              messages={messages}
+              handleShowRightContainer={handleShowRightContainer}
+            />
+          </Box>
+        )}
       </Box>
 
       <ChatSettingsModal />
@@ -502,13 +521,15 @@ const handleShowRightContainer = () =>{
           aria-label="secondary mailbox folders"
           className={classes.chatSettingsList}
         >
-          {roomContent?.privateChat ?
-          (<ListItem button onClick={handleShowRightContainer}>
-            <ListItemText primary="Contact Info" />
-          </ListItem>) :
-          (<ListItem button onClick={handleShowRightContainer}>
-            <ListItemText primary="Group Info" />
-          </ListItem>)}
+          {roomContent?.privateChat ? (
+            <ListItem button onClick={handleShowRightContainer}>
+              <ListItemText primary="Contact Info" />
+            </ListItem>
+          ) : (
+            <ListItem button onClick={handleShowRightContainer}>
+              <ListItemText primary="Group Info" />
+            </ListItem>
+          )}
           <ListItem button onClick={handleClearMessagesFromChat}>
             <ListItemText primary="Clear Messages" />
           </ListItem>

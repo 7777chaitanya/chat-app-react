@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
 import { useAuth } from '../contexts/AuthContext';
 import { db } from "../firebase";
 
@@ -12,7 +12,7 @@ export const AllRoomsWithDocIdProvider = ({ children }) => {
     const [rooms, setRooms] = useState([]);
   
     useEffect(() => {
-      const q = query(collection(db, "rooms"), where("name", "!=", ""));
+      const q = query(collection(db, "rooms"),orderBy("lastMessageTime", "desc"));
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     let rooms = [];
     querySnapshot.forEach((doc) => {

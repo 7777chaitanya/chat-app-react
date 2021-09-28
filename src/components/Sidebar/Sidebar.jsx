@@ -11,6 +11,7 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import {db} from "../../firebase";
 import { doc, setDoc } from "firebase/firestore"; 
 import ProfileDrawer from "../ProfileDrawer/ProfileDrawer";
+import moment from "moment"
 
 
 // import SidebarHeader from "./SidebarHeader";
@@ -65,7 +66,8 @@ const Sidebar = () => {
         members : [currentUser.email],
         privateChat : false,
         desc : "",
-        avatarUrl : ""
+        avatarUrl : "",
+        lastMessageTime : new Date()
       });
       
     }
@@ -147,7 +149,7 @@ const Sidebar = () => {
       </div>
 
       <div className={classes.sidebar__chats}>
-        {rooms.map(eachRoom => <EachChat key={eachRoom.id} roomName={eachRoom.data.name} docId={eachRoom.id}/>)}
+        {rooms.map(eachRoom => <EachChat key={eachRoom.id} roomName={eachRoom.data.name} docId={eachRoom.id} lastMessageTime={eachRoom?.lastMessageTime}/>)}
        
       </div>
       {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}

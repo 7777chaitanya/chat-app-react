@@ -10,6 +10,7 @@ import { AllRoomsWithDocIdContext } from '../../../contexts/AllRoomsWithDocIdCon
 import { CurrentRoomContext } from '../../../contexts/CurrentRoomContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { AllUsersContext } from '../../../contexts/AllUsersContext';
+import moment from "moment"
 
  
 
@@ -17,7 +18,7 @@ import { AllUsersContext } from '../../../contexts/AllUsersContext';
 
 
 
-const EachChat = ({roomName, docId}) => {
+const EachChat = ({roomName, docId, lastMessageTime}) => {
   const history = useHistory();
   const [lastMessage, setLastMessage] = useState("");
   const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
@@ -94,7 +95,7 @@ const EachChat = ({roomName, docId}) => {
             {/* <IconButton aria-label="settings">
               <MoreVertIcon />
             </IconButton> */}
-            <h6>07:30</h6>
+            <h6>{moment(lastMessageTime).fromNow()}</h6>
             </>
           }
           title={generateRoomName()?.name }
