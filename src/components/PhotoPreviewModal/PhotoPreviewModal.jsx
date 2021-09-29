@@ -4,6 +4,8 @@ import Modal from "@material-ui/core/Modal";
 import { PhotoPreviewModalContext } from "../../contexts/PhotoPreviewModalContext";
 import { motion } from "framer-motion";
 import { ClassSharp } from "@material-ui/icons";
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import {IconButton} from "@material-ui/core";
 
 function getModalStyle() {
   if (window.innerWidth > 360) {
@@ -30,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    // position: "absolute"
   },
   image: {
     margin: "auto",
@@ -44,6 +47,15 @@ const useStyles = makeStyles((theme) => ({
       width : "auto"
     },
   },
+  closeButton:{
+    color : "white",
+    fontSize : "xxx-large",
+    // position : "relative",
+    position : "sticky",
+    top : 0,
+    zIndex : 100,
+    marginTop : "0px"
+  }
 }));
 
 export default function SimpleModal({ imageUrl }) {
@@ -69,6 +81,7 @@ export default function SimpleModal({ imageUrl }) {
       }}
     >
       <img src={imageUrl} alt={imageUrl} className={classes.image} />
+      {/* <IconButton ><HighlightOffIcon className={classes.closeButton}/></IconButton> */}
     </motion.div>
   );
 

@@ -33,6 +33,9 @@ import { doc, deleteDoc,updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import StarIcon from "@material-ui/icons/Star";
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { PhotoPreviewModalContext } from "../../contexts/PhotoPreviewModalContext";
+import PhotoPreviewModal from "../PhotoPreviewModal/PhotoPreviewModal";
+
 export default function RecipeReviewCard({
   name,
   time,
@@ -50,6 +53,11 @@ export default function RecipeReviewCard({
   const { currentUserDoc, setCurrentUserDoc } = useContext(
     CurrentUserDocContext
   );
+  const {
+    openPhotoPreviewModal,
+    handleOpenPhotoPreviewModal,
+    handleClosePhotoPreviewModal,
+  } = useContext(PhotoPreviewModalContext);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -138,6 +146,9 @@ export default function RecipeReviewCard({
 
   return (
     <Card className={clsx(classes.root, userMessageClass())}>
+       {openPhotoPreviewModal && (
+        <PhotoPreviewModal imageUrl={imageUrl} />
+      )}
       <CardHeader
         className={classes.messageCardHeader}
         avatar={
@@ -180,7 +191,7 @@ export default function RecipeReviewCard({
       />
       
       {imageUrl && (
-        <CardMedia className={classes.media} image={imageUrl} title={name} />
+        <CardMedia className={classes.media} image={imageUrl} title={name} onClick={handleOpenPhotoPreviewModal}/>
       )}
       <CardContent className={classes.messageText}>
         <Typography variant="body2" color="textSecondary" component="p">
