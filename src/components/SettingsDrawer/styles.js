@@ -59,6 +59,7 @@ const  useStyles = makeStyles({
       sidebar_search__container : {
           padding: "0.5rem",
           backgroundColor : "rgb(235,235,235)",
+          display : "flex"
     
       },
       sidebar__chats:{

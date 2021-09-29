@@ -17,7 +17,7 @@ import {  updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 
 
-const UserCard = ({ item,usedInAddMemberModal }) => {
+const UserCard = ({ item,usedInAddMemberModal, toggleDrawer, state }) => {
 const history = useHistory();
   const classes = useStyles();
   const {currentUser} = useAuth();
@@ -32,6 +32,8 @@ const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
 console.log("all rooooooooooms array => ", allRoomsArray)
 
   const createPersonalRoom = async () => {
+    toggleDrawer("left", false);
+
       console.log(allRoomsArray.includes(`${item.email}${currentUser.email}`));
       console.log(`${item.email}${currentUser.email}`);
       if(!(allRoomsArray.includes(`${item.email}${currentUser.email}`))){
@@ -49,6 +51,8 @@ console.log("all rooooooooooms array => ", allRoomsArray)
   };
 
   const addPersonToMembersOfTheRoom= async () => {
+    toggleDrawer("left", false);
+
     console.log("addPersonToMembersOfTheRoom=>",currentRoom);
     console.log("item.email", item.email);
 if(currentRoom){
@@ -63,6 +67,8 @@ if(currentRoom){
 
   const handleCardClick = () => {
     console.log("usedInAddMemberModal=>",usedInAddMemberModal)
+    toggleDrawer("left", false);
+
     if(!usedInAddMemberModal){
     createPersonalRoom();
     }
@@ -70,6 +76,7 @@ if(currentRoom){
       addPersonToMembersOfTheRoom();
     }
     closeSearchList();
+    toggleDrawer("left", false);
   };
 
 
