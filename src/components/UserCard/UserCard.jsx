@@ -29,7 +29,7 @@ const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
 const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
 
 
-console.log("all rooooooooooms array => ", allRoomsArray)
+console.log("all rooooooooooms array => ", toggleDrawer)
 
   const createPersonalRoom = async () => {
     toggleDrawer("left", false);

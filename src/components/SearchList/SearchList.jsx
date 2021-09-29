@@ -11,7 +11,7 @@ const SearchList = ({ searchTerm , usedInAddMemberModal, toggleDrawer, state, se
   const { allUsers } = useContext(AllUsersContext);
   const { showSearchList, setShowSearchList, closeSearchList, openSearchList } =
     useContext(ShowSearchListContext);
-  console.log("SearchList => ", allUsers);
+  console.log("SearchList => ", toggleDrawer);
 
   let filteredArray = [];
 

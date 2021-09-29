@@ -43,7 +43,7 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
   const userBioRef = useRef(null);
 
 
-  //   console.log("allUser docs bbooo=> ", allUsers);
+    console.log("profileDraweeeeeeeeeer=> ", toggleDrawer);
   const profileBelongsTo = allUsers.find(
     (doc) => doc.email === currentUser.email
   );

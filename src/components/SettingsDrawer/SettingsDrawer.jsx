@@ -25,6 +25,9 @@ export default function TemporaryDrawer({ toggleDrawer, state, handleToggleDrawe
     setSearchTerm(e.target.value);
   };
 
+  console.log("settingsDraweeeeeeeeeer=> ", toggleDrawer);
+
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
