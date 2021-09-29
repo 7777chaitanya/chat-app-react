@@ -43,6 +43,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ChatInfo from "../ChatInfo/ChatInfo";
 import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext";
 import { useHistory } from "react-router-dom";
+import AddMemberContainer from "../AddMemberContainer/AddMemberContainer";
+import LikedMessagesContainer from '../LikedMessagesContainer/LikedMessagesContainer';
+import StarredMessagesContainer from '../StarredMessagesContainer/StarredMessagesContainer';
+
 
 function LinearProgressWithLabel(props) {
   return (
@@ -243,7 +247,7 @@ const Chat = (props) => {
     e.preventDefault();
     console.log(messageRef.current.value);
     setShowEmojiPanel(false);
-    if(messageRef.current.value==="") return;
+    if (messageRef.current.value === "") return;
 
     if (wassupImage !== null) {
       postToFireStorage();
@@ -351,18 +355,54 @@ const Chat = (props) => {
   const handleDeleteAChat = async () => {
     await handleClearMessagesFromChat();
     await deleteDoc(doc(db, "rooms", currentRoom));
-    if(rooms.length>0){
+    if (rooms.length > 0) {
       history.push(`/app/chat/${rooms[0].data.name}`);
-      }
-      else{
-        history.push("/")
-      }  };
+    } else {
+      history.push("/");
+    }
+  };
 
   const [showRightContainer, setShowRightContainer] = useState(false);
 
   const handleShowRightContainer = () => {
     setShowRightContainer((p) => !p);
     handleClose();
+    setAddMemberContainer(false);
+    setLikedMessagesContainer(false);
+    setStarredMessagesContainer(false);
+
+  };
+
+  const [addMemberContainer, setAddMemberContainer] = useState(false);
+
+  const handleAddMemberContainer = () => {
+    setAddMemberContainer((p) => !p);
+    handleClose();
+    setShowRightContainer(false);
+    setLikedMessagesContainer(false);
+    setStarredMessagesContainer(false);
+
+  };
+
+  const [likedMessagesContainer, setLikedMessagesContainer] = useState(false);
+
+  const handleLikedMessagesContainer = () => {
+    setLikedMessagesContainer((p) => !p);
+    handleClose();
+    setAddMemberContainer(false);
+    setShowRightContainer(false);
+    setStarredMessagesContainer(false);
+
+  };
+
+  const [starredMessagesContainer, setStarredMessagesContainer] = useState(false);
+
+  const handleStarredMessagesContainer = () => {
+    setStarredMessagesContainer((p) => !p);
+    handleClose();
+    setAddMemberContainer(false);
+    setShowRightContainer(false);
+    setLikedMessagesContainer(false);
   };
 
   return (
@@ -489,6 +529,7 @@ const Chat = (props) => {
         </IconButton> */}
           </div>
         </Box>
+
         {showRightContainer && (
           <Box className={classes.fullChatContainerRight}>
             <ChatInfo
@@ -499,6 +540,30 @@ const Chat = (props) => {
               roomContent={roomContent}
               messages={messages}
               handleShowRightContainer={handleShowRightContainer}
+            />
+          </Box>
+        )}
+
+        {addMemberContainer && (
+          <Box className={classes.fullChatContainerRight}>
+            <AddMemberContainer
+              handleAddMemberContainer={handleAddMemberContainer}
+            />
+          </Box>
+        )}
+
+{likedMessagesContainer && (
+          <Box className={classes.fullChatContainerRight}>
+            <LikedMessagesContainer
+              handleLikedMessagesContainer={handleLikedMessagesContainer}
+            />
+          </Box>
+        )}
+
+{starredMessagesContainer && (
+          <Box className={classes.fullChatContainerRight}>
+            <StarredMessagesContainer
+              handleStarredMessagesContainer={handleStarredMessagesContainer}
             />
           </Box>
         )}
@@ -540,7 +605,20 @@ const Chat = (props) => {
           <ListItem button onClick={handleDeleteAChat}>
             <ListItemText primary="Delete Chat" />
           </ListItem>
+          {!roomContent?.privateChat && (
+          <ListItem button onClick={handleAddMemberContainer}>
+            <ListItemText primary="Add member" />
+          </ListItem>
+        )}
+        <ListItem button onClick={handleLikedMessagesContainer}>
+            <ListItemText primary="Liked Messages" />
+          </ListItem>
+          <ListItem button onClick={handleStarredMessagesContainer}>
+            <ListItemText primary="Starred Messages" />
+          </ListItem>
         </List>
+        
+       
       </Popover>
     </div>
   );
