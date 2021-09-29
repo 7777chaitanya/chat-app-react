@@ -53,7 +53,13 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
   const handleDeleteAChat = async () => {
     await handleClearMessagesFromChat()
     await deleteDoc(doc(db,"rooms",currentRoom));
-    history.push(`/app/chat/${rooms[0].name}`);
+    handleShowRightContainer();
+    if(rooms.length>0){
+    history.push(`/app/chat/${rooms[0].data.name}`);
+    }
+    else{
+      history.push("/")
+    }
   }
 
   return (

@@ -29,10 +29,9 @@ const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
 const { currentRoom, setCurrentRoom } = useContext(CurrentRoomContext);
 
 
-console.log("all rooooooooooms array => ", toggleDrawer)
+console.log("all rooooooooooms array => ", handleToggleDrawerClose)
 
   const createPersonalRoom = async () => {
-    toggleDrawer("left", false);
 
       console.log(allRoomsArray.includes(`${item.email}${currentUser.email}`));
       console.log(`${item.email}${currentUser.email}`);
@@ -51,7 +50,6 @@ console.log("all rooooooooooms array => ", toggleDrawer)
   };
 
   const addPersonToMembersOfTheRoom= async () => {
-    toggleDrawer("left", false);
 
     console.log("addPersonToMembersOfTheRoom=>",currentRoom);
     console.log("item.email", item.email);
@@ -67,8 +65,8 @@ if(currentRoom){
 
   const handleCardClick = () => {
     console.log("usedInAddMemberModal=>",usedInAddMemberModal)
-    // toggleDrawer("left", false);
-    handleToggleDrawerClose();
+    toggleDrawer("left", false);
+    // handleToggleDrawerClose();
 
     if(!usedInAddMemberModal){
     createPersonalRoom();
@@ -76,6 +74,7 @@ if(currentRoom){
     else{
       addPersonToMembersOfTheRoom();
     }
+    handleToggleDrawerClose();
     closeSearchList();
     // toggleDrawer("left", false);
   };

@@ -351,8 +351,12 @@ const Chat = (props) => {
   const handleDeleteAChat = async () => {
     await handleClearMessagesFromChat();
     await deleteDoc(doc(db, "rooms", currentRoom));
-    history.push(`/app/chat/${rooms[0].name}`);
-  };
+    if(rooms.length>0){
+      history.push(`/app/chat/${rooms[0].data.name}`);
+      }
+      else{
+        history.push("/")
+      }  };
 
   const [showRightContainer, setShowRightContainer] = useState(false);
 

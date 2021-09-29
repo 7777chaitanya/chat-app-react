@@ -28,6 +28,14 @@ export default function TemporaryDrawer({ toggleDrawer, state, handleToggleDrawe
   console.log("settingsDraweeeeeeeeeer=> ", toggleDrawer);
 
 
+  const handleToggleClick = () => {
+    const toggle= toggleDrawer("left", false);
+    toggle("left",false);
+    
+  
+  }
+
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -36,7 +44,9 @@ export default function TemporaryDrawer({ toggleDrawer, state, handleToggleDrawe
       role="presentation"
     >
       <div className={classes.sidebar_search__container}>
+        {/* <IconButton onClick={handleToggleClick}> */}
         <IconButton onClick={toggleDrawer("left", false)}>
+
           <ArrowBackIcon/>
         </IconButton>
         

@@ -164,7 +164,9 @@ const Sidebar = () => {
   };
 
   const handleToggleDrawerClose = () => {
-    toggleDrawer("left", false);
+    const toggle= toggleDrawer("left", false);
+    toggle("left",false);
+    
   };
 
   const generateRoomName = (docId) => {
