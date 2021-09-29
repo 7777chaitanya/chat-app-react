@@ -46,7 +46,7 @@ import { useHistory } from "react-router-dom";
 import AddMemberContainer from "../AddMemberContainer/AddMemberContainer";
 import LikedMessagesContainer from '../LikedMessagesContainer/LikedMessagesContainer';
 import StarredMessagesContainer from '../StarredMessagesContainer/StarredMessagesContainer';
-
+import SearchMessagesContainer from "../SearchMessagesContainer/SearchMessagesContainer"
 
 function LinearProgressWithLabel(props) {
   return (
@@ -370,6 +370,7 @@ const Chat = (props) => {
     setAddMemberContainer(false);
     setLikedMessagesContainer(false);
     setStarredMessagesContainer(false);
+    setSearchMessagesContainer(false);
 
   };
 
@@ -381,6 +382,7 @@ const Chat = (props) => {
     setShowRightContainer(false);
     setLikedMessagesContainer(false);
     setStarredMessagesContainer(false);
+    setSearchMessagesContainer(false);
 
   };
 
@@ -392,6 +394,7 @@ const Chat = (props) => {
     setAddMemberContainer(false);
     setShowRightContainer(false);
     setStarredMessagesContainer(false);
+    setSearchMessagesContainer(false);
 
   };
 
@@ -403,6 +406,18 @@ const Chat = (props) => {
     setAddMemberContainer(false);
     setShowRightContainer(false);
     setLikedMessagesContainer(false);
+    setSearchMessagesContainer(false);
+  };
+
+  const [searchMessagesContainer, setSearchMessagesContainer] = useState(false);
+
+  const handleSearchMessagesContainer = () => {
+    setSearchMessagesContainer((p) => !p);
+    handleClose();
+    setAddMemberContainer(false);
+    setShowRightContainer(false);
+    setLikedMessagesContainer(false);
+    setStarredMessagesContainer(false);
   };
 
   return (
@@ -426,7 +441,7 @@ const Chat = (props) => {
                   {/* <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton> */}
-                  <IconButton aria-label="settings">
+                  <IconButton aria-label="settings" onClick={handleSearchMessagesContainer}>
                     <SearchIcon />
                   </IconButton>
                   <IconButton aria-label="settings" onClick={handleClick}>
@@ -566,6 +581,18 @@ const Chat = (props) => {
           <Box className={classes.fullChatContainerRight}>
             <StarredMessagesContainer
               handleStarredMessagesContainer={handleStarredMessagesContainer}
+              messages={messages}
+              roomDocId={roomDocId}
+
+            />
+          </Box>
+        )}
+
+
+{searchMessagesContainer && (
+          <Box className={classes.fullChatContainerRight}>
+            <SearchMessagesContainer
+              handleSearchMessagesContainer={handleSearchMessagesContainer}
               messages={messages}
               roomDocId={roomDocId}
 
