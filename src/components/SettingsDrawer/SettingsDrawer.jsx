@@ -50,7 +50,7 @@ export default function TemporaryDrawer({ toggleDrawer, state }) {
         </div>
       </div>
 
-      {showSearchList && <SearchList searchTerm={searchTerm} toggleDrawer={toggleDrawer} state={state} /> }
+      {showSearchList && <SearchList searchTerm={searchTerm} toggleDrawer={toggleDrawer} state={state} setSearchTerm={setSearchTerm}/> }
 
     </div>
 
