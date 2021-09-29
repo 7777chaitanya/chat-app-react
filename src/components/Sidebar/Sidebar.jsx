@@ -13,6 +13,8 @@ import { doc, setDoc } from "firebase/firestore";
 import ProfileDrawer from "../ProfileDrawer/ProfileDrawer";
 import moment from "moment";
 import SettingsDrawer from "../SettingsDrawer/SettingsDrawer";
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
 
 
 // import SidebarHeader from "./SidebarHeader";
@@ -29,21 +31,37 @@ const Sidebar = () => {
   const classes = useStyles();
   const [openMenuModal, setOpenMenuModal] = React.useState(false);
   const {currentUser} = useAuth();
-
+  
   const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
-
+  
   console.log("rooms", rooms)
-
+  
   const handleOpenMenuModal = () => {
     setOpenMenuModal(true);
   };
+  
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  
+  const handleClick = (event) => {
+    // setAnchorEl(event.currentTarget);
+    setAnchorEl(true);
+
+  };
+  
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   const handleCloseMenuModal = () => {
     setOpenMenuModal(false);
   };
-
+  
   const handleCreateNewRoom = async () => {
     handleCloseMenuModal();
+    handleClick();
     const roomName = prompt(" Enter a name for the room");
     if(roomName){
       await setDoc(doc(db, "rooms", roomName), {
@@ -149,7 +167,8 @@ const handleRoomNameSearchTermChange = (e) => {
   }
 
   const chatToShow = rooms.filter(room => generateRoomName(room.id).name?.toLowerCase().includes(roomNameSearchTerm));
-  console.log("cts", chatToShow)
+  console.log("cts", chatToShow);
+
   
 
 
@@ -195,6 +214,7 @@ const handleRoomNameSearchTermChange = (e) => {
       {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}
       handleCreateNewRoom={handleCreateNewRoom}
       toggleDrawer={toggleDrawer} state={state}
+      handleClick={handleClick}
       />}
 
       {showSearchList && <SearchList searchTerm={searchTerm} /> }
@@ -207,6 +227,24 @@ const handleRoomNameSearchTermChange = (e) => {
 <SettingsDrawer toggleDrawer={toggleDrawer} state={state}
     handleToggleDrawerClose={handleToggleDrawerClose}
 />
+
+
+<Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <Typography className={classes.typography}>The content of the Popover.</Typography>
+      </Popover>
 
     </div>
   );
