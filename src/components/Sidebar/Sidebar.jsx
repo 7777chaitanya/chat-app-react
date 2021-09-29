@@ -17,7 +17,8 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 // import SidebarHeader from "./SidebarHeader";
 // import SidebarSearch from "./SidebarSearch";
@@ -29,6 +30,8 @@ import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContex
 import { AllUsersContext } from "../../contexts/AllUsersContext";
 import { ChatSettingsModalContext } from "../../contexts/ChatSettingsModalContext";
 import { useHistory } from 'react-router-dom';
+import {auth} from "../../firebase";
+
 
 const Sidebar = () => {
   const classes = useStyles();
@@ -37,6 +40,21 @@ const Sidebar = () => {
 
   const { rooms, setRooms } = useContext(AllRoomsWithDocIdContext);
   const [roomNameValue, setRoomNameValue] = useState("");
+  const {logout} = useAuth();
+  const history = useHistory();
+
+
+  const handleLogout = async () => {
+    // setError("");
+    try {
+        await logout(auth);
+        history.push('/login');
+      }
+    catch(error){
+        // setError("Log out Failed!");
+        console.log(error)
+    }
+  };
 
   const handleRoomNameValueChange = (e) => {
     setRoomNameValue(e.target.value);
@@ -192,7 +210,6 @@ const Sidebar = () => {
   );
   console.log("cts", chatToShow);
 
-  const history = useHistory();
   const showFirstChat = () => {
     history.push(`/app/chat/${chatToShow[0]?.data?.name}`)
   }
@@ -222,18 +239,24 @@ const Sidebar = () => {
           </Tooltip>
         )}
         <div className={classes.sidebar__header__icons}>
-          <IconButton onClick={toggleDrawer("left", true)}>
+          {/* <IconButton onClick={toggleDrawer("left", true)}>
             <DonutLargeIcon className={classes.sidebar__header__icon} />
-          </IconButton>
+          </IconButton> */}
           <IconButton onClick={toggleDrawer("left", true)}>
             <ChatIcon className={classes.sidebar__header__icon} />
           </IconButton>
-          <IconButton
+          <IconButton onClick={toggleDrawer("left", true)} onClick={handleCreateNewRoom}>
+            <MeetingRoomIcon className={classes.sidebar__header__icon} />
+          </IconButton>
+          <IconButton>
+              <ExitToAppIcon onClick={handleLogout}/>
+          </IconButton>
+          {/* <IconButton
             onClick={handleOpenMenuModal}
             className={classes.vertIcon}
           >
             <MoreVertIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
       </div>
 
