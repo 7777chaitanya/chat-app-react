@@ -87,6 +87,12 @@ export default function SimpleModal({
     handleClosePhotoPreviewModal,
   } = useContext(PhotoPreviewModalContext);
 
+  // const handleOpenPhotoPreviewModalAndCloseProfilePictureModal = async () => {
+  //   await handleCloseProfilePictureModal();
+  //   handleOpenPhotoPreviewModal();
+
+  // }
+
   const { currentUser } = useAuth();
   const { allUsers } = useContext(AllUsersContext);
 
