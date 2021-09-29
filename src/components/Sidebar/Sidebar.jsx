@@ -28,6 +28,7 @@ import SearchList from "../SearchList/SearchList";
 import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
 import { ChatSettingsModalContext } from "../../contexts/ChatSettingsModalContext";
+import { useHistory } from 'react-router-dom';
 
 const Sidebar = () => {
   const classes = useStyles();
@@ -189,6 +190,11 @@ const Sidebar = () => {
   );
   console.log("cts", chatToShow);
 
+  const history = useHistory();
+  const showFirstChat = () => {
+    history.push(`/app/chat/${chatToShow[0]?.data?.name}`)
+  }
+
   return (
     <div className={classes.sidebar}>
       <div className={classes.sidebar__header}>
@@ -248,6 +254,7 @@ const Sidebar = () => {
             handlesetRoomNameSearchTermToEmpty={
               handlesetRoomNameSearchTermToEmpty
             }
+            showFirstChat={showFirstChat}
           />
         ))}
       </div>
