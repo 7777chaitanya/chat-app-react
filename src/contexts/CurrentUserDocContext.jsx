@@ -16,13 +16,13 @@ export const CurrentUserDocProvider = ({ children }) => {
   };
 
   useEffect(() => {
-
+if(currentUser){
     const unsub = onSnapshot(doc(db, "users", currentUser?.email), (doc) => {
         console.log("Current data: ", doc?.data());
         setCurrentUserDoc({...doc?.data()});
     });      return () => {
         unsub();
-      }
+      }}
   }, [currentUser])
 
   return (

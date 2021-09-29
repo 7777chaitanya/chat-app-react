@@ -137,8 +137,8 @@ const Sidebar = () => {
 
   const { allUsers } = useContext(AllUsersContext);
 
-  const profileBelongsTo = allUsers.find(
-    (doc) => doc.email === currentUser.email
+  const profileBelongsTo = allUsers?.find(
+    (doc) => doc.email === currentUser?.email
   );
 
   const [state, setState] = React.useState({
@@ -196,6 +196,12 @@ const Sidebar = () => {
   const showFirstChat = () => {
     history.push(`/app/chat/${chatToShow[0]?.data?.name}`)
   }
+
+ 
+  useEffect(() => {
+    history.push(`/app/chat/${chatToShow[0]?.data?.name}`)
+
+  }, []);
 
   return (
     <div className={classes.sidebar}>
