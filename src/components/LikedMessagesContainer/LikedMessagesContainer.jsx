@@ -1,16 +1,51 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import useStyles from "./styles";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Avatar, IconButton, Box, TextField, Button } from "@material-ui/core";
+import { AllUsersContext } from '../../contexts/AllUsersContext';
+import { CurrentUserDocContext } from '../../contexts/CurrentUserDocContext';
+import EachMessage from "../EachMessage/EachMessage";
 
-const LikedMessagesContainer = ({handleLikedMessagesContainer}) => {
+
+const LikedMessagesContainer = ({handleLikedMessagesContainer, messages, roomDocId}) => {
     const classes = useStyles();
+    const likedMessages = messages.filter(message => message.liked===true);
+
+    const { allUsers, setAllUsers } = useContext(AllUsersContext);
+    const { currentUserDoc, setCurrentUserDoc } = useContext(
+      CurrentUserDocContext
+    );
+
+
+  const senderName = (email) => {
+    const requiredUser = allUsers?.find((doc) => doc.email === email);
+    if (requiredUser?.name === currentUserDoc?.name) {
+      return "You";
+    } else {
+      return requiredUser?.name;
+    }
+  };
     return (
         <div>
             liked messages container
             <IconButton onClick={handleLikedMessagesContainer}>
           <ArrowBackIcon />
         </IconButton>
+        {likedMessages.map((eachMessage) => (
+              <Box>
+                <EachMessage
+                  name={senderName(eachMessage.name)}
+                  time={eachMessage.time.toDate().toString()}
+                  message={eachMessage.message}
+                  imageUrl={eachMessage?.imageUrl}
+                  email={eachMessage.name}
+                  id={eachMessage.id}
+                  roomDocId={roomDocId}
+                  starred={eachMessage?.starred}
+                  liked={eachMessage?.liked}
+                />
+              </Box>
+            ))}
         </div>
     )
 }

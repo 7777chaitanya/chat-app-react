@@ -556,6 +556,8 @@ const Chat = (props) => {
           <Box className={classes.fullChatContainerRight}>
             <LikedMessagesContainer
               handleLikedMessagesContainer={handleLikedMessagesContainer}
+              messages={messages}
+              roomDocId={roomDocId}
             />
           </Box>
         )}
@@ -564,6 +566,9 @@ const Chat = (props) => {
           <Box className={classes.fullChatContainerRight}>
             <StarredMessagesContainer
               handleStarredMessagesContainer={handleStarredMessagesContainer}
+              messages={messages}
+              roomDocId={roomDocId}
+
             />
           </Box>
         )}
