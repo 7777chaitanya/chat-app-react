@@ -9,7 +9,7 @@ import useStyles from "./styles";
 import SearchList from '../SearchList/SearchList';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-export default function TemporaryDrawer({ toggleDrawer, state }) {
+export default function TemporaryDrawer({ toggleDrawer, state, handleToggleDrawerClose}) {
   const classes = useStyles();
 
   const roomNameRef = useRef();
@@ -50,7 +50,9 @@ export default function TemporaryDrawer({ toggleDrawer, state }) {
         </div>
       </div>
 
-      {showSearchList && <SearchList searchTerm={searchTerm} toggleDrawer={toggleDrawer} state={state} setSearchTerm={setSearchTerm}/> }
+      {showSearchList && <SearchList searchTerm={searchTerm} toggleDrawer={toggleDrawer} state={state} setSearchTerm={setSearchTerm}
+      handleToggleDrawerClose={handleToggleDrawerClose}
+      /> }
 
     </div>
 

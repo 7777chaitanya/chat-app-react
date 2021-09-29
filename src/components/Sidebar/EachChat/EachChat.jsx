@@ -18,7 +18,7 @@ import moment from "moment"
 
 
 
-const EachChat = ({roomName, docId, lastMessageTime}) => {
+const EachChat = ({roomName, docId, lastMessageTime, handlesetRoomNameSearchTermToEmpty}) => {
   const history = useHistory();
   const [lastMessage, setLastMessage] = useState("");
   const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
@@ -57,6 +57,7 @@ const EachChat = ({roomName, docId, lastMessageTime}) => {
 
   const handleOpenChatRoom = () => {
     history.push(`/app/chat/${roomName}`);
+    handlesetRoomNameSearchTermToEmpty();
   }
     const classes = useStyles();
 

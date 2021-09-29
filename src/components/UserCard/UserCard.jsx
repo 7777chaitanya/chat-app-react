@@ -17,7 +17,7 @@ import {  updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 
 
-const UserCard = ({ item,usedInAddMemberModal, toggleDrawer, state, setSearchTerm }) => {
+const UserCard = ({ item,usedInAddMemberModal, toggleDrawer, state, setSearchTerm, handleToggleDrawerClose }) => {
 const history = useHistory();
   const classes = useStyles();
   const {currentUser} = useAuth();
@@ -68,6 +68,7 @@ if(currentRoom){
   const handleCardClick = () => {
     console.log("usedInAddMemberModal=>",usedInAddMemberModal)
     // toggleDrawer("left", false);
+    handleToggleDrawerClose();
 
     if(!usedInAddMemberModal){
     createPersonalRoom();

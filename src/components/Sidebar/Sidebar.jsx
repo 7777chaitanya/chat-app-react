@@ -23,6 +23,7 @@ import { ShowSearchListContext } from '../../contexts/ShowSearchListContext';
 import SearchList from "../SearchList/SearchList";
 import { AllRoomsWithDocIdContext } from '../../contexts/AllRoomsWithDocIdContext';
 import { AllUsersContext } from "../../contexts/AllUsersContext";
+import { ChatSettingsModalContext } from '../../contexts/ChatSettingsModalContext';
 
 const Sidebar = () => {
   const classes = useStyles();
@@ -30,6 +31,8 @@ const Sidebar = () => {
   const {currentUser} = useAuth();
 
   const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
+
+  console.log("rooms", rooms)
 
   const handleOpenMenuModal = () => {
     setOpenMenuModal(true);
@@ -60,8 +63,15 @@ const Sidebar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showUserNamePen, setShowUserNamePen] = useState(true);
   const [showUserBioPen, setShowUserBioPen] = useState(true);
+  const [roomNameSearchTerm, setRoomNameSearchTerm] = useState("");
 
+ const handlesetRoomNameSearchTermToEmpty = () =>{
+  setRoomNameSearchTerm("")
+ }
 
+const handleRoomNameSearchTermChange = (e) => {
+  setRoomNameSearchTerm(e.target.value);
+}
 
   const handleSearchTermChange = (e) => {
   openSearchList();
@@ -112,6 +122,34 @@ const Sidebar = () => {
 
 
   };
+
+  const handleToggleDrawerClose = () => {
+    toggleDrawer("left", false);
+  }
+
+  const generateRoomName = (docId) => {
+    const roomContent1 = rooms?.find(room => room?.id === docId);
+    const roomContent = roomContent1.data;
+    if(roomContent?.privateChat){
+      let friend = roomContent?.members?.find(member => member !== currentUser?.email);
+      let friendName= friend;
+      if(!friendName){
+        return {name : "Your Saved Messages", avatarUrl : null}
+      }
+      const docOfFriend = allUsers?.find(doc => doc?.email === friendName);
+      return {name : docOfFriend?.name,avatarUrl : docOfFriend?.avatarUrl}
+    }
+
+    else{
+      return {name : roomContent.name, avatarUrl : null};
+    }
+    
+    
+
+  }
+
+  const chatToShow = rooms.filter(room => generateRoomName(room.id).name?.toLowerCase().includes(roomNameSearchTerm));
+  console.log("cts", chatToShow)
   
 
 
@@ -146,12 +184,12 @@ const Sidebar = () => {
         <div className={classes.sidebar_searchicon_div}>
         <SearchIcon className={classes.searchIcon}/>
         </div>
-        <input type="text" placeholder="search your friend here" className={classes.inputField} onChange={handleSearchTermChange}/>
+        <input type="text" placeholder="search your chat here" className={classes.inputField} onChange={handleRoomNameSearchTermChange} value={roomNameSearchTerm} />
       </div>
       </div>
 
       <div className={classes.sidebar__chats}>
-        {rooms.map(eachRoom => <EachChat key={eachRoom.id} roomName={eachRoom.data.name} docId={eachRoom.id} lastMessageTime={eachRoom?.lastMessageTime}/>)}
+        {chatToShow.map(eachRoom => <EachChat key={eachRoom.id} roomName={eachRoom.data.name} docId={eachRoom.id} lastMessageTime={eachRoom?.lastMessageTime} handlesetRoomNameSearchTermToEmpty={handlesetRoomNameSearchTermToEmpty}/>)}
        
       </div>
       {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}
@@ -163,9 +201,12 @@ const Sidebar = () => {
 
       <ProfileDrawer state={state1} toggleDrawer={toggleDrawer1} showUserNamePen={showUserNamePen} setShowUserNamePen={setShowUserNamePen}
       showUserBioPen={showUserBioPen} setShowUserBioPen={setShowUserBioPen}
+      
       />
 
-<SettingsDrawer toggleDrawer={toggleDrawer} state={state} />
+<SettingsDrawer toggleDrawer={toggleDrawer} state={state}
+    handleToggleDrawerClose={handleToggleDrawerClose}
+/>
 
     </div>
   );

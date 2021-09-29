@@ -5,7 +5,7 @@ import { AllUsersContext } from "../../contexts/AllUsersContext";
 import { ShowSearchListContext } from "../../contexts/ShowSearchListContext";
 import UserCard from "../UserCard/UserCard";
 
-const SearchList = ({ searchTerm , usedInAddMemberModal, toggleDrawer, state, setSearchTerm}) => {
+const SearchList = ({ searchTerm , usedInAddMemberModal, toggleDrawer, state, setSearchTerm, handleToggleDrawerClose}) => {
   const classes = useStyles();
 
   const { allUsers } = useContext(AllUsersContext);
@@ -34,7 +34,9 @@ const SearchList = ({ searchTerm , usedInAddMemberModal, toggleDrawer, state, se
     <Card className={classes.root}>
       {filteredArray.map((eachUser) => (
         
-        <UserCard item={eachUser} usedInAddMemberModal={usedInAddMemberModal} toggleDrawer={toggleDrawer} state={state} setSearchTerm={setSearchTerm}/> 
+        <UserCard item={eachUser} usedInAddMemberModal={usedInAddMemberModal} toggleDrawer={toggleDrawer} state={state} setSearchTerm={setSearchTerm}
+        handleToggleDrawerClose={handleToggleDrawerClose}
+        /> 
       ))}
     </Card>
   );

@@ -35,7 +35,7 @@ function LinearProgressWithLabel(props) {
 
 
 
-export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen,  setShowUserNamePen, setShowUserBioPen, showUserBioPen}) {
+export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen,  setShowUserNamePen, setShowUserBioPen, showUserBioPen, handleToggleDrawerClose}) {
   const classes = useStyles();
   const { currentUser } = useAuth();
   const { allUsers } = useContext(AllUsersContext);
