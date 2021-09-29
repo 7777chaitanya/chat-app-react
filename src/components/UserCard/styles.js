@@ -6,7 +6,9 @@ const useStyles = makeStyles({
         marginTop : "0.5rem",
         "&:hover": {
           backgroundColor: "rgb(235,235,235)"
-        }
+        },
+        marginLeft : "auto",
+        marginRight : "auto"
 
       },
       usercard : {
