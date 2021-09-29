@@ -12,6 +12,9 @@ import { db } from "../../firebase";
 import { collection, deleteDoc, doc, query } from "@firebase/firestore";
 import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext";
 import {useHistory} from "react-router-dom";
+import { PhotoPreviewModalContext } from "../../contexts/PhotoPreviewModalContext";
+import PhotoPreviewModal from "../PhotoPreviewModal/PhotoPreviewModal"
+
 
 const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightContainer}) => {
   const classes = useStyles();
@@ -21,6 +24,11 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
   const {currentRoom} = useContext(CurrentRoomContext);
   const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
   const history = useHistory();
+  const {
+    openPhotoPreviewModal,
+    handleOpenPhotoPreviewModal,
+    handleClosePhotoPreviewModal,
+  } = useContext(PhotoPreviewModalContext);
 
 
   useEffect(() => {
@@ -64,6 +72,7 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
 
   return (
     <div>
+     
       <div className={classes.profileDrawerHeader}>
         <IconButton onClick={handleShowRightContainer}>
           <ArrowBackIcon />
@@ -124,13 +133,14 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
 
 
       <Box className={classes.MediaBox}>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Twemoji_1f600.svg/1200px-Twemoji_1f600.svg.png"
-          alt=""
-          className={classes.mediaBoxImages}
-        />
+       
         
-        {messagesWithMedia.map(message => <img src={message.imageUrl} className={classes.mediaBoxImages} />)}
+        {messagesWithMedia.map(message => <>
+        <img src={message.imageUrl} className={classes.mediaBoxImages} onClick={handleOpenPhotoPreviewModal}/>
+        {openPhotoPreviewModal && (
+        <PhotoPreviewModal imageUrl={message.imageUrl} />
+      )}
+        </>)}
       </Box>
       <Box className={classes.buttonBox}>
       <Button
