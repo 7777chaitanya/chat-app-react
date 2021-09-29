@@ -18,8 +18,8 @@ export const CurrentUserDocProvider = ({ children }) => {
   useEffect(() => {
 
     const unsub = onSnapshot(doc(db, "users", currentUser?.email), (doc) => {
-        console.log("Current data: ", doc.data());
-        setCurrentUserDoc({...doc.data()});
+        console.log("Current data: ", doc?.data());
+        setCurrentUserDoc({...doc?.data()});
     });      return () => {
         unsub();
       }
