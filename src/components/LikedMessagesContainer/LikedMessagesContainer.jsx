@@ -1,7 +1,7 @@
 import React,{useContext} from 'react';
 import useStyles from "./styles";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { Avatar, IconButton, Box, TextField, Button } from "@material-ui/core";
+import { Avatar, IconButton, Box, TextField, Button, Card, Typography } from "@material-ui/core";
 import { AllUsersContext } from '../../contexts/AllUsersContext';
 import { CurrentUserDocContext } from '../../contexts/CurrentUserDocContext';
 import EachMessage from "../EachMessage/EachMessage";
@@ -27,26 +27,36 @@ const LikedMessagesContainer = ({handleLikedMessagesContainer, messages, roomDoc
   };
     return (
         <div>
-            liked messages container
-            <IconButton onClick={handleLikedMessagesContainer}>
+           <Box className={classes.HeaderBox}>
+        <IconButton onClick={handleLikedMessagesContainer}>
           <ArrowBackIcon />
         </IconButton>
-        {likedMessages.map((eachMessage) => (
-              <Box>
-                <EachMessage
-                  name={senderName(eachMessage.name)}
-                  time={eachMessage.time.toDate().toString()}
-                  message={eachMessage.message}
-                  imageUrl={eachMessage?.imageUrl}
-                  email={eachMessage.name}
-                  id={eachMessage.id}
-                  roomDocId={roomDocId}
-                  starred={eachMessage?.starred}
-                  liked={eachMessage?.liked}
-                />
-              </Box>
-            ))}
-        </div>
+        <Typography variant="h4">Liked Messages</Typography>
+      </Box>
+      {likedMessages.length !== 0 ? (
+        likedMessages.map((eachMessage) => (
+          <Box className={classes.messageBox}>
+            <EachMessage
+              name={senderName(eachMessage.name)}
+              time={eachMessage.time.toDate().toString()}
+              message={eachMessage.message}
+              imageUrl={eachMessage?.imageUrl}
+              email={eachMessage.name}
+              id={eachMessage.id}
+              roomDocId={roomDocId}
+              liked={eachMessage?.liked}
+              liked={eachMessage?.liked}
+            />
+          </Box>
+        ))
+      ) : (
+        <Card>
+          <Typography>
+            There are no liked messages. Star a message to display here!
+          </Typography>
+        </Card>
+      )}
+       </div>
     )
 }
 

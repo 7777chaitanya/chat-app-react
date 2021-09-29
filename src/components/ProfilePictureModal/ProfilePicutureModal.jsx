@@ -7,7 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
 import InboxIcon from "@material-ui/icons/Inbox";
 import { motion } from "framer-motion";
@@ -25,6 +25,9 @@ import {
 import { db, storage } from "../../firebase";
 import { PhotoCamera } from "@material-ui/icons";
 import { doc, updateDoc } from "@firebase/firestore";
+import VignetteIcon from "@material-ui/icons/Vignette";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 function getModalStyle() {
   if (window.innerWidth > 360) {
@@ -54,9 +57,15 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
     position: "relative",
   },
-  input:{
-    display : "none"
-  }
+  input: {
+    display: "none",
+  },
+  photoIcon: {
+    // marginRight : "2rem"
+    position: "absolute",
+    bottom: "0.1rem",
+    left: "0.4rem",
+  },
 }));
 
 export default function SimpleModal({
@@ -64,9 +73,9 @@ export default function SimpleModal({
   handleOpenProfilePictureModal,
   handleCloseProfilePictureModal,
   progressBar,
-            setProgressBar,
-            showProgressBar,
-            setshowProgressBar,
+  setProgressBar,
+  showProgressBar,
+  setshowProgressBar,
 }) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
@@ -86,22 +95,18 @@ export default function SimpleModal({
   );
 
   const [wassupImage, setWassupImage] = useState(null);
-  console.log("44444444444444444444444444=>",wassupImage?.name)
-
- 
+  console.log("44444444444444444444444444=>", wassupImage?.name);
 
   const handleWassupImageChange = (e) => {
     e.target.files[0] && setWassupImage(e.target.files[0]);
     console.log("camera clicked");
     // postToFireStorage();
-
   };
 
   const postToFireStorage = async () => {
     const file = wassupImage;
     setWassupImage(null);
     handleCloseProfilePictureModal();
-
 
     const storageRef = ref(storage, "images/" + file.name);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -134,11 +139,10 @@ export default function SimpleModal({
 
           const washingtonRef = doc(db, "users", currentUser.email);
 
-// Set the "capital" field of the city 'DC'
-updateDoc(washingtonRef, {
-  avatarUrl: downloadURL
-});
-
+          // Set the "capital" field of the city 'DC'
+          updateDoc(washingtonRef, {
+            avatarUrl: downloadURL,
+          });
 
           setshowProgressBar(false);
         });
@@ -153,62 +157,46 @@ updateDoc(washingtonRef, {
     <motion.div
       style={modalStyle}
       className={classes.paper}
-      animate={{ x: 100 }}
-      transition={{ type: "spring", stiffness: 100 }}
+      animate={{ y: 20 }}
+      transition={{ type: "spring", stiffness: 50 }}
     >
       <List component="nav" aria-label="main mailbox folders">
         <ListItem button onClick={handleOpenPhotoPreviewModal}>
           <ListItemIcon>
-            <InboxIcon />
+            <VisibilityIcon color="primary" />
           </ListItemIcon>
           <ListItemText primary="View photo" />
         </ListItem>
 
         <ListItem button>
           <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary="Take photo" />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Upload photo"
-            onClick={postToFireStorage}
-          />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <InboxIcon />
+            <DeleteForeverIcon color="secondary" />
           </ListItemIcon>
           <ListItemText primary="Remove photo" />
         </ListItem>
-        <ListItem>
-         
-          <ListItemIcon>
-      
         <label>
-        <input
-          type="file"
-          id="icon-button-file"
-          className={classes.input}
-          onChange={handleWassupImageChange}        />
+          <ListItem button>
+            <ListItemIcon>
+              <input
+                type="file"
+                id="icon-button-file"
+                className={classes.input}
+                onChange={handleWassupImageChange}
+              />
 
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="span"
-            className={classes.footerIcons}
-          >
-            <PhotoCamera />
-          </IconButton>
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+                className={classes.footerIcons}
+                className={classes.photoIcon}
+              >
+                <PhotoCamera />
+              </IconButton>
+            </ListItemIcon>
+            <ListItemText primary="Change dp" />
+          </ListItem>
         </label>
-          </ListItemIcon>
-          <ListItemText primary="Change dp" />
-        </ListItem>
-        
       </List>
       <Divider />
       {openPhotoPreviewModal && (
