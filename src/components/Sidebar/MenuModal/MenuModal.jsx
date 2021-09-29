@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCreateNewRoom}) {
+export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCreateNewRoom,toggleDrawer, state}) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
@@ -71,26 +71,7 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
     }
   };
 
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-
-    if(state.left === true){
-      handleCloseMenuModal();
-    }
-
-    setState({ ...state, [anchor]: open });
-
-
-  };
   
   const body = (
 <div style={modalStyle} className={classes.paper}>
@@ -102,11 +83,11 @@ export default function MenuModal({openMenuModal,handleCloseMenuModal, handleCre
           <ListItemText primary="Create room" />
         </ListItem>
 
-        <ListItem button onClick={toggleDrawer("left", true)}>
+        <ListItem button >
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="Create New room" />
+          <ListItemText primary="Start a Chat with your friend" />
         </ListItem>
         <ListItem button onClick={handleLogout}>
           <ListItemIcon>

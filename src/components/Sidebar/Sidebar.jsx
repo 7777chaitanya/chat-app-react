@@ -11,7 +11,8 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import {db} from "../../firebase";
 import { doc, setDoc } from "firebase/firestore"; 
 import ProfileDrawer from "../ProfileDrawer/ProfileDrawer";
-import moment from "moment"
+import moment from "moment";
+import SettingsDrawer from "../SettingsDrawer/SettingsDrawer";
 
 
 // import SidebarHeader from "./SidebarHeader";
@@ -29,25 +30,6 @@ const Sidebar = () => {
   const {currentUser} = useAuth();
 
   const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
-//   const [rooms, setRooms] = useState([]);
-
-//   useEffect(() => {
-//     const q = query(collection(db, "rooms"), where("name", "!=", ""));
-// const unsubscribe = onSnapshot(q, (querySnapshot) => {
-//   let rooms = [];
-//   querySnapshot.forEach((doc) => {
-//       rooms.push({id : doc.id, data : doc.data()});
-//   });
-//   rooms = rooms.filter(rooms => rooms.data?.members?.includes(currentUser?.email))
-//   setRooms([...rooms])
-//   // console.log("Current cities in CA: ", cities.join(", "));
-//   console.log("rooms => ",rooms)
-// });
-
-// return () => {
-//   unsubscribe();
-// }
-//   }, [currentUser])
 
   const handleOpenMenuModal = () => {
     setOpenMenuModal(true);
@@ -86,14 +68,14 @@ const Sidebar = () => {
   setSearchTerm(e.target.value);
   }
 
-  const [state, setState] = React.useState({
+  const [state1, setState1] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
 
-  const toggleDrawer = (anchor, open) => (event) => {
+  const toggleDrawer1 = (anchor, open) => (event) => {
     if(!open){
       setShowUserNamePen(true);
       setShowUserBioPen(true);
@@ -103,13 +85,33 @@ const Sidebar = () => {
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    setState1({ ...state1, [anchor]: open });
   };
 
   const {allUsers} = useContext(AllUsersContext);
 
   const profileBelongsTo = allUsers.find(doc => doc.email === currentUser.email);
 
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    if(state.left === true){
+      handleCloseMenuModal();
+    }
+
+    setState({ ...state, [anchor]: open });
+
+
+  };
   
 
 
@@ -118,7 +120,7 @@ const Sidebar = () => {
       <div className={classes.sidebar__header}>
         {currentUser ? 
         (<Tooltip title={`${profileBelongsTo?.name}`}>
-        <Avatar alt="Remy Sharp" src={profileBelongsTo?.avatarUrl} onClick={toggleDrawer("left", true)}>
+        <Avatar alt="Remy Sharp" src={profileBelongsTo?.avatarUrl} onClick={toggleDrawer1("left", true)}>
           {profileBelongsTo?.name[0]?.toUpperCase()}
         </Avatar>
         </Tooltip>) :
@@ -126,10 +128,10 @@ const Sidebar = () => {
         <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         </Tooltip>)}
         <div className={classes.sidebar__header__icons}>
-          <IconButton>
+          <IconButton onClick={toggleDrawer("left", true)}>
             <DonutLargeIcon className={classes.sidebar__header__icon} />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={toggleDrawer("left", true)}>
             <ChatIcon className={classes.sidebar__header__icon} />
           </IconButton>
           <IconButton onClick={handleOpenMenuModal} className={classes.vertIcon}>
@@ -154,13 +156,17 @@ const Sidebar = () => {
       </div>
       {openMenuModal && <MenuModal openMenuModal={openMenuModal} handleOpenMenuModal={handleOpenMenuModal} handleCloseMenuModal={handleCloseMenuModal}
       handleCreateNewRoom={handleCreateNewRoom}
+      toggleDrawer={toggleDrawer} state={state}
       />}
 
       {showSearchList && <SearchList searchTerm={searchTerm} /> }
 
-      <ProfileDrawer state={state} toggleDrawer={toggleDrawer} showUserNamePen={showUserNamePen} setShowUserNamePen={setShowUserNamePen}
+      <ProfileDrawer state={state1} toggleDrawer={toggleDrawer1} showUserNamePen={showUserNamePen} setShowUserNamePen={setShowUserNamePen}
       showUserBioPen={showUserBioPen} setShowUserBioPen={setShowUserBioPen}
       />
+
+<SettingsDrawer toggleDrawer={toggleDrawer} state={state} />
+
     </div>
   );
 };
