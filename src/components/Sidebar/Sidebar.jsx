@@ -325,32 +325,33 @@ const Sidebar = () => {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "top",
+          vertical: "center",
           horizontal: "center",
         }}
         transformOrigin={{
-          vertical: "top",
+          vertical: "center",
           horizontal: "center",
         }}
       >
-        <Card>
-          <Typography className={classes.typography}>
+        <Card className={classes.addRoomCard}>
+          <Typography className={classes.typography} variant="h4" align="center" color="primary">
             Enter the room name
           </Typography>
-          <form action="submit" onSubmit={handleRoomNameSubmit}>
+          <form action="submit" onSubmit={handleRoomNameSubmit} className={classes.addRoomForm}>
             <TextField
               required
               id="filled-required"
-              label="Required"
+              label="Room name"
               defaultValue="Your room name here"
               variant="filled"
               value={roomNameValue}
               onChange={handleRoomNameValueChange}
+              className={classes.inputFieldCard}
             />
-            <Button color="primary" type="submit">
+            <Button color="primary" type="submit" disabled={roomNameValue===""} className={classes.addRoomCardButtons}>
               Create room!
             </Button>
-            <Button color="secondary" onClick={handleClose}>Cancel</Button>
+            <Button color="secondary" onClick={handleClose} className={classes.addRoomCardButtons}>Cancel</Button>
           </form>
         </Card>
       </Popover>

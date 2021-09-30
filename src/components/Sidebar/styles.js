@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme=>({
   sidebar: {
     flex: 3,
     // borderRight: "1px solid black",
@@ -71,7 +71,34 @@ const useStyles = makeStyles({
         outline: '1px solid slategrey'
       }
   },
+  addRoomCard:{
+    display : "flex",
+    flexDirection : "column",
+    [theme.breakpoints.down('sm')]: {
+      width : "70vw",
+      height : "auto"
+    },
+    [theme.breakpoints.up('sm')]: {
+      width : "50vw",
+      height : "auto"    },
+    
+  },
+  addRoomForm:{
+    display : "flex",
+    flexDirection : "column"
+  },
+  typography : {
+    margin : "1rem"
+  },
+  inputFieldCard:{
+    margin : "1rem auto",
+    
+  },
+  addRoomCardButtons:{
+    margin : "1rem auto",
+
+  }
  
-});
+}));
 
 export default useStyles;
