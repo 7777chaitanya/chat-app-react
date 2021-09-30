@@ -18,9 +18,9 @@ const useStyles = makeStyles({
   },
   profileDrawerHeader: {
     display: "flex",
-    paddingTop : "4rem",
+    paddingTop : "2rem",
     paddingLeft : "2rem",
-    paddingBottom : "2rem",
+    paddingBottom : "1rem",
     backgroundColor : "rgb(105,193,165)",
     alignItems : "center"
   },

@@ -9,12 +9,18 @@ import useStyles from "./styles";
 import { AccountCircle } from "@material-ui/icons";
 import { useAuth } from "../../contexts/AuthContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
-import { Avatar, TextField, IconButton, Box, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  TextField,
+  IconButton,
+  Box,
+  Typography,
+} from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import ProfilePictureModal from "../ProfilePictureModal/ProfilePicutureModal";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { PhotoPreviewModalContext } from "../../contexts/PhotoPreviewModalContext";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
@@ -33,24 +39,28 @@ function LinearProgressWithLabel(props) {
   );
 }
 
-
-
-export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen,  setShowUserNamePen, setShowUserBioPen, showUserBioPen, handleToggleDrawerClose}) {
+export default function TemporaryDrawer({
+  state,
+  toggleDrawer,
+  showUserNamePen,
+  setShowUserNamePen,
+  setShowUserBioPen,
+  showUserBioPen,
+  handleToggleDrawerClose,
+}) {
   const classes = useStyles();
   const { currentUser } = useAuth();
   const { allUsers } = useContext(AllUsersContext);
   const usernameRef = useRef(null);
   const userBioRef = useRef(null);
 
-
-    console.log("profileDraweeeeeeeeeer=> ", toggleDrawer);
+  console.log("profileDraweeeeeeeeeer=> ", toggleDrawer);
   const profileBelongsTo = allUsers.find(
     (doc) => doc.email === currentUser.email
   );
 
   const [username, setUsername] = useState(profileBelongsTo?.name);
   const [userBio, setUserBio] = useState(profileBelongsTo?.bio);
-
 
   const handleFocusUserNameField = () => {
     usernameRef?.current?.focus();
@@ -64,13 +74,11 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
     await updateDoc(userDocRef, {
       name: usernameRef.current.value,
     });
-
   };
 
   const handleUsernameChange = (e) => {
-  setUsername(e.target.value);
-  }
-
+    setUsername(e.target.value);
+  };
 
   const handleFocusUserBioField = () => {
     userBioRef?.current?.focus();
@@ -84,14 +92,14 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
     await updateDoc(userDocRef, {
       bio: userBioRef.current.value,
     });
-
   };
 
   const handleUserBioChange = (e) => {
-  setUserBio(e.target.value);
-  }
+    setUserBio(e.target.value);
+  };
 
-  const [openProfilePictureModal, setOpenProfilePictureModal] = React.useState(false);
+  const [openProfilePictureModal, setOpenProfilePictureModal] =
+    React.useState(false);
 
   const handleOpenProfilePictureModal = () => {
     setOpenProfilePictureModal(true);
@@ -104,11 +112,11 @@ export default function TemporaryDrawer({ state, toggleDrawer, showUserNamePen, 
   const {
     openPhotoPreviewModal,
     handleOpenPhotoPreviewModal,
-    handleClosePhotoPreviewModal
-} = useContext(PhotoPreviewModalContext)
+    handleClosePhotoPreviewModal,
+  } = useContext(PhotoPreviewModalContext);
 
-const [progressBar, setProgressBar] = useState(null);
-const [showProgressBar, setshowProgressBar] = useState(false);
+  const [progressBar, setProgressBar] = useState(null);
+  const [showProgressBar, setshowProgressBar] = useState(false);
 
   const list = (anchor) => (
     <div
@@ -120,12 +128,9 @@ const [showProgressBar, setshowProgressBar] = useState(false);
       // onKeyDown={toggleDrawer(anchor, false)}
     >
       <div className={classes.profileDrawerHeader}>
-        <motion.IconButton onClick={toggleDrawer(anchor, false)}
-         whileHover={{ scale: 1.1 }}
-         whileTap={{ scale: 0.9 }}
-        >
+        <IconButton onClick={toggleDrawer(anchor, false)}>
           <ArrowBackIcon />
-        </motion.IconButton>
+        </IconButton>
         <p className={classes.profileDrawerHeaderText}>Profile</p>
       </div>
       <div className={classes.avatarBox}>
@@ -138,15 +143,17 @@ const [showProgressBar, setshowProgressBar] = useState(false);
               onClick={handleOpenProfilePictureModal}
             />
           ) : (
-            <AccountCircle className={classes?.avatarSize} onClick={handleOpenProfilePictureModal}/>
+            <AccountCircle
+              className={classes?.avatarSize}
+              onClick={handleOpenProfilePictureModal}
+            />
           )}
-         
         </div>
         {showProgressBar && (
-        <Box className={classes.progressBar}>
-          <LinearProgressWithLabel value={progressBar} />
-        </Box>
-      )}
+          <Box className={classes.progressBar}>
+            <LinearProgressWithLabel value={progressBar} />
+          </Box>
+        )}
       </div>
 
       <div className={classes.yourNameBox}>
@@ -193,7 +200,7 @@ const [showProgressBar, setshowProgressBar] = useState(false);
           defaultValue={profileBelongsTo?.bio}
         /> */}
 
-<Box className={classes.usernameBox}>
+        <Box className={classes.usernameBox}>
           <TextField
             required
             id="standard-required"
@@ -215,15 +222,16 @@ const [showProgressBar, setshowProgressBar] = useState(false);
           )}
         </Box>
       </div>
-      {openProfilePictureModal && <ProfilePictureModal openProfilePictureModal={openProfilePictureModal}
-            handleCloseProfilePictureModal={handleCloseProfilePictureModal}
-            progressBar={progressBar}
-            setProgressBar={setProgressBar}
-            showProgressBar={showProgressBar}
-            setshowProgressBar={setshowProgressBar}
-
-          />}
-
+      {openProfilePictureModal && (
+        <ProfilePictureModal
+          openProfilePictureModal={openProfilePictureModal}
+          handleCloseProfilePictureModal={handleCloseProfilePictureModal}
+          progressBar={progressBar}
+          setProgressBar={setProgressBar}
+          showProgressBar={showProgressBar}
+          setshowProgressBar={setshowProgressBar}
+        />
+      )}
     </div>
   );
 
