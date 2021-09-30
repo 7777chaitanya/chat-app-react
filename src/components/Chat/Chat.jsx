@@ -44,9 +44,10 @@ import ChatInfo from "../ChatInfo/ChatInfo";
 import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext";
 import { useHistory } from "react-router-dom";
 import AddMemberContainer from "../AddMemberContainer/AddMemberContainer";
-import LikedMessagesContainer from '../LikedMessagesContainer/LikedMessagesContainer';
-import StarredMessagesContainer from '../StarredMessagesContainer/StarredMessagesContainer';
-import SearchMessagesContainer from "../SearchMessagesContainer/SearchMessagesContainer"
+import LikedMessagesContainer from "../LikedMessagesContainer/LikedMessagesContainer";
+import StarredMessagesContainer from "../StarredMessagesContainer/StarredMessagesContainer";
+import SearchMessagesContainer from "../SearchMessagesContainer/SearchMessagesContainer";
+import MembersContainer from "../MembersContainer/MembersContainer";
 
 function LinearProgressWithLabel(props) {
   return (
@@ -247,7 +248,7 @@ const Chat = (props) => {
     e.preventDefault();
     console.log(messageRef.current.value);
     setShowEmojiPanel(false);
-    if (messageRef.current.value === "" && wassupImage===null) return;
+    if (messageRef.current.value === "" && wassupImage === null) return;
 
     if (wassupImage !== null) {
       postToFireStorage();
@@ -371,7 +372,7 @@ const Chat = (props) => {
     setLikedMessagesContainer(false);
     setStarredMessagesContainer(false);
     setSearchMessagesContainer(false);
-
+    setGroupMembersContainer(false);
   };
 
   const [addMemberContainer, setAddMemberContainer] = useState(false);
@@ -383,7 +384,7 @@ const Chat = (props) => {
     setLikedMessagesContainer(false);
     setStarredMessagesContainer(false);
     setSearchMessagesContainer(false);
-
+    setGroupMembersContainer(false);
   };
 
   const [likedMessagesContainer, setLikedMessagesContainer] = useState(false);
@@ -395,10 +396,11 @@ const Chat = (props) => {
     setShowRightContainer(false);
     setStarredMessagesContainer(false);
     setSearchMessagesContainer(false);
-
+    setGroupMembersContainer(false);
   };
 
-  const [starredMessagesContainer, setStarredMessagesContainer] = useState(false);
+  const [starredMessagesContainer, setStarredMessagesContainer] =
+    useState(false);
 
   const handleStarredMessagesContainer = () => {
     setStarredMessagesContainer((p) => !p);
@@ -407,6 +409,7 @@ const Chat = (props) => {
     setShowRightContainer(false);
     setLikedMessagesContainer(false);
     setSearchMessagesContainer(false);
+    setGroupMembersContainer(false);
   };
 
   const [searchMessagesContainer, setSearchMessagesContainer] = useState(false);
@@ -418,6 +421,19 @@ const Chat = (props) => {
     setShowRightContainer(false);
     setLikedMessagesContainer(false);
     setStarredMessagesContainer(false);
+    setGroupMembersContainer(false);
+  };
+
+  const [groupMembersContainer, setGroupMembersContainer] = useState(false);
+
+  const handleGroupMembersContainer = () => {
+    setGroupMembersContainer((p) => !p);
+    handleClose();
+    setAddMemberContainer(false);
+    setShowRightContainer(false);
+    setLikedMessagesContainer(false);
+    setStarredMessagesContainer(false);
+    setSearchMessagesContainer(false);
   };
 
   return (
@@ -442,7 +458,10 @@ const Chat = (props) => {
                   {/* <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton> */}
-                  <IconButton aria-label="settings" onClick={handleSearchMessagesContainer}>
+                  <IconButton
+                    aria-label="settings"
+                    onClick={handleSearchMessagesContainer}
+                  >
                     <SearchIcon />
                   </IconButton>
                   <IconButton aria-label="settings" onClick={handleClick}>
@@ -509,7 +528,7 @@ const Chat = (props) => {
               {/* <button type="submit" className={classes.submitButton}>
                 submit
               </button> */}
-              {(message||wassupImage) && (
+              {(message || wassupImage) && (
                 <IconButton
                   type="submit"
                   disabled={checkIfImageOrTextBoxIsEmpty()}
@@ -523,8 +542,8 @@ const Chat = (props) => {
                 <MicIcon className={classes.footerIcons} />
               </IconButton>
             )}
-            <p className={classes.imageName} >{wassupImage?.name}</p>
-  
+            <p className={classes.imageName}>{wassupImage?.name}</p>
+
             <label>
               <input
                 type="file"
@@ -563,13 +582,13 @@ const Chat = (props) => {
 
         {addMemberContainer && (
           <Box className={classes.fullChatContainerRight}>
-            <AddMemberContainer
+            <MembersContainer
               handleAddMemberContainer={handleAddMemberContainer}
             />
           </Box>
         )}
 
-{likedMessagesContainer && (
+        {likedMessagesContainer && (
           <Box className={classes.fullChatContainerRight}>
             <LikedMessagesContainer
               handleLikedMessagesContainer={handleLikedMessagesContainer}
@@ -579,25 +598,32 @@ const Chat = (props) => {
           </Box>
         )}
 
-{starredMessagesContainer && (
+        {starredMessagesContainer && (
           <Box className={classes.fullChatContainerRight}>
             <StarredMessagesContainer
               handleStarredMessagesContainer={handleStarredMessagesContainer}
               messages={messages}
               roomDocId={roomDocId}
-
             />
           </Box>
         )}
 
-
-{searchMessagesContainer && (
+        {searchMessagesContainer && (
           <Box className={classes.fullChatContainerRight}>
             <SearchMessagesContainer
               handleSearchMessagesContainer={handleSearchMessagesContainer}
               messages={messages}
               roomDocId={roomDocId}
+            />
+          </Box>
+        )}
 
+        {groupMembersContainer && (
+          <Box className={classes.fullChatContainerRight}>
+            <MembersContainer
+              handleGroupMembersContainer={handleGroupMembersContainer}
+              messages={messages}
+              roomDocId={roomDocId}
             />
           </Box>
         )}
@@ -633,6 +659,11 @@ const Chat = (props) => {
               <ListItemText primary="Group Info" />
             </ListItem>
           )}
+          {!roomContent?.privateChat && (
+            <ListItem button onClick={handleGroupMembersContainer}>
+              <ListItemText primary="Show Members" />
+            </ListItem>
+          )}
           <ListItem button onClick={handleClearMessagesFromChat}>
             <ListItemText primary="Clear Messages" />
           </ListItem>
@@ -640,19 +671,17 @@ const Chat = (props) => {
             <ListItemText primary="Delete Chat" />
           </ListItem>
           {!roomContent?.privateChat && (
-          <ListItem button onClick={handleAddMemberContainer}>
-            <ListItemText primary="Add member" />
-          </ListItem>
-        )}
-        <ListItem button onClick={handleLikedMessagesContainer}>
+            <ListItem button onClick={handleAddMemberContainer}>
+              <ListItemText primary="Add member" />
+            </ListItem>
+          )}
+          <ListItem button onClick={handleLikedMessagesContainer}>
             <ListItemText primary="Liked Messages" />
           </ListItem>
           <ListItem button onClick={handleStarredMessagesContainer}>
             <ListItemText primary="Starred Messages" />
           </ListItem>
         </List>
-        
-       
       </Popover>
     </div>
   );
