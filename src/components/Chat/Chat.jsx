@@ -582,7 +582,7 @@ const Chat = (props) => {
 
         {addMemberContainer && (
           <Box className={classes.fullChatContainerRight}>
-            <MembersContainer
+            <AddMemberContainer
               handleAddMemberContainer={handleAddMemberContainer}
             />
           </Box>
@@ -624,6 +624,7 @@ const Chat = (props) => {
               handleGroupMembersContainer={handleGroupMembersContainer}
               messages={messages}
               roomDocId={roomDocId}
+              roomContent={roomContent}
             />
           </Box>
         )}

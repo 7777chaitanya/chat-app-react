@@ -56,7 +56,7 @@ export default function TemporaryDrawer({
 
   console.log("profileDraweeeeeeeeeer=> ", toggleDrawer);
   const profileBelongsTo = allUsers.find(
-    (doc) => doc.email === currentUser.email
+    (doc) => doc.email === currentUser?.email
   );
 
   const [username, setUsername] = useState(profileBelongsTo?.name);
