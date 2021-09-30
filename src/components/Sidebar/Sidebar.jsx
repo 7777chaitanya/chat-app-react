@@ -95,6 +95,7 @@ const Sidebar = () => {
         desc: "",
         avatarUrl: "",
         lastMessageTime: new Date(),
+        createdBy : currentUser.email
       });
     }
     setRoomNameValue("")
