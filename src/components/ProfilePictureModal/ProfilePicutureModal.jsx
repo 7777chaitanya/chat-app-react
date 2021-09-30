@@ -159,6 +159,14 @@ export default function SimpleModal({
     wassupImage !== null && postToFireStorage();
   }
 
+  const handleDeleteAvatar = async () => {
+    const userDocRef = doc(db, "users", currentUser.email);
+
+    await updateDoc(userDocRef, {
+      avatarUrl: "",
+    });
+  };
+
   const body = (
     <motion.div
       style={modalStyle}
@@ -167,19 +175,23 @@ export default function SimpleModal({
       transition={{ type: "spring", stiffness: 50 }}
     >
       <List component="nav" aria-label="main mailbox folders">
-        <ListItem button onClick={handleOpenPhotoPreviewModal}>
-          <ListItemIcon>
-            <VisibilityIcon color="primary" />
-          </ListItemIcon>
-          <ListItemText primary="View photo" />
-        </ListItem>
+        {profileBelongsTo?.avatarUrl && (
+          <ListItem button onClick={handleOpenPhotoPreviewModal}>
+            <ListItemIcon>
+              <VisibilityIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="View photo" />
+          </ListItem>
+        )}
 
-        <ListItem button>
-          <ListItemIcon>
-            <DeleteForeverIcon color="secondary" />
-          </ListItemIcon>
-          <ListItemText primary="Remove photo" />
-        </ListItem>
+        {profileBelongsTo?.avatarUrl && (
+          <ListItem button onClick={handleDeleteAvatar}>
+            <ListItemIcon>
+              <DeleteForeverIcon color="secondary" />
+            </ListItemIcon>
+            <ListItemText primary="Remove photo" />
+          </ListItem>
+        )}
         <label>
           <ListItem button>
             <ListItemIcon>
