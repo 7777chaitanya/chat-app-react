@@ -431,6 +431,7 @@ const Chat = (props) => {
                   aria-label="recipe"
                   className={classes.avatar}
                   src={generateRoomName()?.avatarUrl}
+                  onClick={handleShowRightContainer}
                 >
                   {generateRoomName().name &&
                     generateRoomName()?.name[0]?.toUpperCase()}
