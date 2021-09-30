@@ -45,7 +45,7 @@ const LikedMessagesContainer = ({handleLikedMessagesContainer, messages, roomDoc
               id={eachMessage.id}
               roomDocId={roomDocId}
               liked={eachMessage?.liked}
-              liked={eachMessage?.liked}
+              starred={eachMessage?.starred}
             />
           </Box>
         ))
