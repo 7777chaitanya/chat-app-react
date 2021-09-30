@@ -247,7 +247,7 @@ const Chat = (props) => {
     e.preventDefault();
     console.log(messageRef.current.value);
     setShowEmojiPanel(false);
-    if (messageRef.current.value === "") return;
+    if (messageRef.current.value === "" && wassupImage===null) return;
 
     if (wassupImage !== null) {
       postToFireStorage();
@@ -505,10 +505,10 @@ const Chat = (props) => {
                 onChange={handleMessageChange}
                 ref={messageRef}
               />
-              <button type="submit" className={classes.submitButton}>
+              {/* <button type="submit" className={classes.submitButton}>
                 submit
-              </button>
-              {message && (
+              </button> */}
+              {(message||wassupImage) && (
                 <IconButton
                   type="submit"
                   disabled={checkIfImageOrTextBoxIsEmpty()}
@@ -522,7 +522,8 @@ const Chat = (props) => {
                 <MicIcon className={classes.footerIcons} />
               </IconButton>
             )}
-
+            <p className={classes.imageName} >{wassupImage?.name}</p>
+  
             <label>
               <input
                 type="file"

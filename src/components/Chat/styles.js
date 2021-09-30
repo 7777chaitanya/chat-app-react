@@ -149,8 +149,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,.1)",
       outline: "1px solid slategrey",
     },
+   
     // display : "none"
   },
+  imageName:{
+    color : "black",
+    fontSize : "0.7rem"
+}
 }));
 
 export default useStyles;
