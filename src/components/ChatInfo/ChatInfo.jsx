@@ -14,6 +14,7 @@ import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContex
 import {useHistory} from "react-router-dom";
 import { PhotoPreviewModalContext } from "../../contexts/PhotoPreviewModalContext";
 import PhotoPreviewModal from "../PhotoPreviewModal/PhotoPreviewModal"
+import { useAuth } from '../../contexts/AuthContext';
 
 
 const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightContainer}) => {
@@ -23,6 +24,7 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
   const [userBio, setUserBio] = useState("");
   const {currentRoom} = useContext(CurrentRoomContext);
   const {rooms,setRooms} = useContext(AllRoomsWithDocIdContext);
+  const {currentUser} = useAuth();
   const history = useHistory();
   const {
     openPhotoPreviewModal,
@@ -147,7 +149,9 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
       )}
         </>)}
       </Box>
-      <Box className={classes.buttonBox}>
+      {roomContent.createdBy===currentUser.email && 
+
+     ( <Box className={classes.buttonBox}>
       <Button
         variant="contained"
         color="secondary"
@@ -159,7 +163,8 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
       >
         Delete Chat
       </Button>
-      </Box>
+      </Box>)}
+
       <Box className={classes.buttonBox}>
 
       <Button
