@@ -11,6 +11,7 @@ import { CurrentRoomContext } from '../../../contexts/CurrentRoomContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { AllUsersContext } from '../../../contexts/AllUsersContext';
 import moment from "moment"
+import { Typography } from '@material-ui/core';
 
  
 
@@ -25,6 +26,8 @@ const EachChat = ({roomName, docId, lastMessageTime, handlesetRoomNameSearchTerm
   const {currentRoom} = useContext(CurrentRoomContext);
   const { allUsers, setAllUsers } = useContext(AllUsersContext);
   const {currentUser} = useAuth();
+
+  console.log(lastMessageTime?.toDate())
   
   useEffect(() => {
     if (docId) {
@@ -96,10 +99,10 @@ const EachChat = ({roomName, docId, lastMessageTime, handlesetRoomNameSearchTerm
             {/* <IconButton aria-label="settings">
               <MoreVertIcon />
             </IconButton> */}
-            <h6>{moment(lastMessageTime).fromNow()}</h6>
+            <p className={classes.lastMessageTime}>{moment(lastMessageTime?.toDate()).fromNow()}</p>
             </>
           }
-          title={generateRoomName()?.name }
+          title={<Typography variant="body2" className={classes.senderName}>{generateRoomName()?.name}</Typography>}
           subheader={lastMessage}
         />
         </div>

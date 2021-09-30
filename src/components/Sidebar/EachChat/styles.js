@@ -12,6 +12,13 @@ const  useStyles = makeStyles({
         '&:hover': { 
             background: "rgba(200,200,200,0.3)"
         }
+      },
+      lastMessageTime:{
+        fontSize : "0.7rem"
+      },
+      senderName:{
+        fontWeight : "500",
+        fontSize : "1rem"
       }
 })
 

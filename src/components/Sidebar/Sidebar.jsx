@@ -281,7 +281,7 @@ const Sidebar = () => {
             key={eachRoom.id}
             roomName={eachRoom.data.name}
             docId={eachRoom.id}
-            lastMessageTime={eachRoom?.lastMessageTime}
+            lastMessageTime={eachRoom?.data?.lastMessageTime}
             handlesetRoomNameSearchTermToEmpty={
               handlesetRoomNameSearchTermToEmpty
             }
