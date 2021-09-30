@@ -30,6 +30,9 @@ const AddMemberContainer = ({ handleAddMemberContainer }) => {
   }
 
   const classes = useStyles();
+
+
+
   return (
     <div>
       <Box className={classes.HeaderBox}>
@@ -64,7 +67,7 @@ const AddMemberContainer = ({ handleAddMemberContainer }) => {
       )}
 
       {mathcingUsers.map((user) => (
-        <UserCard1 user={user} searchTerm={searchTerm} />
+        <UserCard1 user={user} searchTerm={searchTerm} handleAddMemberContainer={handleAddMemberContainer}/>
       ))}
     </div>
   );

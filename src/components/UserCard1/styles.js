@@ -5,7 +5,8 @@ const useStyles = makeStyles({
         maxWidth: 250,
         marginTop : "0.5rem",
         "&:hover": {
-          backgroundColor: "rgb(235,235,235)"
+          backgroundColor: "rgb(235,235,235)",
+          cursor : "pointer"
         },
         marginLeft : "auto",
         marginRight : "auto"
