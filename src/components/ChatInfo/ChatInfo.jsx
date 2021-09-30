@@ -131,6 +131,11 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
           </IconButton>)}
       </Box>
 
+      {messagesWithMedia.length!==0 &&
+      (<div className={classes.profileDrawerHeader}>
+       
+        <p className={classes.profileDrawerHeaderText}>Media</p>
+      </div>)}
 
       <Box className={classes.MediaBox}>
        

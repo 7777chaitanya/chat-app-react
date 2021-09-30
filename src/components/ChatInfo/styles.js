@@ -18,9 +18,9 @@ const useStyles = makeStyles({
   },
   profileDrawerHeader: {
     display: "flex",
-    paddingTop : "2rem",
+    paddingTop : "1rem",
     paddingLeft : "2rem",
-    paddingBottom : "2rem",
+    paddingBottom : "1rem",
     backgroundColor : "rgb(105,193,165)",
     alignItems : "center"
   },
@@ -101,7 +101,15 @@ paddingBottom : "1rem"
   buttonBox:{
   
     padding: "1rem"
-  }
+  },
+  mediaBoxHeader: {
+    display: "flex",
+    paddingTop : "1rem",
+    paddingLeft : "2rem",
+    paddingBottom : "1rem",
+    backgroundColor : "rgb(105,193,165)",
+    alignItems : "center"
+  },
 });
 
 export default useStyles;
