@@ -71,14 +71,14 @@ import { doc, setDoc } from "firebase/firestore";
     };
   
     return (
-      <>
+      <Box className={classes.outer}>
         <Typography
           variant="h3"
           color="primary"
           align="center"
           className={classes.typography}
         >
-          SignUp form
+          SignUp for HippoWire
         </Typography>
         <Box className={classes.box}>
           {error && (
@@ -181,7 +181,7 @@ import { doc, setDoc } from "firebase/firestore";
           </Typography>
           {/* </a> */}
         </Box>
-      </>
+      </Box>
     );
   };
   

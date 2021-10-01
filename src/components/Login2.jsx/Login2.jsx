@@ -63,7 +63,7 @@ import {
           align="center"
           className={classes.typography}
         >
-          LogIn form
+          LogIn to HippoWire
         </Typography>
         <Box className={classes.box}>
           {error && (

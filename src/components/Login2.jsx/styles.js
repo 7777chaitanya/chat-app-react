@@ -13,8 +13,8 @@ const useStyles = makeStyles({
       // width: "50vw",
       padding: "0px 5rem",
       boxShadow:
-        "0rem 0.1rem 0.1rem 0.1rem linear-gradient(165deg, lightcyan, greenyellow)",
-      backgroundImage: "linear-gradient(165deg, lightcyan, greenyellow)",
+        "0rem 0.1rem 0.1rem 0.1rem linear-gradient(165deg, lightcyan, white)",
+      backgroundImage: "linear-gradient(165deg, lightcyan, white)",
     },
     button: {
       // background: "linear-gradient(135deg, lightgray, greenyellow)",
@@ -33,7 +33,9 @@ const useStyles = makeStyles({
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
-      width : "100vw"
+      width : "100vw",
+      backgroundImage: "linear-gradient(165deg, lightcyan, white)",
+
     },
     formBox: {
       display: "flex",
@@ -55,7 +57,7 @@ const useStyles = makeStyles({
       color: "black",
     },
     typography: {
-      color: "greenyellow",
+      color: "rgb(91,96,116)",
     },
   });
 
