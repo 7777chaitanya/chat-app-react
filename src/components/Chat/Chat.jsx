@@ -309,7 +309,7 @@ const Chat = (props) => {
       return { name: docOfFriend?.name, avatarUrl: docOfFriend?.avatarUrl };
     }
 
-    return { name: roomContent?.name, avatarUrl: null };
+    return { name: roomContent?.name, avatarUrl: roomContent?.avatarUrl };
   };
 
   const getFriendsBio = () => {
