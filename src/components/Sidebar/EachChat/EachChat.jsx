@@ -79,7 +79,7 @@ const EachChat = ({roomName, docId, lastMessageTime, handlesetRoomNameSearchTerm
       }
 
       else{
-        return {name : roomName, avatarUrl : null};
+        return {name : roomName, avatarUrl : roomContent?.avatarUrl};
       }
       
       

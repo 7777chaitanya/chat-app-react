@@ -17,8 +17,8 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 // import SidebarHeader from "./SidebarHeader";
 // import SidebarSearch from "./SidebarSearch";
@@ -29,9 +29,9 @@ import SearchList from "../SearchList/SearchList";
 import { AllRoomsWithDocIdContext } from "../../contexts/AllRoomsWithDocIdContext";
 import { AllUsersContext } from "../../contexts/AllUsersContext";
 import { ChatSettingsModalContext } from "../../contexts/ChatSettingsModalContext";
-import { useHistory } from 'react-router-dom';
-import {auth} from "../../firebase";
-
+import { useHistory } from "react-router-dom";
+import { auth } from "../../firebase";
+import postGroupDpToFireStorage from "../../utils/postGroupDpToFireStorage";
 
 const Sidebar = () => {
   const classes = useStyles();
@@ -40,19 +40,17 @@ const Sidebar = () => {
 
   const { rooms, setRooms } = useContext(AllRoomsWithDocIdContext);
   const [roomNameValue, setRoomNameValue] = useState("");
-  const {logout} = useAuth();
+  const { logout } = useAuth();
   const history = useHistory();
-
 
   const handleLogout = async () => {
     // setError("");
     try {
-        await logout(auth);
-        history.push('/login');
-      }
-    catch(error){
-        // setError("Log out Failed!");
-        console.log(error)
+      await logout(auth);
+      history.push("/login");
+    } catch (error) {
+      // setError("Log out Failed!");
+      console.log(error);
     }
   };
 
@@ -74,6 +72,7 @@ const Sidebar = () => {
   };
 
   const handleClose = () => {
+    setGroupDp(null);
     setAnchorEl(null);
   };
 
@@ -84,10 +83,21 @@ const Sidebar = () => {
     setOpenMenuModal(false);
   };
 
-  const handleRoomNameSubmit = async (e) =>{
+  const [groupDp, setGroupDp] = useState(null);
+
+  const handleGroupImageChange = (e) => {
+    e.target?.files[0] && setGroupDp(e?.target?.files[0]);
+
+    console.log("camera clicked");
+    // postToFireStorage();
+  };
+
+  const handleRoomNameSubmit = async (e) => {
     e.preventDefault();
     handleClose();
     if (roomNameValue) {
+     
+
       await setDoc(doc(db, "rooms", roomNameValue), {
         name: roomNameValue,
         members: [currentUser.email],
@@ -95,19 +105,22 @@ const Sidebar = () => {
         desc: "",
         avatarUrl: "",
         lastMessageTime: new Date(),
-        createdBy : currentUser.email
+        createdBy: currentUser.email,
       });
     }
-    setRoomNameValue("")
-  }
+    if (groupDp) {
+      postGroupDpToFireStorage(groupDp, roomNameValue, currentUser);
+      // setRoomNameValue("");
+      return;
+    }
+    setRoomNameValue("");
+  };
 
   const handleCreateNewRoom = async () => {
     handleCloseMenuModal();
     handleClick();
     // const roomName = prompt(" Enter a name for the room");
-   
   };
-
 
   const { openSearchList, showSearchList, closeSearchList } = useContext(
     ShowSearchListContext
@@ -183,9 +196,8 @@ const Sidebar = () => {
   };
 
   const handleToggleDrawerClose = () => {
-    const toggle= toggleDrawer("left", false);
-    toggle("left",false);
-    
+    const toggle = toggleDrawer("left", false);
+    toggle("left", false);
   };
 
   const generateRoomName = (docId) => {
@@ -212,13 +224,11 @@ const Sidebar = () => {
   console.log("cts", chatToShow);
 
   const showFirstChat = () => {
-    history.push(`/app/chat/${chatToShow[0]?.data?.name}`)
-  }
+    history.push(`/app/chat/${chatToShow[0]?.data?.name}`);
+  };
 
- 
   useEffect(() => {
-    history.push(`/app/chat/${chatToShow[0]?.data?.name}`)
-
+    history.push(`/app/chat/${chatToShow[0]?.data?.name}`);
   }, []);
 
   return (
@@ -246,11 +256,14 @@ const Sidebar = () => {
           <IconButton onClick={toggleDrawer("left", true)}>
             <ChatIcon className={classes.sidebar__header__icon} />
           </IconButton>
-          <IconButton onClick={toggleDrawer("left", true)} onClick={handleCreateNewRoom}>
+          <IconButton
+            onClick={toggleDrawer("left", true)}
+            onClick={handleCreateNewRoom}
+          >
             <MeetingRoomIcon className={classes.sidebar__header__icon} />
           </IconButton>
           <IconButton>
-              <ExitToAppIcon onClick={handleLogout}/>
+            <ExitToAppIcon onClick={handleLogout} />
           </IconButton>
           {/* <IconButton
             onClick={handleOpenMenuModal}
@@ -334,10 +347,19 @@ const Sidebar = () => {
         }}
       >
         <Card className={classes.addRoomCard}>
-          <Typography className={classes.typography} variant="h4" align="center" color="primary">
+          <Typography
+            className={classes.typography}
+            variant="h4"
+            align="center"
+            color="primary"
+          >
             Enter the room name
           </Typography>
-          <form action="submit" onSubmit={handleRoomNameSubmit} className={classes.addRoomForm}>
+          <form
+            action="submit"
+            onSubmit={handleRoomNameSubmit}
+            className={classes.addRoomForm}
+          >
             <TextField
               required
               id="filled-required"
@@ -348,10 +370,45 @@ const Sidebar = () => {
               onChange={handleRoomNameValueChange}
               className={classes.inputFieldCard}
             />
-            <Button color="primary" type="submit" disabled={roomNameValue===""} className={classes.addRoomCardButtons}>
+            <label
+              htmlFor="contained-button-file"
+              className={classes.uploadButton}
+            >
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={handleGroupImageChange}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                component="span"
+                className={classes.uploadButton}
+              >
+                Upload Avatar
+              </Button>
+            </label>
+            <Typography variant="p" align="center">
+              {groupDp?.name}
+            </Typography>
+            <Button
+              color="primary"
+              type="submit"
+              disabled={roomNameValue === ""}
+              className={classes.addRoomCardButtons}
+            >
               Create room!
             </Button>
-            <Button color="secondary" onClick={handleClose} className={classes.addRoomCardButtons}>Cancel</Button>
+            <Button
+              color="secondary"
+              onClick={handleClose}
+              className={classes.addRoomCardButtons}
+            >
+              Cancel
+            </Button>
           </form>
         </Card>
       </Popover>

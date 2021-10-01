@@ -97,6 +97,12 @@ const useStyles = makeStyles(theme=>({
   addRoomCardButtons:{
     margin : "1rem auto",
 
+  },
+  input : {
+    display : "none"
+  },
+  uploadButton:{
+    margin : "1rem auto"
   }
  
 }));
