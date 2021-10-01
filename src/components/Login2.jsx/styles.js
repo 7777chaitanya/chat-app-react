@@ -33,6 +33,7 @@ const useStyles = makeStyles({
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+      width : "100vw"
     },
     formBox: {
       display: "flex",
@@ -41,11 +42,12 @@ const useStyles = makeStyles({
     },
     divider: {
       width: "50vw",
-      // height : "50px",
+      height : "2rem",
       padding: "0.5rem 0",
       paddingLeft: "25vw",
+      display : "flex",
   
-      // justifyContent : "center",
+      justifyContent : "center",
     },
     link: {
       textAlign: "center",

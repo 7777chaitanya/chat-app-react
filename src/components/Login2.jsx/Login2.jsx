@@ -56,7 +56,7 @@ import {
     };
   
     return (
-      <>
+      <Box  className={classes.outer}>
         <Typography
           variant="h3"
           color="primary"
@@ -152,7 +152,7 @@ import {
             Don't have an account? SignUp!
           </Typography>
         </Box>
-      </>
+      </Box>
     );
   };
   
