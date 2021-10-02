@@ -50,9 +50,9 @@ const LikedMessagesContainer = ({handleLikedMessagesContainer, messages, roomDoc
           </Box>
         ))
       ) : (
-        <Card>
+        <Card className={classes.likedAlertContainer}>
           <Typography>
-            There are no liked messages. Star a message to display here!
+            There are no liked messages. Like a message to display here!
           </Typography>
         </Card>
       )}

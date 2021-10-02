@@ -61,7 +61,7 @@ const StarredMessagesContainer = ({
           </Box>
         ))
       ) : (
-        <Card>
+        <Card className={classes.starredAlertCard}>
           <Typography>
             There are no starred messages. Star a message to display here!
           </Typography>
