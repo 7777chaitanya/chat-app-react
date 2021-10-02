@@ -65,7 +65,7 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
     await deleteDoc(doc(db,"rooms",currentRoom));
     handleShowRightContainer();
     if(rooms.length>0){
-    history.push(`/app/chat/${rooms[0].data.name}`);
+    // history.push(`/app/chat/${rooms[0].data.name}`);
     }
     else{
       history.push("/")
@@ -149,7 +149,7 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
       )}
         </>)}
       </Box>
-      {roomContent.createdBy===currentUser.email && 
+      {roomContent?.createdBy===currentUser?.email && 
 
      ( <Box className={classes.buttonBox}>
       <Button
