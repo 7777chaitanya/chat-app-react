@@ -9,7 +9,7 @@ const useStyles = makeStyles({
   },
   form: {
     border: "1px solid lightgray",
-    margin: "5px",
+    // margin: "1rem",
     borderRadius: 5,
     // width: "50vw",
     padding: "0px 5rem",
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
   mainForm: {
     display: "flex",
-    height: "100vh",
+    height: "105vh",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -50,6 +50,8 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    // padding : "5rem"
+    marginBottom : "3rem"
   },
   divider: {
     width: "50vw",

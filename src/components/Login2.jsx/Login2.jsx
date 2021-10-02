@@ -30,7 +30,7 @@ import {
     const history = useHistory();
   
     const handleSubmit = async (e) => {
-      e.preventDefault();
+      e && e.preventDefault();
       console.log("sign up method =>", auth);
   
       
@@ -54,6 +54,12 @@ import {
       }
       setLoading(false);
     };
+
+    const handleTestuserLogin = () => {
+      emailRef.current.value="neeraj@gmail.com";
+      passwordRef.current.value = "asdfgh";
+      handleSubmit();
+    }
   
     return (
       <Box  className={classes.outer}>
@@ -119,6 +125,14 @@ import {
                   disabled={loading}
                 >
                   Login
+                </Button>
+                <Button
+                  color="white"
+                  className={classes.button}
+                  onClick={handleTestuserLogin}
+                  disabled={loading}
+                >
+                  Login as Test User
                 </Button>
               </Box>
             </Box>

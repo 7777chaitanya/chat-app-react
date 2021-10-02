@@ -5,6 +5,7 @@ const useStyles = makeStyles({
       display: "flex",
       justifyContent: "center",
       margin: "1rem",
+      flexDirection : "column"
     },
     form: {
       border: "1px solid lightgray",
