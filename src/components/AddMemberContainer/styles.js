@@ -7,6 +7,8 @@ const useStyles = makeStyles({
     alignItems: "center",
     padding: "1rem 0rem",
     backgroundColor: "rgb(105,193,165)",
+    backgroundImage: "linear-gradient(165deg, lightcyan, white)",
+
   },
   sidebar__header: {
     display: "flex",
@@ -57,7 +59,9 @@ const useStyles = makeStyles({
   },
   displayMessageCard:{
     margin : "0.5rem 1rem",
-    padding : "0.5rem 2rem"
+    padding : "0.5rem 2rem",
+    backgroundImage: "linear-gradient(165deg, lightcyan, white)",
+
   }
 });
 

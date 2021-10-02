@@ -14,7 +14,10 @@ const  useStyles = makeStyles({
          justifyContent : "center",
          alignItems : "center",
          padding : "1rem 0rem",
-         backgroundColor : "rgb(105,193,165)"
+         backgroundColor : "rgb(105,193,165)",
+         backgroundImage: "linear-gradient(165deg, lightcyan, white)",
+
+         
     },
     messageBox:{
         marginRight : "2rem",
