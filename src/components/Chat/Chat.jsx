@@ -315,7 +315,7 @@ const Chat = (props) => {
   const getFriendsBio = () => {
     if (roomContent?.privateChat) {
       let friend = roomContent?.members?.find(
-        (member) => member !== currentUser.email
+        (member) => member !== currentUser?.email
       );
       let friendName = friend;
       let friendDoc = allUsers.find((user) => user.email === friend);
