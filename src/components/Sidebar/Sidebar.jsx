@@ -20,6 +20,7 @@ import Button from "@material-ui/core/Button";
 import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
+
 // import SidebarHeader from "./SidebarHeader";
 // import SidebarSearch from "./SidebarSearch";
 // import SidebarChats from "./SidebarChats"
@@ -280,18 +281,24 @@ const Sidebar = () => {
           {/* <IconButton onClick={toggleDrawer("left", true)}>
             <DonutLargeIcon className={classes.sidebar__header__icon} />
           </IconButton> */}
-          <IconButton onClick={toggleDrawer("left", true)}>
-            <ChatIcon className={classes.sidebar__header__icon} />
-          </IconButton>
-          <IconButton
-            onClick={toggleDrawer("left", true)}
-            onClick={handleCreateNewRoom}
-          >
-            <MeetingRoomIcon className={classes.sidebar__header__icon} />
-          </IconButton>
-          <IconButton>
-            <ExitToAppIcon onClick={handleLogout} />
-          </IconButton>
+          <Tooltip title="New Message">
+            <IconButton onClick={toggleDrawer("left", true)}>
+              <ChatIcon className={classes.sidebar__header__icon} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Create room">
+            <IconButton
+              onClick={toggleDrawer("left", true)}
+              onClick={handleCreateNewRoom}
+            >
+              <MeetingRoomIcon className={classes.sidebar__header__icon} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Log out">
+            <IconButton>
+              <ExitToAppIcon onClick={handleLogout} />
+            </IconButton>
+          </Tooltip>
           {/* <IconButton
             onClick={handleOpenMenuModal}
             className={classes.vertIcon}

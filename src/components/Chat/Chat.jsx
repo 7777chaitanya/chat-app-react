@@ -5,6 +5,7 @@ import {
   Box,
   Typography,
   ListItem,
+  Tooltip,
 } from "@material-ui/core";
 import React, { useRef, useState, useEffect, useContext } from "react";
 import useStyles from "./styles";
@@ -353,18 +354,16 @@ const Chat = (props) => {
     );
   };
 
-  
   useEffect(() => {
     history.push(`/app/chat/${rooms[0]?.data?.name}`);
-
-  }, [rooms])
+  }, [rooms]);
 
   const handleDeleteAChat = async () => {
     await handleClearMessagesFromChat();
     await deleteDoc(doc(db, "rooms", currentRoom));
     if (rooms.length > 0) {
       // setTimeout(() => {
-        // history.push(`/app/chat/${rooms[0].data.name}`);
+      // history.push(`/app/chat/${rooms[0].data.name}`);
       // }, 1000);
     } else {
       history.push("/");
@@ -466,15 +465,19 @@ const Chat = (props) => {
                   {/* <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton> */}
-                  <IconButton
-                    aria-label="settings"
-                    onClick={handleSearchMessagesContainer}
-                  >
-                    <SearchIcon />
-                  </IconButton>
+                  <Tooltip title="Search Messages">
+                    <IconButton
+                      aria-label="settings"
+                      onClick={handleSearchMessagesContainer}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="More options">
                   <IconButton aria-label="settings" onClick={handleClick}>
                     <MoreVertIcon />
                   </IconButton>
+                  </Tooltip>
                 </>
               }
               title={generateRoomName()?.name}

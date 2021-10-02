@@ -92,6 +92,12 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
         </div>
       </div>
 
+      <div className={classes.pBox}>
+        <p>
+          Groups and their details cannot be modified once they are created!
+        </p>
+      </div>
+
      {/* { !roomContent?.privateChat &&
 
      ( <Box className={classes.usernameBox}>
