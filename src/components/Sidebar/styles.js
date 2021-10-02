@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme=>({
     // borderRight: "1px solid black",
     display : "flex",
     flexDirection : "column",
-    // minWidth : "400px"
+    minWidth : "22.6rem"
   },
   sidebar__header: {
     display: "flex",
@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme=>({
     padding: "1rem",
     alignItems: "center",
     backgroundColor: "rgb(235,235,235)",
-    border: "1px solid black",
+    // border: "1px solid darkgray",
+    borderRight : 'none',
     maxWidth : "310px"
   },
   sidebar__header__icon: {
@@ -53,6 +54,7 @@ const useStyles = makeStyles(theme=>({
   sidebar_search__container : {
       padding: "0.5rem",
       backgroundColor : "rgb(235,235,235)",
+      marginTop : "1px solid darkgray"
 
   },
   sidebar__chats:{

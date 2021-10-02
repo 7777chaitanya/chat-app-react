@@ -6,16 +6,21 @@ const useStyles = makeStyles((theme) => ({
   chat: {
     flex: 7,
     [theme.breakpoints.down("sm")]: {
-      display: "none",
+      // display: "none",
     },
-    border: "1px solid black",
+    // border: "1px solid black",
     display: "flex",
     flexDirection: "column",
+    minWidth : "30rem",
+    borderLeft : "1px solid darkgray"
   },
   avatar: {
     backgroundColor: red[500],
   },
-  chat__header: {},
+  chat__header: {
+    border : "1px solid darkgray",
+    borderLeft : "none"
+  },
   chat__body: {
     // minHeight : "70vh",
     // height : "100%",
