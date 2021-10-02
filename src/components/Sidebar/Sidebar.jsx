@@ -108,11 +108,16 @@ const Sidebar = () => {
         createdBy: currentUser.email,
       });
     }
+   
     if (groupDp) {
       postGroupDpToFireStorage(groupDp, roomNameValue, currentUser);
       // setRoomNameValue("");
       return;
     }
+    // setTimeout(()=> {
+      history.push(`/app/chat/${roomNameValue}`);
+
+    // },1000)
     setRoomNameValue("");
   };
 
@@ -221,15 +226,37 @@ const Sidebar = () => {
   const chatToShow = rooms.filter((room) =>
     generateRoomName(room.id).name?.toLowerCase().includes(roomNameSearchTerm)
   );
-  console.log("cts", chatToShow);
+  // console.log("cts", chatToShow);
 
   const showFirstChat = () => {
-    history.push(`/app/chat/${chatToShow[0]?.data?.name}`);
+    // history.push(`/app/chat/${chatToShow[0]?.data?.name}`);
   };
 
-  useEffect(() => {
+  const [timeoutManager, setTimeoutManager] = useState(true);
+
+  // useEffect(() => {
+    // timeoutManager && (
+    // setTimeout(() => {
+    //   history.push(`/app/chat/${chatToShow[0]?.data?.name}`);
+    //   setTimeoutManager(false);
+
+    // },1000))
+    
+  // },[]);
+
+  if(timeoutManager){
+  setTimeout(() => {
     history.push(`/app/chat/${chatToShow[0]?.data?.name}`);
-  }, []);
+    // setTimeoutManager(false);
+    setTimeout(()=>{
+      setTimeoutManager(false)
+    },2000)
+
+  },1000)
+}
+
+
+
 
   return (
     <div className={classes.sidebar}>
