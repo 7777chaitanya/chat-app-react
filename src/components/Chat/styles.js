@@ -46,8 +46,6 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
 
-      height : "50vh",
-      zIndex : 0
   },
   chat__footer: {
     display: "flex",
@@ -58,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     bottom : 0
 
-    // flex : 2
   },
   footerIcons: {
     color: "gray",
@@ -124,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fullChatContainerLeft: {
     display: "flex",
-    height: "99vh",
+    height: "99.8vh",
     flexDirection: "column",
     flex: 6,
     overflow: "scroll",
