@@ -507,6 +507,7 @@ const Chat = (props) => {
               onEmojiClick={onEmojiClick}
               native={true}
               pickerStyle={{ width: "100%" }}
+              className={classes.emojiPanel}
             />
           )}
 

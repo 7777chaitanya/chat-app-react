@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
   },
   chat__body: {
-    minHeight : "70vh",
+    // minHeight : "70vh",
     // height : "100%",
     flex : 1,
     backgroundImage: `url(${image})`,
@@ -46,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
 
-      height : "50vh"
+      height : "50vh",
+      zIndex : 0
   },
   chat__footer: {
     display: "flex",
@@ -54,7 +55,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     maxHeight: "3rem",
     padding: "0.5rem 1rem",
-    position: "relative",
+    position: "sticky",
+    bottom : 0
+
     // flex : 2
   },
   footerIcons: {
@@ -121,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fullChatContainerLeft: {
     display: "flex",
-    maxHeight: "99vh",
+    height: "99vh",
     flexDirection: "column",
     flex: 6,
     overflow: "scroll",
@@ -163,6 +166,10 @@ const useStyles = makeStyles((theme) => ({
   imageName:{
     color : "black",
     fontSize : "0.7rem"
+},
+emojiPanel:{
+  zIndex : 10000,
+  position : "relative",
 }
 }));
 
