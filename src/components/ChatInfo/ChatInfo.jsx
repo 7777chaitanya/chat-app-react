@@ -92,13 +92,13 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
         </div>
       </div>
 
-     { !roomContent?.privateChat &&
+     {/* { !roomContent?.privateChat &&
 
      ( <Box className={classes.usernameBox}>
         <TextField
           required
           id="standard-required"
-          label="Required"
+          label={roomContent?.privateChat ? "Username" : "GroupName"}
           defaultValue={roomContent?.name}
           disabled={showUserNamePen}
           // onChange={handleUsernameChange}
@@ -111,26 +111,32 @@ const ChatInfo = ({name, avatarUrl,messages, bio, roomContent,handleShowRightCon
           (<IconButton onClick={saveUsernameChanges} disabled={!username}>
             <CheckIcon />
           </IconButton>)}
-      </Box>)}
+      </Box>)} */}
 
 
       <Box className={classes.usernameBox}>
+        {roomContent?.privateChat &&(
         <TextField
-          required
+          // required
           id="standard-required"
-          label="Required"
+          label="Bio"
           value={userBio}
           disabled={showUserNamePen}
+          multiline
+          maxRows={4}
+          InputProps={{
+            readOnly: true,
+          }}
           // onChange={handleUsernameChange}
-        />
-         {!roomContent?.privateChat &&
+        />)}
+         {/* {!roomContent?.privateChat &&
           (<IconButton onClick={handleFocusUserNameField}>
             <EditIcon />
           </IconButton>)}
           {!roomContent?.privateChat &&
           (<IconButton onClick={saveUsernameChanges} disabled={!username}>
             <CheckIcon />
-          </IconButton>)}
+          </IconButton>)} */}
       </Box>
 
       {messagesWithMedia.length!==0 &&
