@@ -22,6 +22,8 @@ const useStyles = makeStyles({
     paddingLeft : "2rem",
     paddingBottom : "1rem",
     backgroundColor : "rgb(105,193,165)",
+    backgroundImage: "linear-gradient(165deg, lightcyan, white)",
+
     alignItems : "center"
   },
   profileDrawerHeaderText: {
@@ -52,12 +54,16 @@ paddingBottom : "1rem"
   },
   avatarBox:{
       backgroundColor : "rgb(200,200,200)",
+      backgroundImage: "linear-gradient(165deg, lightcyan, white)",
+
       padding: "1rem 0",
       // position : "absolute"
   },
   pBox : {
       padding : "2rem",
-      backgroundColor : "rgb(200,200,200)"
+      backgroundColor : "rgb(200,200,200)",
+      backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
   },
   usernameBox:{
     display :"flex",
