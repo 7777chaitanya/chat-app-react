@@ -19,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
   },
   chat__header: {
     border : "1px solid darkgray",
-    borderLeft : "none"
+    borderLeft : "none",
+    borderRight : "none"
   },
   chat__body: {
-    // minHeight : "70vh",
+    minHeight : "70vh",
     // height : "100%",
     flex : 1,
     backgroundImage: `url(${image})`,
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
       outline: "1px solid slategrey",
     },
 
-    //   height : "50vh"
+      height : "50vh"
   },
   chat__footer: {
     display: "flex",

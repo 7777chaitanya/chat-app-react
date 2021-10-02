@@ -295,7 +295,7 @@ const Chat = (props) => {
   const generateRoomName = () => {
     if (roomContent?.privateChat) {
       let friend = roomContent?.members?.find(
-        (member) => member !== currentUser.email
+        (member) => member !== currentUser?.email
       );
       let friendName = friend;
       if (!friendName) {
