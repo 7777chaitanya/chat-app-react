@@ -1,6 +1,9 @@
 import { createTheme, makeStyles } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import image from "./whatsappbackground.png";
+import image1 from "./nightbg.jpg";
+import image2 from "./undraw_Online_chat_re_c4lx.png"
+
 
 const useStyles = makeStyles((theme) => ({
   chat: {
