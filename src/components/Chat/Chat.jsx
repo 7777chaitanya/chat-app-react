@@ -353,11 +353,19 @@ const Chat = (props) => {
     );
   };
 
+  
+  useEffect(() => {
+    history.push(`/app/chat/${rooms[0]?.data?.name}`);
+
+  }, [rooms])
+
   const handleDeleteAChat = async () => {
     await handleClearMessagesFromChat();
     await deleteDoc(doc(db, "rooms", currentRoom));
     if (rooms.length > 0) {
-      history.push(`/app/chat/${rooms[0].data.name}`);
+      // setTimeout(() => {
+        // history.push(`/app/chat/${rooms[0].data.name}`);
+      // }, 1000);
     } else {
       history.push("/");
     }
