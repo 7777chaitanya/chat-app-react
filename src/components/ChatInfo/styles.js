@@ -22,6 +22,8 @@ const useStyles = makeStyles({
     paddingLeft : "2rem",
     paddingBottom : "1rem",
     backgroundColor : "rgb(105,193,165)",
+    backgroundImage: "linear-gradient(165deg, lightcyan, white)",
+
     alignItems : "center"
   },
   profileDrawerHeaderText: {
@@ -33,7 +35,9 @@ const useStyles = makeStyles({
     flex: 3,
     display: "flex",
     justifyContent: "center",
-    paddingTop : "2vh"
+    paddingTop : "2vh",
+    backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
     // alignItems: "center",
   },
   avatarSize: {
@@ -53,6 +57,8 @@ paddingBottom : "1rem"
   avatarBox:{
       backgroundColor : "rgb(200,200,200)",
       padding: "1rem 0",
+      backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
       // position : "absolute"
   },
   pBox : {

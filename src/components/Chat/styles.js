@@ -20,7 +20,9 @@ const useStyles = makeStyles((theme) => ({
   chat__header: {
     border : "1px solid darkgray",
     borderLeft : "none",
-    borderRight : "none"
+    borderRight : "none",
+    backgroundImage: "linear-gradient(180deg, lightcyan, white)"
+
   },
   chat__body: {
     minHeight : "70vh",

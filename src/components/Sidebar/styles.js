@@ -16,7 +16,9 @@ const useStyles = makeStyles(theme=>({
     backgroundColor: "rgb(235,235,235)",
     // border: "1px solid darkgray",
     borderRight : 'none',
-    maxWidth : "310px"
+    maxWidth : "22.6rem",
+    backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
   },
   sidebar__header__icon: {
     marginRight: "2rem",
@@ -54,7 +56,9 @@ const useStyles = makeStyles(theme=>({
   sidebar_search__container : {
       padding: "0.5rem",
       backgroundColor : "rgb(235,235,235)",
-      marginTop : "1px solid darkgray"
+      marginTop : "1px solid darkgray",
+      // backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
 
   },
   sidebar__chats:{
@@ -71,7 +75,9 @@ const useStyles = makeStyles(theme=>({
       '&::-webkit-scrollbar-thumb': {
         backgroundColor: 'rgba(0,0,0,.1)',
         outline: '1px solid slategrey'
-      }
+      },
+      backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
   },
   addRoomCard:{
     display : "flex",

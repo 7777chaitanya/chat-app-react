@@ -36,7 +36,9 @@ const  useStyles = makeStyles(theme => ({
         width : "fit-content",
         // marginBottom : "1rem",
           marginLeft : "auto",
-          backgroundColor : "rgb(219,246,198)"
+          backgroundColor : "rgb(219,246,198)",
+          backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
       },
       chat__message : {
         backgroundColor : "white",
@@ -60,7 +62,7 @@ const  useStyles = makeStyles(theme => ({
         fontSize : "medium",
         fontWeight : 800,
         marginBottom : "0",
-        color : "purple"
+        color : "rgb(91,96,116)"
         // top : 0,
         // left : 8
     },

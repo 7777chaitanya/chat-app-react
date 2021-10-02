@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 
 const  useStyles = makeStyles({
     root: {
-        // maxWidth: 345,
+        minWidth: "22.6",
 
         // maxWidth : "100%",
         borderBottom : "0.0000001rem solid lightgray",
@@ -10,7 +10,9 @@ const  useStyles = makeStyles({
        
         cursor : "pointer",
         marginLeft : "auto",
-        marginRight : "auto"
+        marginRight : "auto",
+        backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
       },
       cardHeader:{
         '&:hover': { 
