@@ -317,7 +317,15 @@ const Sidebar = () => {
       </div>
 
       <div className={classes.sidebar__chats}>
-        {chatToShow.map((eachRoom) => (
+        {chatToShow.length===0 ? 
+        <Card className={classes.noMessagesCard}>
+          <Typography variant="body1" className={classes.noMessagesTest}>
+                There are no chats to show. Start a conversation with your friends to see it here.
+          </Typography>
+          </Card> :
+        
+        
+        chatToShow.map((eachRoom) => (
           <EachChat
             key={eachRoom.id}
             roomName={eachRoom.data.name}

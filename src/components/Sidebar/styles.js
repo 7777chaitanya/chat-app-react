@@ -111,6 +111,13 @@ const useStyles = makeStyles(theme=>({
   },
   uploadButton:{
     margin : "1rem auto"
+  },
+  noMessagesCard:{
+    backgroundImage: "linear-gradient(165deg, lightcyan, white)"
+
+  },
+  noMessagesTest:{
+    margin: "1rem"
   }
  
 }));
