@@ -225,7 +225,7 @@ const Sidebar = () => {
   };
 
   const chatToShow = rooms.filter((room) =>
-    generateRoomName(room.id).name?.toLowerCase().includes(roomNameSearchTerm)
+    generateRoomName(room.id).name?.toLowerCase().includes(roomNameSearchTerm.toLowerCase())
   );
   // console.log("cts", chatToShow);
 
