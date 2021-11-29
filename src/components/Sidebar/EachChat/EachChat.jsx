@@ -46,10 +46,10 @@ const EachChat = ({roomName, docId, lastMessageTime, handlesetRoomNameSearchTerm
 
         let lastMessage = messages[messages.length-1]?.message;
         
-        setLastMessage((lastMessage?.trim().length > 30 && lastMessage!=="") ? 
+        setLastMessage((lastMessage?.trim()?.length > 30 && lastMessage!=="") ? 
           
-          (lastMessage?.trim().substring(0,28)+"...") :
-          lastMessage.trim()
+          (lastMessage?.trim()?.substring(0,28)+"...") :
+          lastMessage?.trim()
           )
       });
       return () => {
