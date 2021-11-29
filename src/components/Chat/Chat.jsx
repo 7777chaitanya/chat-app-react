@@ -95,6 +95,7 @@ const Chat = (props) => {
   const history = useHistory();
 
   const handleMessageChange = (e) => {
+    if(e.target.value.trim() !== "")
     setMessage(e.target.value);
   };
 
@@ -103,7 +104,7 @@ const Chat = (props) => {
 
   const checkIfImageOrTextBoxIsEmpty = () => {
     if (messageRef) {
-      if (message === "" && wassupImage === null) {
+      if (message.trim() === "" && wassupImage === null) {
         return true;
       }
       return false;
