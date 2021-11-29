@@ -6,10 +6,14 @@ import { IconButton } from "@material-ui/core";
 import { ShowSearchListContext } from "../../contexts/ShowSearchListContext";
 import SearchIcon from "@material-ui/icons/Search";
 import useStyles from "./styles";
-import SearchList from '../SearchList/SearchList';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import SearchList from "../SearchList/SearchList";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
-export default function TemporaryDrawer({ toggleDrawer, state, handleToggleDrawerClose}) {
+export default function TemporaryDrawer({
+  toggleDrawer,
+  state,
+  handleToggleDrawerClose,
+}) {
   const classes = useStyles();
 
   const roomNameRef = useRef();
@@ -27,14 +31,11 @@ export default function TemporaryDrawer({ toggleDrawer, state, handleToggleDrawe
 
   console.log("settingsDraweeeeeeeeeer=> ", toggleDrawer);
 
-
   const handleToggleClick = () => {
-    const toggle= toggleDrawer("left", false);
-    toggle("left",false);
-    
-  
-  }
-
+    const toggle = toggleDrawer("left", false);
+    toggle("left", false);
+    closeSearchList();
+  };
 
   const list = (anchor) => (
     <div
@@ -44,12 +45,12 @@ export default function TemporaryDrawer({ toggleDrawer, state, handleToggleDrawe
       role="presentation"
     >
       <div className={classes.sidebar_search__container}>
-        {/* <IconButton onClick={handleToggleClick}> */}
-        <IconButton onClick={toggleDrawer("left", false)}>
+        <IconButton onClick={handleToggleClick}>
+          {/* <IconButton onClick={toggleDrawer("left", false)}> */}
 
-          <ArrowBackIcon/>
+          <ArrowBackIcon />
         </IconButton>
-        
+
         <div className={classes.sidebar_search}>
           <div className={classes.sidebar_searchicon_div}>
             <SearchIcon className={classes.searchIcon} />
@@ -63,13 +64,16 @@ export default function TemporaryDrawer({ toggleDrawer, state, handleToggleDrawe
         </div>
       </div>
 
-      {showSearchList && <SearchList searchTerm={searchTerm} toggleDrawer={toggleDrawer} state={state} setSearchTerm={setSearchTerm}
-      handleToggleDrawerClose={handleToggleDrawerClose}
-      /> }
-
+      {showSearchList && (
+        <SearchList
+          searchTerm={searchTerm}
+          toggleDrawer={toggleDrawer}
+          state={state}
+          setSearchTerm={setSearchTerm}
+          handleToggleDrawerClose={handleToggleDrawerClose}
+        />
+      )}
     </div>
-
-
   );
 
   return (

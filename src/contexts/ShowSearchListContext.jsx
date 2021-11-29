@@ -24,6 +24,6 @@ export const ShowSearchListProvider = ({ children }) => {
     
     </ShowSearchListContext.Provider>
     
-    );;
+    );
 };
 
