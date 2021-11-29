@@ -249,7 +249,7 @@ const Chat = (props) => {
     e.preventDefault();
     console.log(messageRef.current.value);
     setShowEmojiPanel(false);
-    if (messageRef.current.value === "" && wassupImage === null) return;
+    if (messageRef.current.value.trim() === "" && wassupImage === null) return;
 
     if (wassupImage !== null) {
       postToFireStorage();
