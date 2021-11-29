@@ -95,20 +95,18 @@ const Chat = (props) => {
   const history = useHistory();
 
   const handleMessageChange = (e) => {
-    if(e.target.value.trim() !== "")
-    setMessage(e.target.value);
+      setMessage(e.target.value);
   };
 
   console.log("match => ", roomContent);
   console.log("messages => ", messages);
 
   const checkIfImageOrTextBoxIsEmpty = () => {
-    if (messageRef) {
-      if (message.trim() === "" && wassupImage === null) {
+      if (messageRef.current.value.trim()  === "" && wassupImage === null) {
         return true;
       }
       return false;
-    }
+    
   };
 
   const handleWassupImageChange = (e) => {
