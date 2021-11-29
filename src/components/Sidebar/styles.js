@@ -16,12 +16,16 @@ const useStyles = makeStyles(theme=>({
     backgroundColor: "rgb(235,235,235)",
     // border: "1px solid darkgray",
     borderRight : 'none',
-    maxWidth : "22.6rem",
+    // maxWidth : "22.6rem",
+    width : "100%",
     backgroundImage: "linear-gradient(165deg, lightcyan, white)"
 
   },
   sidebar__header__icon: {
     marginRight: "2rem",
+  },
+  sidebar__header__icons:{
+    marginRight : "2rem"
   },
   searchIcon: {
     margin: "auto 1rem",
