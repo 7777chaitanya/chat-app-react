@@ -96,11 +96,11 @@ const Sidebar = () => {
   const handleRoomNameSubmit = async (e) => {
     e.preventDefault();
     handleClose();
-    if (roomNameValue) {
+    if (roomNameValue.trim().length !== 0) {
      
 
       await setDoc(doc(db, "rooms", roomNameValue), {
-        name: roomNameValue,
+        name: roomNameValue.trim(),
         members: [currentUser.email],
         privateChat: false,
         desc: "",
@@ -439,7 +439,7 @@ const Sidebar = () => {
             <Button
               color="primary"
               type="submit"
-              disabled={roomNameValue === ""}
+              disabled={roomNameValue.trim() === ""}
               className={classes.addRoomCardButtons}
             >
               Create room!
